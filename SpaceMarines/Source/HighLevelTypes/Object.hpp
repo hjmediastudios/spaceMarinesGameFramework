@@ -49,6 +49,7 @@ public:
 	virtual void start() = 0;
 	virtual bool isActive() = 0;
 	virtual const char* getComponentType() const = 0;
+	void setGameObject(GameObject* obj) { gameObject = obj; }
 protected:
 	GameObject* gameObject;
 };
@@ -117,6 +118,8 @@ public:
 			activeComponents.insert(std::pair<const char*, ActiveComponent*>(typeid(T).name(), (ActiveComponent*) comp));
 		else
 			passiveComponents.insert(std::pair<const char*, PassiveComponent*>(typeid(T).name(), (PassiveComponent*) comp));
+
+		comp->setGameObject(this);
 	}
 
 	virtual ~GameObject()
@@ -130,6 +133,35 @@ public:
 			delete it->second;
 		}
 	}
+
+	void start()
+	{
+		for (std::map<const char*, ActiveComponent*>::iterator it = activeComponents.begin(); it != activeComponents.end(); it++)
+		{
+			it->second->start();
+		}
+		for (std::map<const char*, PassiveComponent*>::iterator it = passiveComponents.begin(); it != passiveComponents.end(); it++)
+		{
+			it->second->start();
+		}
+	}
+
+	void update()
+	{
+		for (std::map<const char*, ActiveComponent*>::iterator it = activeComponents.begin(); it != activeComponents.end(); it++)
+		{
+			it->second->update();
+		}
+	}
+
+	void fixedUpdate()
+	{
+		for (std::map<const char*, ActiveComponent*>::iterator it = activeComponents.begin(); it != activeComponents.end(); it++)
+		{
+			it->second->fixedUpdate();
+		}
+	}
+
 private:
 	std::map<const char*, ActiveComponent*> activeComponents;
 	std::map<const char*, PassiveComponent*> passiveComponents;

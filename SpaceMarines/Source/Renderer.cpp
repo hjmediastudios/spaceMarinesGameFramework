@@ -10,10 +10,13 @@
 namespace SpaceMarines
 {
 
-Renderer::Renderer(const std::string &assetPath, const Vector2 &windowSize)
+Renderer::Renderer(const std::string &assetPath, const Vector2 &windowSize, const char *pipelineResource)
 {
 	this->assetPath = assetPath;
 	this->windowSize = windowSize;
+	this->pipelineFilePath = pipelineResource;
+	pipeline = 0;
+	this->camera = nullptr;
 }
 
 Renderer::~Renderer()
@@ -28,12 +31,15 @@ bool Renderer::init()
 	if (!setupWindow()) throw Exception("Error opening window");
 	if (!h3dInit()) throw Exception("Error initializing Horde3D");
 
+	pipeline = h3dAddResource(H3DResTypes::Pipeline, pipelineFilePath.c_str(), 0);
+
+	if (!h3dutLoadResourcesFromDisk(assetPath.c_str())) throw Exception("Unable to load pipeline data.");
 	return true;
 }
 
 bool Renderer::setupWindow()
 {
-	if (!glfwOpenWindow(windowSize.x, windowSize.y, 8, 8, 8, 8, 24, 8, GLFW_WINDOW))
+	if (!glfwOpenWindow((int)windowSize.x, (int)windowSize.y, 8, 8, 8, 8, 24, 8, GLFW_WINDOW))
 	{
 		glfwTerminate();
 		return false;
@@ -45,6 +51,20 @@ bool Renderer::setupWindow()
 Vector2 Renderer::getWindowSize() const
 {
 	return windowSize;
+}
+
+void Renderer::setCamera(Camera* camera)
+{
+	this->camera = camera;
+}
+
+void Renderer::update()
+{
+	h3dRender(camera->cam);
+
+    // Finish rendering of frame
+    h3dFinalizeFrame();
+    glfwSwapBuffers();
 }
 
 

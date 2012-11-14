@@ -8,12 +8,13 @@
 #include <typeinfo>
 #include <hash_set>
 
-#include <GL/glfw.h>
-#include <GL/gl.h>
+
 #include <tinyxml2.h>
 #include <horde3d/Horde3D.h>
 #include <horde3d/Horde3DUtils.h>
 #include <functional>
+#include <GL/glfw.h>
+#include <GL/gl.h>
 
 class Exception : public std::exception
 {
