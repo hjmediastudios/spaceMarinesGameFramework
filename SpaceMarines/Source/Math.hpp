@@ -1,9 +1,13 @@
 #pragma once
-#include "Prerequisites.hpp"
+//#include "Prerequisites.hpp"
+#include <iostream>
+#include <fstream>
+#include <string>
 #include <math.h>
 
 namespace SpaceMarines
 {
+
 namespace Math
 {
 	const unsigned int MaxUInt32 = 0xFFFFFFFF;
@@ -76,13 +80,13 @@ namespace Math
 	public:
 		BinaryFile(const std::string &filename) : stream(filename.c_str(), std::ios::in | std::ios::binary)
 		{
-			if (!stream || stream.eof()) throw Exception("Unable to open binary file: file \"" + filename + "\" is empty");
+			/*if (!stream || stream.eof());*/
 		}
 
 		template<typename T>
 		void read(T* reader)
 		{
-			if (stream.eof()) throw Exception("Error: File is empty");
+			if (stream.eof()) return;
 			stream.read(reinterpret_cast<char*>(reader), sizeof(T));
 		}
 
@@ -332,6 +336,12 @@ public:
 	{
 		return a + (b-a)*f;
 	}
+
+	static const Vector3 ONE;
+	static const Vector3 ZERO;
+	static const Vector3 RIGHT;
+	static const Vector3 UP;
+	static const Vector3 FORWARD;
 };
 
 class Vector4

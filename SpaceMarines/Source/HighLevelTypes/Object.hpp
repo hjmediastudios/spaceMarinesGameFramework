@@ -81,13 +81,47 @@ public:
 /************************************************************8
  * GameObject
  */
+
+class Transform
+{
+public:
+	Transform() {}
+	Transform(const Transform &other) { position = other.position; rotationEulers = other.rotationEulers; scale = other.scale; }
+	Transform(const Vector3 &position, const Vector3 &rotationEulers, const Vector3 &scale = Vector3::ONE)
+	{
+		this->position = position;
+		this->rotationEulers = rotationEulers;
+		this->scale = scale;
+	}
+
+	void setPosition(const Vector3 &position) { this->position = position; }
+	void setRotationEulers(const Vector3 &rotationEulers) { this->rotationEulers = rotationEulers; }
+	void setScale(const Vector3 &scale) { this->scale = scale; }
+
+	Vector3 getPosition() const { return position; }
+	Vector3 getScale() const { return scale; }
+	Vector3 getRotationEulers() const { return rotationEulers; }
+
+	void setHorde3DNodeTransform(H3DNode node)
+	{
+		h3dSetNodeTransform(node, position.x, position.y, position.x,
+								  rotationEulers.x, rotationEulers.y, rotationEulers.z,
+								  scale.x, scale.y, scale.z);
+	}
+
+private:
+	Vector3 position;
+	Vector3 scale;
+	Vector3 rotationEulers;
+};
+
 class GameObject : public Object
 {
 public:
 	static const ObjectTypeName type = ObjectType::GameObject;
 	GameObject() : Object()
 	{
-
+		transform = Transform(Vector3::ZERO, Vector3::ZERO, Vector3::ONE);
 	}
 
 	template<typename T>
@@ -153,7 +187,6 @@ public:
 			it->second->update();
 		}
 	}
-
 	void fixedUpdate()
 	{
 		for (std::map<const char*, ActiveComponent*>::iterator it = activeComponents.begin(); it != activeComponents.end(); it++)
@@ -162,9 +195,16 @@ public:
 		}
 	}
 
+	Transform* getTransform()
+	{
+		return &transform;
+	}
+
 private:
 	std::map<const char*, ActiveComponent*> activeComponents;
 	std::map<const char*, PassiveComponent*> passiveComponents;
+	Transform transform;
+
 };
 
 }

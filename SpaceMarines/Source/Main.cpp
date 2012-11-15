@@ -47,10 +47,10 @@ int main(int argc, char* argv[])
 	h3dSetNodeParamF( light, H3DLight::ColorF3, 1, 0.9f );
 	h3dSetNodeParamF( light, H3DLight::ColorF3, 2, 1.0f );
 
+	//Add camera
 	GameObject* camObj = new GameObject();
 	camObj->addComponent(new Camera("Hey", renderer));
 	camObj->getComponent<Camera>()->setView(Vector2(1280, 720), 45.0f, Vector2(0.5f, 1000.0f));
-    // Add camera
 	renderer->setCamera(camObj->getComponent<Camera>());
 
 	cout << "Hey\n";

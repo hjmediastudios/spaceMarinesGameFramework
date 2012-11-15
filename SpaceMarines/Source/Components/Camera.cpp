@@ -15,7 +15,6 @@ Camera::Camera(const std::string &name, Renderer* renderer)
 
 Camera::~Camera()
 {
-
 }
 
 void Camera::setView(const Vector2 &size, const float fovDegrees, const Vector2 &clipDistances)
