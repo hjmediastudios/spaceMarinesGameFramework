@@ -33,7 +33,11 @@ bool Renderer::init()
 
 	pipeline = h3dAddResource(H3DResTypes::Pipeline, pipelineFilePath.c_str(), 0);
 
-	if (!h3dutLoadResourcesFromDisk(assetPath.c_str())) throw Exception("Unable to load pipeline data.");
+	if (!h3dutLoadResourcesFromDisk(assetPath.c_str()))
+	{
+		h3dutDumpMessages();
+		throw Exception("Unable to load asset data.");
+	}
 	return true;
 }
 

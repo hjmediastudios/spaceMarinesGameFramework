@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 	std::string appPath = Math::extractAppPath(argv[0]);
 	std::string assetPath = appPath + "../Assets";
 
-	Renderer* renderer = new SpaceMarines::Renderer(assetPath, Vector2(1280, 720), "pipelines/deferred.pipeline.xml");
+	Renderer* renderer = new SpaceMarines::Renderer(assetPath, Vector2(1280, 720), "pipelines/mypipe.pipeline.xml");
 	renderer->init();
 
 	H3DNode model = 0;

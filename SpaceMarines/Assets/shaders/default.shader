@@ -59,7 +59,7 @@ context LIGHTING
 	BlendMode = Add;
 }
 
-context AMBIENT
+context AMBIENTCOLOR
 {
 	VertexShader = compile GLSL VS_GENERAL;
 	PixelShader = compile GLSL FS_AMBIENT;
