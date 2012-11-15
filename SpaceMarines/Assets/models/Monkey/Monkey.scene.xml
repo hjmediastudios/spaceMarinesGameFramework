@@ -1,0 +1,4 @@
+<Model name="Monkey" geometry="models/Monkey/Monkey.geo">
+
+	<Mesh name="Monkey" material="materials/default.material.xml" batchStart="0" batchCount="11808" vertRStart="0" vertREnd="2011" />
+</Model>
