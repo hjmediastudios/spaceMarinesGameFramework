@@ -17,6 +17,7 @@ Renderer::Renderer(const std::string &assetPath, const Vector2 &windowSize, cons
 	this->pipelineFilePath = pipelineResource;
 	pipeline = 0;
 	this->camera = nullptr;
+	_started = 0;
 }
 
 Renderer::~Renderer()
@@ -38,6 +39,8 @@ bool Renderer::init()
 		h3dutDumpMessages();
 		throw Exception("Unable to load asset data.");
 	}
+
+	_started = 1;
 	return true;
 }
 
@@ -46,6 +49,13 @@ bool Renderer::loadResources()
 	if (!h3dutLoadResourcesFromDisk(assetPath.c_str()))
 		return false;
 	return true;
+}
+
+void Renderer::start()
+{
+	if (_started != 1) throw Exception("Renderer must be initialized before it can be started");
+	if (!loadResources()) throw Exception("Unable to load resources");
+	_started = 2;
 }
 
 bool Renderer::setupWindow()
@@ -71,6 +81,7 @@ void Renderer::setCamera(Camera* camera)
 
 void Renderer::update()
 {
+	if (_started != 2) throw Exception("Renderer hasn't been properly started.");
 	h3dRender(camera->cam);
 
     // Finish rendering of frame

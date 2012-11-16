@@ -63,7 +63,7 @@ public:
 	virtual ~ActiveComponent() {}
 	virtual void start() = 0;
 	virtual void update() = 0;
-	virtual void fixedUpdate() = 0;
+//	virtual void fixedUpdate() = 0; TODO PHysicsAffectableComponent
 	virtual const char* getComponentType() const = 0;
 };
 
@@ -84,6 +84,10 @@ public:
 
 class Transform
 {
+public:
+	Vector3 position;
+	Vector3 scale;
+	Quaternion rotation;
 public:
 	Transform() {}
 	Transform(const Transform &other) { position = other.position; rotation = other.rotation; scale = other.scale; }
@@ -112,12 +116,6 @@ public:
 	{
 		//TODO Fetch transform
 	}
-
-
-private:
-	Vector3 position;
-	Vector3 scale;
-	Quaternion rotation;
 };
 
 class GameObject : public Object
@@ -126,7 +124,7 @@ public:
 	static const ObjectTypeName type = ObjectType::GameObject;
 	GameObject() : Object()
 	{
-		transform = Transform(Vector3::ZERO, Vector3::ZERO, Vector3::ONE);
+		transform = Transform(Vector3::ZERO, Quaternion::IDENTITY, Vector3::ONE);
 	}
 
 	template<typename T>
@@ -196,7 +194,7 @@ public:
 	{
 		for (std::map<const char*, ActiveComponent*>::iterator it = activeComponents.begin(); it != activeComponents.end(); it++)
 		{
-			it->second->fixedUpdate();
+//			it->second->fixedUpdate();
 		}
 	}
 

@@ -12,6 +12,7 @@ public:
 	Renderer(const std::string &assetPath, const Vector2& windowSize, const char* pipelineResource);
 	virtual ~Renderer();
 	bool init();
+	void start();
 	bool loadResources();
 	Vector2 getWindowSize() const;
 	H3DRes getPipelineHandle() const { return pipeline; }
@@ -25,6 +26,7 @@ private:
 	H3DRes pipeline;
 	std::string pipelineFilePath;
 	Camera* camera;
+	unsigned short _started;
 };
 
 } /* namespace SpaceMarines */

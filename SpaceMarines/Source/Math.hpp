@@ -461,7 +461,7 @@ public:
 		float invLen = 1.0f / sqrtf( qt.x * qt.x + qt.y * qt.y + qt.z * qt.z + qt.w * qt.w );
 		return Quaternion( qt.x * invLen, qt.y * invLen, qt.z * invLen, qt.w * invLen );
 	}
-
+	static const Quaternion IDENTITY;
 };
 
 class Matrix4
