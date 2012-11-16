@@ -56,6 +56,7 @@ void Renderer::start()
 	if (_started != 1) throw Exception("Renderer must be initialized before it can be started");
 	if (!loadResources()) throw Exception("Unable to load resources");
 	_started = 2;
+	if (camera == nullptr) throw Exception("Renderer has no camera");
 }
 
 bool Renderer::setupWindow()

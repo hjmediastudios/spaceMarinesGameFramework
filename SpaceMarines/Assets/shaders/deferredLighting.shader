@@ -38,10 +38,19 @@ context AMBIENT
 	BlendMode = Replace;
 }
 
-context LIGHTING
+context SPOTLIGHT
 {
 	VertexShader = compile GLSL VS_VOLUME;
-	PixelShader = compile GLSL FS_LIGHTING;
+	PixelShader = compile GLSL FS_SPOTLIGHT;
+	
+	ZWriteEnable = false;
+	BlendMode = Add;
+}
+
+context POINTLIGHT
+{
+	VertexShader = compile GLSL VS_VOLUME;
+	PixelShader = compile GLSL FS_POINTLIGHT;
 	
 	ZWriteEnable = false;
 	BlendMode = Add;
@@ -105,7 +114,7 @@ void main( void )
 }
 
 
-[[FS_LIGHTING]]
+[[FS_SPOTLIGHT]]
 
 #include "shaders/utilityLib/fragLighting.glsl"
 #include "shaders/utilityLib/fragDeferredRead.glsl"
@@ -122,8 +131,31 @@ void main( void )
 		vec3 pos = getPos( fragCoord ) + viewerPos;
 		float vsPos = (viewMat * vec4( pos, 1.0 )).z;
 		
-		gl_FragColor.rgb =
-			calcPhongSpotLight( pos, getNormal( fragCoord ),
+		gl_FragColor.rgb = calcPhongSpotLight( pos, getNormal( fragCoord ),
+								getAlbedo( fragCoord ), getSpecMask( fragCoord ), 16.0, -vsPos, 0.3 );
+	}
+	else discard;
+	
+}
+
+[[FS_POINTLIGHT]]
+
+#include "shaders/utilityLib/fragLighting.glsl"
+#include "shaders/utilityLib/fragDeferredRead.glsl"
+
+uniform mat4 viewMat;
+varying vec4 vpos;
+
+void main( void )
+{
+	vec2 fragCoord = (vpos.xy / vpos.w) * 0.5 + 0.5;
+	
+	if( getMatID( fragCoord ) == 1.0 )	// Standard phong material
+	{
+		vec3 pos = getPos( fragCoord ) + viewerPos;
+		float vsPos = (viewMat * vec4( pos, 1.0 )).z;
+		
+		gl_FragColor.rgb = calcPhongPointLight( pos, getNormal( fragCoord ),
 								getAlbedo( fragCoord ), getSpecMask( fragCoord ), 16.0, -vsPos, 0.3 );
 	}
 	else discard;

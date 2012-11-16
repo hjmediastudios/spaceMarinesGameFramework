@@ -27,7 +27,7 @@ namespace Math
 	//-------------------------------------------
 	//			General math functions
 	//-------------------------------------------
-	static inline float degToRed(float degrees)
+	static inline float degToRad(float degrees)
 	{
 		return degrees * 0.017453293f;
 	}
@@ -191,7 +191,8 @@ public:
 	Vector3(const float x, const float y, const float z) : x(x), y(y), z(z) {}
 	Vector3(const Vector3 &other) : x(other.x), y (other.y), z (other.z) {}
 	//Vector3 accessors
-	float &operator[] (unsigned int index) { return *(&x + index); }
+	float &operator[] (unsigned short index) { return *(&x + index); }
+	float operator[](unsigned short index) const { return *(&x + index); }
 	bool operator==(const Vector3& other)
 	{
 		return (x > other.x - Math::Epsilon && x < other.x + Math::Epsilon &&
@@ -529,7 +530,7 @@ public:
 	{
 		Matrix4 mat = Matrix4(0.0f);
 		float zRange = zNear - zFar;
-		float tanHalfFOV = tanf(Math::degToRed(degreeFOV) / 2.0f);
+		float tanHalfFOV = tanf(Math::degToRad(degreeFOV) / 2.0f);
 
 		mat.mm[0][0] = 1.0f / (tanHalfFOV * aspect);
 		mat.mm[1][1] = 1.0f / tanHalfFOV;

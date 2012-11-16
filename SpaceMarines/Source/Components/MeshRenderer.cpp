@@ -13,20 +13,14 @@ MeshRenderer::MeshRenderer(const char* assetPath)
 MeshRenderer::~MeshRenderer()
 {
 	std::cout << "Deleting MeshRenderer.\n";
-}
-
-void MeshRenderer::update()
-{
-	Transform* trans = gameObject->getTransform();
-	h3dSetNodeTransformQ(modelNode, trans->position.x, trans->position.y, trans->position.z,
-			trans->rotation.x, trans->rotation.y, trans->rotation.z, trans->rotation.w,
-			trans->scale.x, trans->scale.y, trans->scale.z);
+	h3dRemoveNode(modelNode);
 }
 
 void MeshRenderer::start()
 {
+	if (gameObject == nullptr) throw Exception("SpotLight isn't attached to a GameObject");
 	if (!h3dIsResLoaded(modelResource)) throw Exception("Model resource is not loaded!");
-	modelNode = h3dAddNodes(H3DRootNode, modelResource); //TODO enable addition of parent nodes
+	modelNode = h3dAddNodes(gameObject->getTransform()->getNode(), modelResource); //TODO enable addition of parent nodes
 
 	if (modelNode == 0) throw Exception("Model node is not added!");
 }

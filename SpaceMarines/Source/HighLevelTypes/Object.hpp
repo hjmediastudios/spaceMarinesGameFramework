@@ -63,7 +63,7 @@ public:
 	virtual ~ActiveComponent() {}
 	virtual void start() = 0;
 	virtual void update() = 0;
-//	virtual void fixedUpdate() = 0; TODO PHysicsAffectableComponent
+//	virtual void fixedUpdate() = 0; TODO PhysicsAffectableComponent
 	virtual const char* getComponentType() const = 0;
 };
 
@@ -89,18 +89,35 @@ public:
 	Vector3 scale;
 	Quaternion rotation;
 public:
-	Transform() {}
-	Transform(const Transform &other) { position = other.position; rotation = other.rotation; scale = other.scale; }
+	~Transform()
+	{
+		std::cout << "Deleting Transform.\n";
+	}
+	Transform(const Transform &other)
+	{
+		position = other.position;
+		rotation = other.rotation;
+		scale = other.scale;
+		transformNode = h3dAddGroupNode(H3DRootNode, "");
+		if (transformNode == 0) throw Exception("Group node couldn't be added");
+	}
 	Transform(const Vector3 &position, const Quaternion &rotation, const Vector3 &scale = Vector3::ONE)
 	{
 		this->position = position;
 		this->rotation = rotation;
 		this->scale = scale;
+		transformNode = h3dAddGroupNode(H3DRootNode, "");
+		if (transformNode == 0) throw Exception("Group node couldn't be added");
 	}
 
 	void setPosition(const Vector3 &position) { this->position = position; }
 	void setRotation(const Quaternion &rotation) { this->rotation = rotation; }
 	void setScale(const Vector3 &scale) { this->scale = scale; }
+
+	void update()
+	{
+		setHorde3DNodeTransform(transformNode);
+	}
 
 	Vector3 getPosition() const { return position; }
 	Vector3 getScale() const { return scale; }
@@ -112,19 +129,19 @@ public:
 								  rotation.x, rotation.y, rotation.z, rotation.w,
 								  scale.x, scale.y, scale.z);
 	}
-	void getHorde3DNodeTransform(H3DNode node, Vector3* position, Vector3* rotationEulers, Vector3* scale)
-	{
-		//TODO Fetch transform
-	}
+
+	H3DNode getNode() const {return transformNode;}
+protected:
+	H3DNode transformNode;
 };
 
 class GameObject : public Object
 {
 public:
 	static const ObjectTypeName type = ObjectType::GameObject;
-	GameObject() : Object()
+	GameObject() : Object(), transform(Vector3::ZERO, Quaternion::IDENTITY, Vector3::ONE)
 	{
-		transform = Transform(Vector3::ZERO, Quaternion::IDENTITY, Vector3::ONE);
+		parent = nullptr;
 	}
 
 	template<typename T>
@@ -189,6 +206,7 @@ public:
 		{
 			it->second->update();
 		}
+		transform.update();
 	}
 	void fixedUpdate()
 	{
@@ -203,10 +221,25 @@ public:
 		return &transform;
 	}
 
+	void setParent(GameObject* parent)
+	{
+		this->parent = parent;
+		if (parent != nullptr)
+			h3dSetNodeParent(transform.getNode(), parent->getTransform()->getNode());
+		else
+			h3dSetNodeParent(transform.getNode(), 0);
+	}
+
+	GameObject* getParent()
+	{
+		return parent;
+	}
+
 private:
 	std::map<const char*, ActiveComponent*> activeComponents;
 	std::map<const char*, PassiveComponent*> passiveComponents;
 	Transform transform;
+	GameObject* parent;
 
 };
 
