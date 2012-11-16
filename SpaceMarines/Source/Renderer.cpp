@@ -41,6 +41,13 @@ bool Renderer::init()
 	return true;
 }
 
+bool Renderer::loadResources()
+{
+	if (!h3dutLoadResourcesFromDisk(assetPath.c_str()))
+		return false;
+	return true;
+}
+
 bool Renderer::setupWindow()
 {
 	if (!glfwOpenWindow((int)windowSize.x, (int)windowSize.y, 8, 8, 8, 8, 24, 8, GLFW_WINDOW))
@@ -69,6 +76,15 @@ void Renderer::update()
     // Finish rendering of frame
     h3dFinalizeFrame();
     glfwSwapBuffers();
+}
+
+std::string Renderer::getAssetPath() const
+{
+#ifndef WINDOWS
+	return assetPath + "/";
+#else
+	return assetPath + "\\";
+#endif
 }
 
 

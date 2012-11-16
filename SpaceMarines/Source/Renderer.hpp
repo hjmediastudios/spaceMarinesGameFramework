@@ -12,10 +12,12 @@ public:
 	Renderer(const std::string &assetPath, const Vector2& windowSize, const char* pipelineResource);
 	virtual ~Renderer();
 	bool init();
+	bool loadResources();
 	Vector2 getWindowSize() const;
 	H3DRes getPipelineHandle() const { return pipeline; }
 	void setCamera(Camera* camera);
 	void update();
+	std::string getAssetPath() const;
 private:
 	std::string assetPath;
 	Vector2 windowSize;

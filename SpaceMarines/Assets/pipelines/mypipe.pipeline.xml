@@ -37,7 +37,7 @@
 		<Stage id="FXAA">
 			<SwitchTarget target="" />
 			<BindBuffer sampler="buf0" sourceRT="COPYBUFFER" bufIndex="0" />
-			<DrawQuad material="materials/fxaa.material.xml" context="FXAA" />
+			<DrawQuad material="compositing/fxaa.material.xml" context="FXAA" />
 			<UnbindBuffers />
 		</Stage>
 			

@@ -24,16 +24,17 @@ int main(int argc, char* argv[])
 	renderer->init();
 
 	H3DNode model = 0;
-
+	H3DRes modelRes = 0;
     // Add model resource
-    H3DRes modelRes = h3dAddResource( H3DResTypes::SceneGraph, "models/Monkey/Monkey.scene.xml", 0 );
+//	H3DRes modelRes = h3dutLoadResourceFromDisk(H3DResTypes::SceneGraph, (renderer->getAssetPath() + "models/Monkey/Monkey.scene.xml").c_str(), 0);
+	modelRes = h3dAddResource(H3DResTypes::SceneGraph, "models/Monkey/Monkey.scene.xml", 0);
+	cout << modelRes << endl;
 	H3DRes lightMatRes = h3dAddResource( H3DResTypes::Material, "materials/light.material.xml", 0 );
     // Add animation resource
     // Load added resources
-    if (!h3dutLoadResourcesFromDisk(assetPath.c_str())) {h3dutDumpMessages(); throw Exception("Error loading resources!");}
+
 
     // Add model to scene
-    model = h3dAddNodes(H3DRootNode, modelRes);
 
     // Add light source
 	H3DNode light = h3dAddLightNode( H3DRootNode, "Light1", lightMatRes, "LIGHTING", "SHADOWMAP" );
@@ -47,13 +48,20 @@ int main(int argc, char* argv[])
 	h3dSetNodeParamF( light, H3DLight::ColorF3, 1, 0.9f );
 	h3dSetNodeParamF( light, H3DLight::ColorF3, 2, 1.0f );
 
+	if (!renderer->loadResources()) {h3dutDumpMessages(); throw Exception("Unable to load resources");}
+
+	model = h3dAddNodes(H3DRootNode, modelRes);
+	if (model == 0) {h3dutDumpMessages(); throw Exception("Unable to add node");}
 	//Add camera
 	GameObject* camObj = new GameObject();
 	camObj->addComponent(new Camera("Hey", renderer));
 	camObj->getComponent<Camera>()->setView(Vector2(1280, 720), 45.0f, Vector2(0.5f, 1000.0f));
 	renderer->setCamera(camObj->getComponent<Camera>());
 
-	cout << "Hey\n";
+//	GameObject* minifig = new GameObject();
+//	minifig->addComponent(new MeshRenderer("models/Monkey/Monkey.scene.xml"));
+//	Transform trans = Transform(Vector3::ZERO, Vector3::ZERO);
+
 
     for (int i=0; i < 5000; i++)
     {
@@ -71,7 +79,8 @@ int main(int argc, char* argv[])
     }
 
     delete camObj;
-//    delete renderer;
+//    delete minifig;
+    delete renderer;
 	return 0;
 }
 

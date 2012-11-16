@@ -86,33 +86,38 @@ class Transform
 {
 public:
 	Transform() {}
-	Transform(const Transform &other) { position = other.position; rotationEulers = other.rotationEulers; scale = other.scale; }
-	Transform(const Vector3 &position, const Vector3 &rotationEulers, const Vector3 &scale = Vector3::ONE)
+	Transform(const Transform &other) { position = other.position; rotation = other.rotation; scale = other.scale; }
+	Transform(const Vector3 &position, const Quaternion &rotation, const Vector3 &scale = Vector3::ONE)
 	{
 		this->position = position;
-		this->rotationEulers = rotationEulers;
+		this->rotation = rotation;
 		this->scale = scale;
 	}
 
 	void setPosition(const Vector3 &position) { this->position = position; }
-	void setRotationEulers(const Vector3 &rotationEulers) { this->rotationEulers = rotationEulers; }
+	void setRotation(const Quaternion &rotation) { this->rotation = rotation; }
 	void setScale(const Vector3 &scale) { this->scale = scale; }
 
 	Vector3 getPosition() const { return position; }
 	Vector3 getScale() const { return scale; }
-	Vector3 getRotationEulers() const { return rotationEulers; }
+	Quaternion getRotation() const { return rotation; }
 
 	void setHorde3DNodeTransform(H3DNode node)
 	{
-		h3dSetNodeTransform(node, position.x, position.y, position.x,
-								  rotationEulers.x, rotationEulers.y, rotationEulers.z,
+		h3dSetNodeTransformQ(node, position.x, position.y, position.x,
+								  rotation.x, rotation.y, rotation.z, rotation.w,
 								  scale.x, scale.y, scale.z);
 	}
+	void getHorde3DNodeTransform(H3DNode node, Vector3* position, Vector3* rotationEulers, Vector3* scale)
+	{
+		//TODO Fetch transform
+	}
+
 
 private:
 	Vector3 position;
 	Vector3 scale;
-	Vector3 rotationEulers;
+	Quaternion rotation;
 };
 
 class GameObject : public Object
