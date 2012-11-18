@@ -5,12 +5,13 @@ namespace SpaceMarines
 
 Camera::Camera(const std::string &name, Renderer* renderer)
 {
-	if ((cam = h3dAddCameraNode(H3DRootNode, name.c_str(), renderer->getPipelineHandle())) == 0)
+	if ((cameraNode = h3dAddCameraNode(H3DRootNode, name.c_str(), renderer->getPipelineHandle())) == 0)
 		throw Exception("Failed to create camera");
 	fovDegrees = 60.0f;
 	clipDistances = Vector2(0.1f, 1000.0f);
 	this->renderer = renderer;
 	gameObject = nullptr;
+	setView(renderer->getWindowSize(), 60.0f, Vector2(0.1f, 1000.0f));
 }
 
 Camera::~Camera()
@@ -24,16 +25,21 @@ void Camera::setView(const Vector2 &size, const float fovDegrees, const Vector2 
 	this->fovDegrees = fovDegrees;
 	this->clipDistances = clipDistances;
 
-	if (gameObject == nullptr) throw Exception("Camera's GameObject is null!");
-	h3dSetNodeParamI(cam, H3DCamera::ViewportXI, 0);
-	h3dSetNodeParamI(cam, H3DCamera::ViewportYI, 0);
-	h3dSetNodeParamI(cam, H3DCamera::ViewportWidthI, size.x);
-	h3dSetNodeParamI(cam, H3DCamera::ViewportHeightI, size.y);
+	h3dSetNodeParamI(cameraNode, H3DCamera::ViewportXI, 0);
+	h3dSetNodeParamI(cameraNode, H3DCamera::ViewportYI, 0);
+	h3dSetNodeParamI(cameraNode, H3DCamera::ViewportWidthI, size.x);
+	h3dSetNodeParamI(cameraNode, H3DCamera::ViewportHeightI, size.y);
 
-	h3dSetupCameraView(cam, fovDegrees, viewSize.x / viewSize.y, clipDistances.x, clipDistances.y);
+	h3dSetupCameraView(cameraNode, fovDegrees, viewSize.x / viewSize.y, clipDistances.x, clipDistances.y);
     h3dResizePipelineBuffers(renderer->getPipelineHandle(), viewSize.x, viewSize.y);
 
-	h3dSetNodeTransform(cam, 0, 1.8f, 10.0f, 0 , 0, 0, 1, 1, 1);
+	h3dSetNodeTransform(cameraNode, 0, 1.8f, 10.0f, 0 , 0, 0, 1, 1, 1);
+}
+
+void Camera::start()
+{
+	if (gameObject == nullptr) throw Exception("Camera isn't attached to a GameObject");
+	h3dSetNodeParent(cameraNode, gameObject->getTransform()->getNode());
 }
 
 } /* namespace SpaceMarines */

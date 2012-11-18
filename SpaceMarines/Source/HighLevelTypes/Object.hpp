@@ -113,6 +113,12 @@ public:
 	void setPosition(const Vector3 &position) { this->position = position; }
 	void setRotation(const Quaternion &rotation) { this->rotation = rotation; }
 	void setScale(const Vector3 &scale) { this->scale = scale; }
+	void rotate(const Quaternion &q) { this->rotation *= q; }
+	void translate(const Vector3 &v) { position += v; }
+
+	Vector3 forward() const { return rotation * Vector3::FORWARD; }
+	Vector3 up() const { return rotation * Vector3::UP; }
+	Vector3 right() const { return rotation * Vector3::RIGHT; }
 
 	void update()
 	{
@@ -125,7 +131,7 @@ public:
 
 	void setHorde3DNodeTransform(H3DNode node)
 	{
-		h3dSetNodeTransformQ(node, position.x, position.y, position.x,
+		h3dSetNodeTransformQ(node, position.x, position.y, position.z,
 								  rotation.x, rotation.y, rotation.z, rotation.w,
 								  scale.x, scale.y, scale.z);
 	}

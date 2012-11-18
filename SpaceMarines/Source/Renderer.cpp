@@ -34,6 +34,11 @@ bool Renderer::init()
 
 	pipeline = h3dAddResource(H3DResTypes::Pipeline, pipelineFilePath.c_str(), 0);
 
+	h3dSetOption(H3DOptions::FastAnimation, 0);
+#ifdef DEBUG
+	h3dSetOption(H3DOptions::DebugViewMode, 1);
+#endif
+
 	if (!h3dutLoadResourcesFromDisk(assetPath.c_str()))
 	{
 		h3dutDumpMessages();
@@ -54,7 +59,7 @@ bool Renderer::loadResources()
 void Renderer::start()
 {
 	if (_started != 1) throw Exception("Renderer must be initialized before it can be started");
-	if (!loadResources()) throw Exception("Unable to load resources");
+	if (!loadResources()) {h3dutDumpMessages(); throw Exception("Unable to load resources"); }
 	_started = 2;
 	if (camera == nullptr) throw Exception("Renderer has no camera");
 }
@@ -83,7 +88,7 @@ void Renderer::setCamera(Camera* camera)
 void Renderer::update()
 {
 	if (_started != 2) throw Exception("Renderer hasn't been properly started.");
-	h3dRender(camera->cam);
+	h3dRender(camera->cameraNode);
 
     // Finish rendering of frame
     h3dFinalizeFrame();

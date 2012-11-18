@@ -26,48 +26,30 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1353078977984</id>
+			<id>1353255761130</id>
+			<name>Assets/animations</name>
+			<type>21</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-*.anim</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1353105236659</id>
 			<name>Assets/models</name>
 			<type>21</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1353078977989</id>
-			<name>Assets/models</name>
-			<type>5</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-*.scene.xml</arguments>
 			</matcher>
 		</filter>
 		<filter>
-			<id>1353078977993</id>
+			<id>1353105236663</id>
 			<name>Assets/models</name>
-			<type>5</type>
+			<type>21</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-*.geo</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1352983567735</id>
-			<name>Assets/models/Monkey</name>
-			<type>5</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-*.geo</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1352983567741</id>
-			<name>Assets/models/Monkey</name>
-			<type>5</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-*.scene.xml</arguments>
 			</matcher>
 		</filter>
 		<filter>

@@ -1,0 +1,77 @@
+<Model name="Minifig" geometry="models/Minifig/Minifig.geo">
+	<Joint name="Root" rx="90" ry="0" rz="-0" jointIndex="1" >
+		<Joint name="IK.Leg.R" tx="-0.47762" ty="-0.09487" tz="0.32234" rx="90" ry="0" rz="180" jointIndex="2" />
+		<Joint name="IK.Leg.L" tx="0.47762" ty="-0.09487" tz="0.32234" rx="90" ry="0" rz="180" jointIndex="3" />
+		<Joint name="Pole.Leg.R" tx="-0.47762" ty="0.84144" tz="-0.81679" rx="90" ry="0" rz="-180" jointIndex="4" />
+		<Joint name="Pole.Leg.L" tx="0.47762" ty="0.84144" tz="-0.81679" rx="90" ry="0" rz="-180" jointIndex="5" />
+		<Joint name="Hips" tx="-0" ty="0.00104" tz="-1.38471" rx="-0.103672" ry="-3.64155e-07" rz="-180" jointIndex="6" >
+			<Joint name="Torso.Lower" tx="0" ty="-0" tz="-0.57447" rx="-0.103673" ry="-3.47842e-07" rz="-1.73025e-05" jointIndex="7" >
+				<Joint name="Torso.Middle" tx="0" ty="-0" tz="-0.6351" rx="-9.94795e-17" ry="-1.88787e-17" rz="8.14183e-13" jointIndex="8" >
+					<Joint name="Torso.Upper" tx="0" ty="-0" tz="-0.52737" rx="8.14123e-13" ry="8.52598e-14" rz="-1.1298e-06" jointIndex="9" >
+						<Joint name="IK.Arm.L" tx="-2.79028" ty="-0.0187" tz="0.00223" rx="-9.8063e-06" ry="90" rz="-3.50949e-05" jointIndex="10" />
+						<Joint name="IK.Arm.R" tx="2.79028" ty="-0.0187" tz="0.00222" rx="9.8063e-06" ry="-90" rz="3.50949e-05" jointIndex="11" />
+						<Joint name="Head" tx="-0" ty="0" tz="-0.28681" rx="8.1411e-13" ry="-8.52618e-14" rz="1.1298e-06" jointIndex="12" />
+						<Joint name="Bicep.L" tx="-0.74209" ty="-0.00935" tz="0.01157" rx="-1.00318e-05" ry="88.0129" rz="-90" jointIndex="13" >
+							<Joint name="Forearm.L" tx="-0" ty="0" tz="-0.53918" rx="-1.98711" ry="-4.46961e-06" rz="2.02491e-06" jointIndex="14" >
+								<Joint name="Wrist.L" tx="0" ty="0" tz="-0.62033" rx="-11.6625" ry="-2.74323" rz="90.3045" jointIndex="15" >
+									<Joint name="Thumb.2.L" tx="-0.01193" ty="-0.19571" tz="-0.3048" rx="-13.8619" ry="-0.27256" rz="0.247922" jointIndex="16" >
+										<Joint name="Thumb.3.L" tx="-0" ty="-0" tz="-0.17631" rx="38.0646" ry="1.27484" rz="0.389947" jointIndex="17" >
+											<Joint name="Thumb.4.L" tx="0" ty="-0" tz="-0.17244" rx="38.1074" ry="0.220492" rz="-0.159693" jointIndex="18" />
+										</Joint>
+									</Joint>
+									<Joint name="Finger.2.L" tx="-0.01385" ty="0.20186" tz="-0.3068" rx="20.9989" ry="0.959784" rz="0.31105" jointIndex="19" >
+										<Joint name="Finger.3.L" tx="0" ty="0" tz="-0.14438" rx="-35.7959" ry="-0.198592" rz="0.0652396" jointIndex="20" >
+											<Joint name="Finger.4.L" tx="-0" ty="0" tz="-0.16727" rx="-37.567" ry="-0.21065" rz="-0.110235" jointIndex="21" />
+										</Joint>
+									</Joint>
+								</Joint>
+							</Joint>
+						</Joint>
+						<Joint name="Bicep.R" tx="0.74209" ty="-0.00935" tz="0.01157" rx="1.15259e-05" ry="-88.0129" rz="90" jointIndex="22" >
+							<Joint name="Forearm.R" tx="0" ty="-0" tz="-0.53918" rx="-1.98712" ry="4.46961e-06" rz="-2.8396e-06" jointIndex="23" >
+								<Joint name="Wrist.R" tx="0" ty="0" tz="-0.62033" rx="-11.6625" ry="2.74323" rz="-90.3045" jointIndex="24" >
+									<Joint name="Thumb.2.R" tx="0.01193" ty="-0.19571" tz="-0.3048" rx="-13.8619" ry="0.272562" rz="-0.24794" jointIndex="25" >
+										<Joint name="Thumb.3.R" tx="0" ty="-0" tz="-0.17631" rx="38.0646" ry="-1.27484" rz="-0.389908" jointIndex="26" >
+											<Joint name="Thumb.4.R" tx="0" ty="0" tz="-0.17244" rx="38.1073" ry="-0.220491" rz="0.159723" jointIndex="27" />
+										</Joint>
+									</Joint>
+									<Joint name="Finger.2.R" tx="0.01385" ty="0.20186" tz="-0.3068" rx="20.9989" ry="-0.959783" rz="-0.311029" jointIndex="28" >
+										<Joint name="Finger.3.R" tx="-0" ty="-0" tz="-0.14438" rx="-35.7959" ry="0.198593" rz="-0.0652743" jointIndex="29" >
+											<Joint name="Finger.4.R" tx="0" ty="-0" tz="-0.16727" rx="-37.567" ry="0.21065" rz="0.110202" jointIndex="30" />
+										</Joint>
+									</Joint>
+								</Joint>
+							</Joint>
+						</Joint>
+					</Joint>
+				</Joint>
+			</Joint>
+			<Joint name="Thigh.L" tx="-0.47762" ty="0" tz="0" rx="0.39278" ry="-180" rz="5.00896e-06" jointIndex="31" >
+				<Joint name="Shin.L" tx="0" ty="0" tz="-0.74048" rx="7.55344" ry="1.158e-06" rz="-3.72863e-06" jointIndex="32" >
+					<Joint name="Foot.L" tx="0" ty="-0" tz="-0.46453" rx="-82.1574" ry="-180" rz="-5.40943e-05" jointIndex="33" >
+						<Joint name="Toes.L" tx="0" ty="-0" tz="-0.36569" rx="-4.02301e-13" ry="6.50272e-16" rz="-2.07968e-06" jointIndex="34" />
+					</Joint>
+				</Joint>
+			</Joint>
+			<Joint name="Thigh.R" tx="0.47762" ty="-0" tz="0" rx="0.39278" ry="-180" rz="2.23118e-05" jointIndex="35" >
+				<Joint name="Shin.R" tx="-0" ty="0" tz="-0.74048" rx="7.55344" ry="-1.158e-06" rz="-6.1183e-06" jointIndex="36" >
+					<Joint name="Foot.R" tx="0" ty="-0" tz="-0.46453" rx="-82.1574" ry="180" rz="5.40943e-05" jointIndex="37" >
+						<Joint name="Toes.R" tx="0" ty="-0" tz="-0.36569" rx="-4.07511e-13" ry="-5.73104e-15" rz="1.76911e-07" jointIndex="38" />
+					</Joint>
+				</Joint>
+			</Joint>
+		</Joint>
+		<Joint name="Master.Leg.R" tx="-0.47762" ty="-0.08843" tz="0.07785" rx="90" ry="0" rz="180" jointIndex="39" >
+			<Joint name="Control.Toes.R" tx="0" ty="-0" tz="-0.30231" rx="0" ry="-0" rz="5.00896e-06" jointIndex="40" />
+		</Joint>
+		<Joint name="Master.Leg.L" tx="0.47762" ty="-0.08843" tz="0.07785" rx="90" ry="0" rz="180" jointIndex="41" >
+			<Joint name="Control.Toes.L" tx="0" ty="0" tz="-0.30231" rx="0" ry="-0" rz="5.00896e-06" jointIndex="42" />
+		</Joint>
+	</Joint>
+
+	<Mesh name="Minifig" material="materials/Blue.material.xml" batchStart="0" batchCount="6678" vertRStart="0" vertREnd="2041" >
+		<Mesh name="Minifig0" material="materials/Decals.material.xml" batchStart="6678" batchCount="1662" vertRStart="2042" vertREnd="2432" />
+		<Mesh name="Minifig1" material="materials/Red.material.xml" batchStart="8340" batchCount="1812" vertRStart="2433" vertREnd="2806" />
+		<Mesh name="Minifig2" material="materials/Yellow.material.xml" batchStart="10152" batchCount="5592" vertRStart="2807" vertREnd="3922" />
+	</Mesh>
+</Model>

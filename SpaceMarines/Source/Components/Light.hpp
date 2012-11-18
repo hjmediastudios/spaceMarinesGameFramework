@@ -28,7 +28,6 @@ class SpotLight : public Light
 {
 public:
 	SpotLight(const char* lightMaterialResourceFilename, const float angleDegrees, const float radius);
-	virtual ~SpotLight();
 	const char* getComponentType() const { return "SpotLight";}
 	void setLightRotation(const Quaternion &q);
 	void setLightRotation(const Vector3 &eulerAngles);

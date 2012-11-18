@@ -403,6 +403,16 @@ public:
 	{
 		return *this = *this * q;
 	}
+	Vector3 operator*(const Vector3 &v) const
+	{
+		Vector3 uv, uuv;
+		Vector3 qvec(x, y, z);
+		uv = qvec.cross(v);
+		uuv = qvec.cross(uv);
+		uv *= (2.0f * w);
+		uuv *= 2.0f;
+		return v + uv + uuv;
+	}
 
 	//Other operations
 	static Quaternion slerp(const Quaternion &a, const Quaternion &b, const float t)

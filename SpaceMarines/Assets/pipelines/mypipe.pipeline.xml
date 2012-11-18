@@ -28,7 +28,7 @@
 			<BindBuffer sampler="buf3" sourceRT="GBUFFER" bufIndex="3" />
 			
 			<!-- Ambient shading has been temporarily disabled -->
-			<DrawQuad material="materials/light.material.xml" context="AMBIENT" />
+			<!--<DrawQuad material="materials/light.material.xml" context="AMBIENT" />-->
 			<DoDeferredLightLoop />
 			
 			<UnbindBuffers />

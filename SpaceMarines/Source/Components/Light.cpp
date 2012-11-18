@@ -12,10 +12,14 @@ Light::Light(const char* lightMaterialResourceFilename)
 	if (lightMaterialResource == 0) throw Exception("Unable to add light resource");
 	lightNode = h3dAddLightNode(H3DRootNode, "SpotLight", lightMaterialResource, "SPOTLIGHT", "SHADOWMAP");
 	if (lightNode == 0) throw Exception("Unable to add spot light node");
+	Vector3 color = Vector3::ONE;
+	for (unsigned short i=0; i < 3; i++)
+		h3dSetNodeParamF(lightNode, H3DLight::ColorF3, i, color[i]);
 }
 
 Light::~Light()
 {
+	std::cout << "Deleting light.\n";
 	h3dRemoveNode(lightNode);
 }
 
@@ -62,11 +66,6 @@ SpotLight::SpotLight(const char* lightMaterialResourceFilename, const float angl
 void SpotLight::setRadius(const float radius)
 {
 	h3dSetNodeParamF(lightNode, H3DLight::RadiusF, 0, radius);
-}
-
-SpotLight::~SpotLight()
-{
-	std::cout << "Deleting SpotLight.\n";
 }
 
 void SpotLight::setLightRotation(const Quaternion &q)

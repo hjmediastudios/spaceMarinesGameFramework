@@ -13,10 +13,10 @@ public:
 	Camera(const std::string &name, Renderer* renderer);
 	virtual ~Camera();
 	void setView(const Vector2 &size, const float fovDegrees, const Vector2 &clipDistances);
-	void start() {}
+	void start();
 	const char* getComponentType() const { return "Camera";}
 protected:
-	H3DNode cam;
+	H3DNode cameraNode;
 	friend class Renderer;
 private:
 	Vector2 viewSize;

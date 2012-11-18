@@ -26,9 +26,22 @@ private:
 	std::string message;
 };
 
+namespace SpaceMarines
+{
+	struct Time
+	{
+		static double time;
+		static double deltaTime;
+		static const double fixedDeltaTime;
+	};
+}
+
 #include "Math.hpp"
+#include "Input.hpp"
 
 #include "HighLevelTypes/Object.hpp"
+
+//#define DEBUG
 
 
 
