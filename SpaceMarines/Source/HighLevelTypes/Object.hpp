@@ -229,11 +229,10 @@ public:
 
 	void setParent(GameObject* parent)
 	{
+		if (this == parent) throw Exception("Cannot parent an object to itself!");
 		this->parent = parent;
 		if (parent != nullptr)
 			h3dSetNodeParent(transform.getNode(), parent->getTransform()->getNode());
-		else
-			h3dSetNodeParent(transform.getNode(), 0);
 	}
 
 	GameObject* getParent()

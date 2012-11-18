@@ -46,7 +46,7 @@ vec3 calcPhongPointLight(const vec3 pos, const vec3 normal, const vec3 albedo, c
 	float atten = max( 1.0 - lightDepth * lightDepth, 0.0 );
 			
 	// Lambert diffuse
-	float NdotL = max( dot( normal, light ), 0.0 );
+	float NdotL = abs( dot(normal, light));
 	atten *= NdotL;
 		
 	// Blinn-Phong specular with energy conservation
@@ -54,24 +54,9 @@ vec3 calcPhongPointLight(const vec3 pos, const vec3 normal, const vec3 albedo, c
 	vec3 halfVec = normalize( light + view );
 	float spec = pow( max( dot( halfVec, normal ), 0.0 ), specExp );
 	spec *= (specExp * 0.04 + 0.32) * specMask;  // Normalization factor (n+8)/8pi
-	
-	// Shadows
-	float shadowTerm = 1.0;
-	//if( atten * (shadowMapSize - 4.0) > 0.0 )  // Skip shadow mapping if default shadow map (size==4) is bound
-	//{
-	//	vec4 projShadow = shadowMats[3] * vec4( pos, 1.0 );
-	//	if( viewDist < shadowSplitDists.x ) projShadow = shadowMats[0] * vec4( pos, 1.0 );
-	//	else if( viewDist < shadowSplitDists.y ) projShadow = shadowMats[1] * vec4( pos, 1.0 );
-	//	else if( viewDist < shadowSplitDists.z ) projShadow = shadowMats[2] * vec4( pos, 1.0 );
-	//	
-	//	projShadow.z = lightDepth;
-	//	projShadow.xy /= projShadow.w;
-	//	
-	//	shadowTerm = max( PCF( projShadow ), ambientIntensity );
-	//}
-	
+		
 	// Final color
-	return albedo * lightColor * atten * shadowTerm * (1.0 + spec);
+	return albedo * lightColor * atten * (1.0 + spec);
 }
 
 vec3 calcPhongSpotLight( const vec3 pos, const vec3 normal, const vec3 albedo, const float specMask,

@@ -43,6 +43,7 @@ void Light::setColor(const Vector3 &color)
 
 PointLight::PointLight(const char* lightMaterialResourceFilename, const float radius) : Light(lightMaterialResourceFilename)
 {
+	h3dSetNodeParamStr(lightNode, H3DLight::LightingContextStr, "POINTLIGHT");
 	h3dSetNodeParamF(lightNode, H3DLight::FovF, 0, 360.0f);
 	h3dSetNodeParamI(lightNode, H3DLight::ShadowMapCountI, 0);
 	setRadius(radius);
