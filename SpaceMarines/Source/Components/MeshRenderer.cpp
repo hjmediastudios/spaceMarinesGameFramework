@@ -73,16 +73,20 @@ void AnimatedMeshRenderer::playAnimation(const char* animationName, unsigned sho
 		throw Exception("Clip \"" + std::string(animationName) + "\" doesn't exist");
 	}
 
+	if (clip->layer > 15)
+		throw Exception("Only layers 0-15 are supported for skeletal animation");
+
 	if (clip->layer != layer || clip->weight != weight || clip->additive != additive)
 	{
+		clip->animationTime = 0.0f;
 		clip->layer = layer;
 		clip->weight = weight;
 		clip->additive = additive;
-		h3dSetupModelAnimStage(modelNode, 0, clip->animationRes, clip->layer, clip->rootNode, clip->additive);
+		h3dSetupModelAnimStage(modelNode, clip->layer, clip->animationRes, clip->layer, clip->rootNode, clip->additive);
 	}
 
 	if (weight > 0.0f)
-		h3dSetModelAnimParams(modelNode, 0, Time::time * Time::animationFPS, clip->weight);
+		h3dSetModelAnimParams(modelNode, clip->layer, (clip->animationTime += Time::deltaTime) * Time::animationFPS, clip->weight);
 
 }
 

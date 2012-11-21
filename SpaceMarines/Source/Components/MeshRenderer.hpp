@@ -46,6 +46,8 @@ private:
 		float weight;
 		bool additive;
 		const char* rootNode;
+
+		float animationTime;
 	};
 
 	typedef std::map<std::string, AnimationClip> AnimationClipMap;

@@ -4,6 +4,8 @@
 #include <fstream>
 #include <string>
 #include <math.h>
+#include <bullet/btBulletDynamicsCommon.h>
+
 
 namespace SpaceMarines
 {
@@ -343,6 +345,9 @@ public:
 	static const Vector3 RIGHT;
 	static const Vector3 UP;
 	static const Vector3 FORWARD;
+
+	//Library conversion
+	btVector3 bullet() const { return btVector3(x, y, z); }
 };
 
 class Vector4
@@ -361,6 +366,7 @@ public:
 	{
 		return Vector4(x*f, y*f, z*f, w*f);
 	}
+	btVector4 bullet() { return btVector4(x, y, z, w); }
 };
 
 class Quaternion
@@ -497,6 +503,9 @@ public:
 		return q;
 	}
 	static const Quaternion IDENTITY;
+
+	//Library conversion
+	btQuaternion bullet() const { return btQuaternion(x, y, z, w); }
 };
 
 class Matrix4

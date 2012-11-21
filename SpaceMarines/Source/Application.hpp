@@ -1,10 +1,11 @@
 #pragma once
 #include "Prerequisites.hpp"
 #include "Renderer.hpp"
-#include "Physics.hpp"
 #include "HighLevelTypes/Object.hpp"
+#include "Physics.hpp"
 #include "Components/MeshRenderer.hpp"
 #include "Components/Light.hpp"
+#include "Components/Collider.hpp"
 
 namespace SpaceMarines
 {

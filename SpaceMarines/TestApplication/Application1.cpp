@@ -21,13 +21,14 @@ Application1::~Application1()
 
 void Application1::customSetupFunction()
 {
-
-
 	runner = new GameObject();
 	runner->addComponent(new AnimatedMeshRenderer("models/Minifig/Minifig.scene.xml"));
 	runner->getComponent<AnimatedMeshRenderer>()->addAnimation("animations/Minifig/Legs_Run.anim", "Run", "Root");
+	runner->getComponent<AnimatedMeshRenderer>()->addAnimation("animations/Minifig/Body_Run.anim", "Body_Run", "Torso.Lower");
 	runner->getTransform()->setPosition(Vector3(0, 0, 0));
 	runner->getTransform()->setRotation(Quaternion(Vector3::UP, Math::degToRad(45)));
+	runner->addComponent(new BoxCollider());
+	runner->addComponent(new RigidBody(runner->getComponent<BoxCollider>(), 1.0f));
 	addObject(runner);
 
 	GameObject* camera = new GameObject();
@@ -57,7 +58,7 @@ void Application1::customSetupFunction()
 
 	GameObject* sun = new GameObject();
 	sun->addComponent(new DirectionalLight("materials/light.material.xml"));
-	sun->getComponent<DirectionalLight>()->setColor(Vector3::ONE * 0.2f);
+	sun->getComponent<DirectionalLight>()->setColor(Vector3::ONE * 0.8f);
 	sun->getComponent<DirectionalLight>()->setLightDirection(Quaternion(Vector3::RIGHT, 20.0f));
 	sun->getTransform()->setPosition(Vector3::UP * 3);
 	sun->getTransform()->setRotation(Quaternion(Vector3::RIGHT, -80.0f));
@@ -95,7 +96,10 @@ void Application1::customLogicLoop()
 	}
 
 	if (running)
-		runner->getComponent<AnimatedMeshRenderer>()->playAnimation("Run");
+	{
+		runner->getComponent<AnimatedMeshRenderer>()->playAnimation("Run", 0, 0.25f);
+		runner->getComponent<AnimatedMeshRenderer>()->playAnimation("Body_Run", 1, 1.0f);
+	}
 }
 
 } /* namespace SpaceMarines */

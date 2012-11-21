@@ -13,6 +13,8 @@
 #include <tinyxml2.h>
 #include <horde3d/Horde3D.h>
 #include <horde3d/Horde3DUtils.h>
+#include <bullet/btBulletDynamicsCommon.h>
+
 
 class Exception : public std::exception
 {
@@ -30,7 +32,10 @@ namespace SpaceMarines
 	{
 		static double time;
 		static double deltaTime;
+		static float timeF;
+		static float deltaTimeF;
 		static const double fixedDeltaTime;
+		static const float fixedDeltaTimeF;
 		static float fps;
 		static const float animationFPS;
 	};
