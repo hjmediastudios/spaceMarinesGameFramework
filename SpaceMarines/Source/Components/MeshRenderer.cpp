@@ -3,19 +3,15 @@
 namespace SpaceMarines
 {
 
-MeshRenderer::MeshRenderer(const char* assetPath, bool isAnimated)
+MeshRenderer::MeshRenderer(const char* assetPath)
 {
 	if((modelResource = h3dAddResource(H3DResTypes::SceneGraph, assetPath, 0)) == 0)
 		throw Exception(std::string("Unable to add mesh resource \"") + assetPath + "\"");
 	modelNode = 0;
-	_isAnimated = isAnimated;
-	if (!_isAnimated) return;
-	animations = std::vector<AnimationEntry>();
 }
 
 MeshRenderer::~MeshRenderer()
 {
-	std::cout << "Deleting MeshRenderer.\n";
 	h3dRemoveNode(modelNode);
 }
 
@@ -23,32 +19,72 @@ void MeshRenderer::start()
 {
 	if (gameObject == nullptr) throw Exception("SpotLight isn't attached to a GameObject");
 	if (!h3dIsResLoaded(modelResource)) throw Exception("Model resource is not loaded!");
-	modelNode = h3dAddNodes(gameObject->getTransform()->getNode(), modelResource); //TODO enable addition of parent nodes
+	modelNode = h3dAddNodes(gameObject->getTransform()->getNode(), modelResource);
 
 	if (modelNode == 0) throw Exception("Model node is not added!");
-	if (!_isAnimated) return;
-	for (unsigned short i=0; i < animations.size(); i++)
+}
+
+void MeshRenderer::update() {}
+
+/*************************************
+ * 	Animated Mesh Renderer stuff
+ *************************************/
+AnimatedMeshRenderer::AnimatedMeshRenderer(const char* assetPath) : MeshRenderer(assetPath)
+{
+	clips = AnimationClipMap();
+}
+
+AnimatedMeshRenderer::~AnimatedMeshRenderer()
+{
+
+}
+
+void AnimatedMeshRenderer::addAnimation(const char* assetPath, const char* animName, const char* rootNode)
+{
+	try
 	{
-		h3dSetupModelAnimStage(modelNode, animations[i].stage, animations[i].animation, 0, animations[i].rootNode, animations[i].isAdditive);
+		clips.at(std::string(animName));
+	}
+	catch (std::exception &ex)
+	{
+		AnimationClip clip;
+		clip.animationRes = h3dAddResource(H3DResTypes::Animation, assetPath, 0);
+		if (clip.animationRes == 0) throw Exception("Can't load animation from path \"" + std::string(assetPath) + "\"");
+		clip.name = animName;
+		h3dSetupModelAnimStage(modelNode, 0, clip.animationRes, 0, rootNode, false);
+		clip.additive = false;
+		clip.layer = 0;
+		clip.rootNode = rootNode;
+
+		std::cout << "Added animation clip \"" << clip.name << "\"\n";
+		clips.insert(std::pair<std::string, AnimationClip>(clip.name, clip));
 	}
 }
 
-void MeshRenderer::update()
+void AnimatedMeshRenderer::playAnimation(const char* animationName, unsigned short layer, float weight, bool additive)
 {
-	if (!_isAnimated) return;
-	for (unsigned short i=0; i < animations.size(); i++)
+	AnimationClip* clip;
+	try
 	{
-		h3dSetModelAnimParams(modelNode, animations[i].stage, Time::time * 24.0f, 1.0f);
+		clip = &clips.at(std::string(animationName));
 	}
+	catch(std::exception &ex)
+	{
+		throw Exception("Clip \"" + std::string(animationName) + "\" doesn't exist");
+	}
+
+	if (clip->layer != layer || clip->weight != weight || clip->additive != additive)
+	{
+		clip->layer = layer;
+		clip->weight = weight;
+		clip->additive = additive;
+		h3dSetupModelAnimStage(modelNode, 0, clip->animationRes, clip->layer, clip->rootNode, clip->additive);
+	}
+
+	if (weight > 0.0f)
+		h3dSetModelAnimParams(modelNode, 0, Time::time * Time::animationFPS, clip->weight);
+
 }
 
-bool MeshRenderer::addAnimation(const char* animationName, const char* rootName, unsigned short animationStage, unsigned short layer, bool additive)
-{
-	if (!_isAnimated) return false;
-
-	H3DRes res = h3dAddResource(H3DResTypes::Animation, animationName, 0);
-	if (res == 0) throw Exception(std::string("Can't find animation ") + animationName);
-	animations.push_back(AnimationEntry(res, animationStage, layer, rootName, additive));
-}
 
 } /* namespace SpaceMarines */

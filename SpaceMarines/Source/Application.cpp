@@ -7,10 +7,13 @@ namespace SpaceMarines
 const double Time::fixedDeltaTime = 0.01;
 double Time::time = 0.0;
 double Time::deltaTime = 0.0;
+float Time::fps = 0.0f;
+const float Time::animationFPS = 24.0f;
 
 Application::Application(const char* assetPath, const char* renderingPipeline, const Vector2 &windowSize, bool drawDebug)
 {
 	renderer = new Renderer(assetPath, windowSize, renderingPipeline);
+	physics = new PhysicsWorld();
 	objects = std::vector<GameObject*>();
 	this->drawDebug = drawDebug;
 }
@@ -22,6 +25,7 @@ Application::~Application()
 		delete objects[i];
 	}
 	delete renderer;
+	delete physics;
 }
 
 bool Application::init()
@@ -54,6 +58,7 @@ void Application::start()
 	{
 		double newTime = glfwGetTime();
 		Time::deltaTime = newTime - currentTime;
+		Time::fps = 1.0f / ((float) Time::deltaTime);
 		currentTime = newTime;
 
 		accumulator += Time::deltaTime;

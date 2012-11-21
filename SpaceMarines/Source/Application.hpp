@@ -1,6 +1,7 @@
 #pragma once
 #include "Prerequisites.hpp"
 #include "Renderer.hpp"
+#include "Physics.hpp"
 #include "HighLevelTypes/Object.hpp"
 #include "Components/MeshRenderer.hpp"
 #include "Components/Light.hpp"
@@ -18,6 +19,7 @@ public:
 	void start();
 protected:
 	Renderer* renderer;
+	PhysicsWorld* physics;
 	void addObject(GameObject* obj);
 private:
 	bool init();

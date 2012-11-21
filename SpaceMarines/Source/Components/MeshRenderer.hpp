@@ -1,41 +1,55 @@
 #pragma once
 #include "../Prerequisites.hpp"
+#include <map>
 
 namespace SpaceMarines
 {
 
+/*************************************
+ * 	Mesh Renderer class
+ *************************************/
 class MeshRenderer : public ActiveComponent
 {
 public:
 	static const ObjectTypeName type = ObjectType::MeshRenderer;
-	MeshRenderer(const char* assetPath, bool isAnimated = false);
+	MeshRenderer(const char* assetPath);
 	virtual ~MeshRenderer();
 	void start();
 	void update();
 	virtual const char* getComponentType() const { return "MeshRenderer"; }
-	bool addAnimation(const char* animationName, const char* rootName, unsigned short animationStage = 0, unsigned short layer = 0, bool additive = false);
 protected:
 	H3DRes modelResource;
 	H3DNode modelNode;
-	bool _isAnimated;
+
+};
+
+/*************************************
+ * 	Animated Mesh Renderer class
+ *************************************/
+class AnimatedMeshRenderer : public MeshRenderer
+{
+public:
+	virtual const char* getComponentType() const { return "AnimatedMeshRenderer"; }
+	AnimatedMeshRenderer(const char* assetPath);
+	virtual ~AnimatedMeshRenderer();
+	void addAnimation(const char* assetPath, const char* animName, const char* rootNode);
+	void playAnimation(const char* animationName,
+			unsigned short layer = 0, float weight = 1.0f, bool additive = false);
+	//ToDo getBone(const char* name)
 private:
-	struct AnimationEntry
+	struct AnimationClip
 	{
-		H3DRes animation;
-		unsigned short stage;
+		std::string name;
+		H3DRes animationRes;
+
 		unsigned short layer;
-		bool isAdditive;
+		float weight;
+		bool additive;
 		const char* rootNode;
-		AnimationEntry(H3DRes res, unsigned short stage, unsigned short layer, const char* rootNode, bool isAdditive)
-		{
-			animation = res;
-			this->stage = stage;
-			this->layer = layer;
-			this->isAdditive = isAdditive;
-			this->rootNode = rootNode;
-		}
 	};
-	std::vector<AnimationEntry> animations;
+
+	typedef std::map<std::string, AnimationClip> AnimationClipMap;
+	AnimationClipMap clips;
 };
 
 } /* namespace SpaceMarines */

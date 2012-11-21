@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <string.h>
+#include <string>
 #include <vector>
 #include <map>
 #include <typeinfo>
@@ -13,8 +13,6 @@
 #include <tinyxml2.h>
 #include <horde3d/Horde3D.h>
 #include <horde3d/Horde3DUtils.h>
-#include <functional>
-
 
 class Exception : public std::exception
 {
@@ -33,12 +31,15 @@ namespace SpaceMarines
 		static double time;
 		static double deltaTime;
 		static const double fixedDeltaTime;
+		static float fps;
+		static const float animationFPS;
 	};
 }
 
 #include "Math.hpp"
 #include "Input.hpp"
 
+#include "HighLevelTypes/Interfaces.hpp"
 #include "HighLevelTypes/Object.hpp"
 
 //#define DEBUG

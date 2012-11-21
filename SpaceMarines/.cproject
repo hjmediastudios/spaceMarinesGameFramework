@@ -25,7 +25,9 @@
 							<tool command="g++" id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1828221400" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug">
 								<option id="gnu.cpp.compiler.exe.debug.option.optimization.level.1855715906" name="Optimization Level" superClass="gnu.cpp.compiler.exe.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.exe.debug.option.debugging.level.1308371735" name="Debug Level" superClass="gnu.cpp.compiler.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.include.paths.1335519" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths"/>
+								<option id="gnu.cpp.compiler.option.include.paths.1335519" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/usr/local/include/bullet"/>
+								</option>
 								<option id="gnu.cpp.compiler.option.other.other.998702637" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++0x" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.989128165" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -38,6 +40,9 @@
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1410215615" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug">
 								<option id="gnu.cpp.link.option.libs.522913711" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="Horde3D"/>
+									<listOptionValue builtIn="false" value="BulletDynamics"/>
+									<listOptionValue builtIn="false" value="BulletCollision"/>
+									<listOptionValue builtIn="false" value="LinearMath"/>
 									<listOptionValue builtIn="false" value="Horde3DUtils"/>
 									<listOptionValue builtIn="false" value="GL"/>
 									<listOptionValue builtIn="false" value="glfw"/>
@@ -54,16 +59,6 @@
 							<tool id="cdt.managedbuild.tool.gnu.assembler.exe.debug.383532184" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug">
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1583731788" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
-						</toolChain>
-					</folderInfo>
-					<folderInfo id="cdt.managedbuild.config.gnu.exe.debug.1326639866.1078473301" name="/" resourcePath="Assets/models">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.debug.856892834" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.exe.debug" unusedChildren="">
-							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1383004564" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.16749939"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1810478282" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1828221400"/>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.599559321" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1239769296"/>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.685817237" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug.688401251"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.630574962" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1410215615"/>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.exe.debug.1500844284" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug.383532184"/>
 						</toolChain>
 					</folderInfo>
 				</configuration>

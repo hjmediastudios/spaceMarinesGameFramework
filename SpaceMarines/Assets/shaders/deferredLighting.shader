@@ -47,6 +47,15 @@ context SPOTLIGHT
 	BlendMode = Add;
 }
 
+context DIRECTIONALLIGHT
+{
+	VertexShader = compile GLSL VS_FSQUAD;
+	PixelShader = compile GLSL FS_DIRECTIONALLIGHT;
+	
+	ZWriteEnable = false;
+	BlendMode = Add;
+}
+
 context POINTLIGHT
 {
 	VertexShader = compile GLSL VS_VOLUME;
@@ -161,6 +170,27 @@ void main( void )
 	else discard;
 }
 
+[[FS_DIRECTIONALLIGHT]]
+
+#include "shaders/utilityLib/fragLighting.glsl"
+#include "shaders/utilityLib/fragDeferredRead.glsl"
+
+uniform mat4 viewMat;
+varying vec2 texCoords;
+
+void main( void )
+{	
+	if( getMatID( texCoords ) == 1.0 )	// Standard phong material
+	{
+		vec3 pos = getPos( texCoords ) + viewerPos;
+		float vsPos = (viewMat * vec4( pos, 1.0 )).z;
+		
+		gl_FragColor.rgb = calcPhongDirectionalLight(pos, getNormal( texCoords ),
+								getAlbedo( texCoords ), getSpecMask( texCoords ), 16.0, -vsPos, 0.3 );
+	}
+	else
+		discard;
+}
 
 [[FS_COPY_DEPTH]]
 

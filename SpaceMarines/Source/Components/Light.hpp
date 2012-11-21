@@ -24,6 +24,15 @@ public:
 	void setRadius(const float radius);
 };
 
+class DirectionalLight : public Light
+{
+public:
+	const char* getComponentType() const { return "DirectionalLight";}
+	DirectionalLight(const char* lightMaterialResourceFilename);
+	void setLightDirection(const Vector3 &direction);
+	void setLightDirection(const Quaternion& q);
+};
+
 class SpotLight : public Light
 {
 public:

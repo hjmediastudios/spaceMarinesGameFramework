@@ -19,7 +19,6 @@ Light::Light(const char* lightMaterialResourceFilename)
 
 Light::~Light()
 {
-	std::cout << "Deleting light.\n";
 	h3dRemoveNode(lightNode);
 }
 
@@ -52,6 +51,27 @@ PointLight::PointLight(const char* lightMaterialResourceFilename, const float ra
 void PointLight::setRadius(const float radius)
 {
 	h3dSetNodeParamF(lightNode, H3DLight::RadiusF, 0, radius);
+}
+
+/**************************
+ * Point light functions
+ **************************/
+DirectionalLight::DirectionalLight(const char* lightMaterialResourceFilename) : Light(lightMaterialResourceFilename)
+{
+	h3dSetNodeParamStr(lightNode, H3DLight::LightingContextStr, "DIRECTIONALLIGHT");
+	h3dSetNodeParamI(lightNode, H3DLight::ShadowMapCountI, 0);
+	h3dSetNodeParamI(lightNode, H3DLight::DrawFullScreen, true);
+}
+
+void DirectionalLight::setLightDirection(const Vector3 &direction)
+{
+	Quaternion q = Quaternion::rotationBetweenVectors(Vector3::UP, direction);
+	h3dSetNodeTransformQ(lightNode, 0, 0, 0, q.x, q.y, q.z, q.w, 1, 1, 1);
+}
+
+void DirectionalLight::setLightDirection(const Quaternion &q)
+{
+	h3dSetNodeTransformQ(lightNode, 0, 0, 0, q.x, q.y, q.z, q.w, 1, 1, 1);
 }
 
 /**************************

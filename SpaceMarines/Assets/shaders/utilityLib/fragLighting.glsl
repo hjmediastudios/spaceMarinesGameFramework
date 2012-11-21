@@ -59,6 +59,22 @@ vec3 calcPhongPointLight(const vec3 pos, const vec3 normal, const vec3 albedo, c
 	return albedo * lightColor * atten * (1.0 + spec);
 }
 
+vec3 calcPhongDirectionalLight(const vec3 pos, const vec3 normal, const vec3 albedo, const float specMask,
+						 const float specExp, const float viewDist, const float ambientIntensity)
+{			
+	// Lambert diffuse
+	float NdotL = abs( dot(normal, lightDir.xyz) );
+		
+	// Blinn-Phong specular with energy conservation
+	vec3 view = normalize( viewerPos - pos );
+	vec3 halfVec = normalize( lightDir.xyz + view );
+	float spec = pow( max( dot( halfVec, normal ), 0.0 ), specExp);
+	spec *= (specExp * 0.04 + 0.32) * specMask;  // Normalization factor (n+8)/8pi
+		
+	// Final color
+	return albedo * lightColor * NdotL * (1.0 + spec);
+}
+
 vec3 calcPhongSpotLight( const vec3 pos, const vec3 normal, const vec3 albedo, const float specMask,
 						 const float specExp, const float viewDist, const float ambientIntensity )
 {

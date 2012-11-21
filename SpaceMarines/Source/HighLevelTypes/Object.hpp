@@ -91,7 +91,7 @@ public:
 public:
 	~Transform()
 	{
-		std::cout << "Deleting Transform.\n";
+		h3dRemoveNode(transformNode);
 	}
 	Transform(const Transform &other)
 	{
@@ -115,6 +115,11 @@ public:
 	void setScale(const Vector3 &scale) { this->scale = scale; }
 	void rotate(const Quaternion &q) { this->rotation *= q; }
 	void translate(const Vector3 &v) { position += v; }
+
+	void setForward(const Vector3 &fwd)
+	{
+		this->rotation = Quaternion::rotationBetweenVectors(Vector3::UP, fwd);
+	}
 
 	Vector3 forward() const { return rotation * Vector3::FORWARD; }
 	Vector3 up() const { return rotation * Vector3::UP; }

@@ -414,6 +414,19 @@ public:
 		return v + uv + uuv;
 	}
 
+	float norm() const
+	{
+		return x*x + y*y + z*z + w*w;
+	}
+
+	void normalize()
+	{
+		float len = norm();
+		float factor = 1.0f / sqrtf(len);
+		*this = *this * factor;
+	}
+	void setXYZ(const float x, const float y, const float z) { this->x = x, this->y = y; this->z = z; }
+
 	//Other operations
 	static Quaternion slerp(const Quaternion &a, const Quaternion &b, const float t)
 	{
@@ -471,6 +484,17 @@ public:
 		// Return normalized quaternion
 		float invLen = 1.0f / sqrtf( qt.x * qt.x + qt.y * qt.y + qt.z * qt.z + qt.w * qt.w );
 		return Quaternion( qt.x * invLen, qt.y * invLen, qt.z * invLen, qt.w * invLen );
+	}
+	static Quaternion rotationBetweenVectors(const Vector3 &from, const Vector3 &to)
+	{
+		Quaternion q;
+		Vector3 a = from.cross(to);
+		q.setXYZ(a.x, a.y, a.z);
+
+		float fromMag = from.length(); float toMag = to.length();
+		q.w = sqrt((fromMag * fromMag) * (toMag * toMag)) + from.dot(to);
+		q.normalize();
+		return q;
 	}
 	static const Quaternion IDENTITY;
 };
