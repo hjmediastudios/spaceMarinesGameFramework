@@ -383,6 +383,12 @@ public:
 
 	//Library conversion
 	btVector3 bullet() const { return btVector3(x, y, z); }
+
+	friend std::ostream& operator<< (std::ostream &o, const Vector3 &v)
+	{
+		o << "<" << v.x << ", " << v.y << ", " << v.z << ">";
+		return o;
+	}
 };
 
 class Vector4

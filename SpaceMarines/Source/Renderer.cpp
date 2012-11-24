@@ -19,17 +19,14 @@ Renderer::Renderer(const std::string &assetPath, const Vector2 &windowSize, cons
 	this->camera = nullptr;
 	_started = 0;
 #ifdef PP_DebugDraw
-	Ldb_color = -1;
-	Ldb_mvpMat = -1;
-	LlinesVBO = -1;
-	debugShader = nullptr;
+	this->debugDrawer = nullptr;
 #endif
 }
 
 Renderer::~Renderer()
 {
 #ifdef PP_DebugDraw
-	delete debugShader;
+	delete debugDrawer;
 #endif
 	h3dRelease();
 	glfwTerminate();
@@ -39,29 +36,13 @@ bool Renderer::init()
 {
 	if (!glfwInit()) throw Exception("Error initializing GLFW");
 	if (!setupWindow()) throw Exception("Error opening window");
+	if (glewInit() != GLEW_OK) throw Exception("GLEW couldn't be initialized");
 
 #ifdef PP_DebugDraw
-	if (glewInit() != GLEW_OK) throw Exception("GLEW couldn't be initialized");
-	glPushAttrib(GL_ALL_ATTRIB_BITS);
-	debugShader = Shader::newShaderFromOneFile(getAssetPath() + "shaders/debugShader.glsl");
-	Ldb_mvpMat = debugShader->getUniformLocation("mvpMat");
-	Ldb_color = debugShader->getUniformLocation("color");
-	if (Ldb_color == INVALID_UNIFORM_LOCATION || Ldb_mvpMat == INVALID_UNIFORM_LOCATION)
-		throw Exception("Error finding debug uniforms!");
-
-    Vector3 vertices[3];
-    vertices[0] = Vector3(-1.0f, -1.0f, 0.0f);
-    vertices[1] = Vector3(1.0f, -1.0f, 0.0f);
-    vertices[2] = Vector3(0.0f, 1.0f, 0.0f);
-	glGenBuffers(1, &LlinesVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, LlinesVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3) * 3, vertices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	debugDrawer = new DebugDrawer(this);
 #endif
 
 	if (!h3dInit()) throw Exception("Error initializing Horde3D");
-
-
 
 	pipeline = h3dAddResource(H3DResTypes::Pipeline, pipelineFilePath.c_str(), 0);
 
@@ -121,10 +102,11 @@ GameObject* Renderer::getCamera()
 
 void Renderer::update()
 {
+	debugDrawer->drawLine(Vector3::ZERO, Vector3::ONE);
 	h3dRender(camera->cameraNode);
 	h3dFinalizeFrame();
 #ifdef PP_DebugDraw
-	debugDraw();
+	debugDrawer->render();
 #endif
 
 	// Finish rendering of frame
@@ -139,45 +121,6 @@ std::string Renderer::getAssetPath() const
 	return assetPath + "\\";
 #endif
 }
-
-/***********************************
- *     Debug drawing functions
- ***********************************/
-
-//Private draw method
-#ifdef PP_DebugDraw
-
-void Renderer::debugDraw()
-{
-	glPopAttrib();
-
-	glEnable(GL_BLEND);
-	glBlendEquation(GL_ADD);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	if (camera == nullptr) throw Exception("Can't DebugDraw without a camera");
-
-	debugShader->enable();
-
-	Matrix4 identity = camera->getProjectionMatrix() * camera->getViewMatrix();
-
-	glUniformMatrix4fv(Ldb_mvpMat, 1, GL_TRUE, identity.ptr());
-
-	glEnableVertexAttribArray(0);
-	glUniform3f(Ldb_color, 1.0f, 1.0f, 1.0f);
-
-	glBindBuffer(GL_ARRAY_BUFFER, LlinesVBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-
-	debugShader->disable();
-	glDisableVertexAttribArray(0);
-	std::cout << "Hey\n";
-	glDisable(GL_BLEND);
-	glPushAttrib(GL_ALL_ATTRIB_BITS);
-}
-
-#endif
 
 
 } /* namespace SpaceMarines */

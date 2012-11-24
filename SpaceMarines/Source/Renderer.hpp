@@ -2,11 +2,13 @@
 #include "Prerequisites.hpp"
 #include "Components/Camera.hpp"
 #include "Resources/Shader.hpp"
+#include "DebugDrawer.hpp"
 
 namespace SpaceMarines
 {
 
 class Camera;
+class DebugDrawer;
 
 class Renderer
 {
@@ -22,23 +24,17 @@ public:
 	GameObject* getCamera();
 	void update();
 	std::string getAssetPath() const;
+protected:
+	Camera* camera;
+	friend class DebugDrawer;
 private:
 	std::string assetPath;
 	Vector2 windowSize;
 	bool setupWindow();
 	H3DRes pipeline;
 	std::string pipelineFilePath;
-	Camera* camera;
 	unsigned short _started;
-private:
-	#ifdef PP_DebugDraw
-	void debugDraw();
-	Shader* debugShader;
-	GLuint Ldb_mvpMat;
-	GLuint Ldb_color;
-	GLuint LlinesVBO;
-
-	#endif
+	DebugDrawer* debugDrawer;
 
 };
 
