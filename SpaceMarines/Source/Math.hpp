@@ -230,13 +230,13 @@ public:
 	//Vector3 accessors
 	float &operator[] (unsigned short index) { return *(&x + index); }
 	float operator[](unsigned short index) const { return *(&x + index); }
-	bool operator==(const Vector3& other)
+	bool operator==(const Vector3& other) const
 	{
 		return (x > other.x - Math::Epsilon && x < other.x + Math::Epsilon &&
 				y > other.y - Math::Epsilon && y < other.y + Math::Epsilon &&
 				z > other.z - Math::Epsilon && z < other.z + Math::Epsilon);
 	}
-	bool operator!=(const Vector3 &other)
+	bool operator!=(const Vector3 &other) const
 	{
 		return (x < other.x - Math::Epsilon || x > other.x + Math::Epsilon ||
 				y < other.y - Math::Epsilon || y > other.y + Math::Epsilon ||

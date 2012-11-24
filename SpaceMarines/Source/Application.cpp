@@ -37,6 +37,7 @@ Application::~Application()
 bool Application::init()
 {
 	if (!renderer->init()) return false;
+	physics->setDebugDrawer(renderer->getDebugDrawer());
 	if (drawDebug) h3dSetOption(H3DOptions::DebugViewMode, 1);
 	return true;
 }
@@ -89,6 +90,7 @@ void Application::update()
 	{
 		objects[i]->update();
 	}
+	physics->debugDraw();
 	renderer->update();
 }
 

@@ -56,7 +56,7 @@ void Application1::customSetupFunction()
 	addObject(sun);
 
 	GameObject* plane = new GameObject();
-//	plane->addComponent(new MeshRenderer("models/Plane/Plane.scene.xml"));
+	plane->addComponent(new MeshRenderer("models/Plane/Plane.scene.xml"));
 	plane->addComponent(new StaticPlaneCollider());
 	plane->addComponent(new RigidBody(plane->getComponent<StaticPlaneCollider>(), 0.0f));
 	addObject(plane);
@@ -67,8 +67,8 @@ bool running = false;
 void Application1::customLogicLoop()
 {
 	float speed = runner->getComponent<RigidBody>()->getVelocity().lengthSquared();
-	renderer->getDebugDrawer()->drawLine(Vector3::ZERO, runner->getTransform()->getPosition());
-
+//	renderer->getDebugDrawer()->drawLine(Vector3::ZERO, runner->getTransform()->getPosition());
+	renderer->getDebugDrawer()->drawAxis(runner->getTransform()->position, 2.0f, runner->getTransform()->rotation);
 	running = (speed > Math::Epsilon);
 
 	Transform* cameraTrans = renderer->getCamera()->getTransform();

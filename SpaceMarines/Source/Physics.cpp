@@ -53,6 +53,18 @@ void PhysicsWorld::fixedUpdate()
 	dynamicsWorld->stepSimulation(Time::fixedDeltaTimeF, 10);
 }
 
+void PhysicsWorld::setDebugDrawer(DebugDrawer* debugDrawer)
+{
+	dynamicsWorld->setDebugDrawer(debugDrawer);
+	debugDrawer->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+}
+
+void PhysicsWorld::debugDraw()
+{
+	if (dynamicsWorld->getDebugDrawer() == nullptr) return;
+	dynamicsWorld->debugDrawWorld();
+}
+
 /*************************************
  * 	Rigid body component
  *************************************/

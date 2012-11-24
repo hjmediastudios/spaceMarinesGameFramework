@@ -25,9 +25,7 @@ Renderer::Renderer(const std::string &assetPath, const Vector2 &windowSize, cons
 
 Renderer::~Renderer()
 {
-#ifdef PP_DebugDraw
 	delete debugDrawer;
-#endif
 	h3dRelease();
 	glfwTerminate();
 }
@@ -38,9 +36,7 @@ bool Renderer::init()
 	if (!setupWindow()) throw Exception("Error opening window");
 	if (glewInit() != GLEW_OK) throw Exception("GLEW couldn't be initialized");
 
-#ifdef PP_DebugDraw
 	debugDrawer = new DebugDrawer(this);
-#endif
 
 	if (!h3dInit()) throw Exception("Error initializing Horde3D");
 
@@ -102,12 +98,10 @@ GameObject* Renderer::getCamera()
 
 void Renderer::update()
 {
-	debugDrawer->drawLine(Vector3::ZERO, Vector3::ONE);
 	h3dRender(camera->cameraNode);
 	h3dFinalizeFrame();
-#ifdef PP_DebugDraw
 	debugDrawer->render();
-#endif
+
 
 	// Finish rendering of frame
     glfwSwapBuffers();

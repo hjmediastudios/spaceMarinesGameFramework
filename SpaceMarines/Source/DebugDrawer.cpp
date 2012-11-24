@@ -18,12 +18,11 @@ DebugDrawer::DebugDrawer(Renderer* renderer)
 	glGenBuffers(1, &LlinesIBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, LlinesIBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	setDebugMode(0);
 }
 
 void DebugDrawer::render()
 {
-
-
 	glPopAttrib();
 
 	glEnable(GL_BLEND);
@@ -75,13 +74,20 @@ void DebugDrawer::drawLine(const Vector3 &ptA, const Vector3 &ptB, const Vector3
 	vertices.push_back(DebugVertex(ptB, color));
 }
 
-//void DebugDrawer::drawAxis(const Vector3 &point, const float size, const Quaternion &rotation, const Vector3 &color)
-//{
-//	unsigned int centerIndex = vertices.size();
-//	indices.push_back(centerIndex);
-//	vertices.push_back(DebugVertex(point, color));
-//	indices.push_back(centerIndex + 1);
-//	vertices.push_back(DebugVertex(point + rotation * Vector3::RIGHT * size, color));
-//}
+void DebugDrawer::drawAxis(const Vector3 &point, const float size, const Quaternion &rotation, const Vector3 &color)
+{
+	unsigned int centerIndex = vertices.size();
+	indices.push_back(centerIndex);
+	vertices.push_back(DebugVertex(point, (color == Vector3::ZERO ? Vector3::ONE : color)));
+	indices.push_back(centerIndex + 1);
+	vertices.push_back(DebugVertex(point + rotation * Vector3::RIGHT * size, (color == Vector3::ZERO ? Vector3::RIGHT : color)));
+	indices.push_back(centerIndex);
+	indices.push_back(centerIndex + 2);
+	vertices.push_back(DebugVertex(point + rotation * Vector3::UP * size, (color == Vector3::ZERO ? Vector3::UP : color)));
+	indices.push_back(centerIndex);
+	indices.push_back(centerIndex + 3);
+	vertices.push_back(DebugVertex(point + rotation * Vector3::FORWARD * size, (color == Vector3::ZERO ? Vector3::FORWARD : color)));
+
+}
 
 }

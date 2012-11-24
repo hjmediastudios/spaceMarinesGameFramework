@@ -43,7 +43,7 @@ public:
 protected:
 	btCollisionShape* createCollisionShape()
 	{
-		return new btStaticPlaneShape(Vector3::UP.bullet(), 1);
+		return new btStaticPlaneShape(Vector3::UP.bullet(), offset.z);
 	}
 };
 

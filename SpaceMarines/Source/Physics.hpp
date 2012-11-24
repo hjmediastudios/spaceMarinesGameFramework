@@ -1,6 +1,7 @@
 #pragma once
 #include "Prerequisites.hpp"
 #include "Components/Collider.hpp"
+#include "DebugDrawer.hpp"
 
 namespace SpaceMarines
 {
@@ -20,6 +21,8 @@ public:
 	void removeRigidBody(RigidBody* rigidBody);
 
 	void fixedUpdate();
+	void setDebugDrawer(DebugDrawer* debugDrawer);
+	void debugDraw();
 private:
 	static PhysicsWorld* instance;
 	PhysicsWorld();
