@@ -15,6 +15,7 @@ float Time::deltaTimeF = 0.0f;
 
 float Time::fps = 0.0f;
 const float Time::animationFPS = 24.0f;
+Vector2 Input::screenSize = Vector2(1, 1);
 
 Application::Application(const char* assetPath, const char* renderingPipeline, const Vector2 &windowSize, bool drawDebug)
 {
@@ -48,6 +49,7 @@ void Application::start()
 	customSetupFunction();
 
 	renderer->start();
+	Input::screenSize = renderer->getScreenSize();
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{

@@ -214,6 +214,12 @@ public:
 	float distanceSquared(const Vector2 &other) const { return (other - *this).lengthSquared(); }
 	Vector2 normalized() const { float fi = 1.0f / sqrtf(x*x+y*y); return Vector2(x*fi, y*fi); }
 	void normalize() { float fi = 1.0f / sqrtf(x*x+y*y); x *= fi; y *= fi; }
+
+	friend std::ostream& operator<< (std::ostream &o, const Vector2 &v)
+	{
+		o << "<" << v.x << ", " << v.y << ">";
+		return o;
+	}
 };
 
 class Vector3
@@ -222,6 +228,7 @@ public:
 	float x, y, z;
 	//Vector3 constructors
 	Vector3(const float f) : x(f), y(f), z(f) {}
+	explicit Vector3(const Vector2 &vec2) : x(vec2.x), y(vec2.y), z(0.0f) {}
 	Vector3() { x = 0.0f; y = 0.0f; z = 0.0f; }
 	explicit Vector3(Math::ForceNoInitialization) {}
 	Vector3(const float x, const float y, const float z) : x(x), y(y), z(z) {}

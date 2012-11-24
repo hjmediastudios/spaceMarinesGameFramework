@@ -22,18 +22,19 @@ protected:
 };
 
 /*************************************
- * 	BoxCollider class
+ * 	Collider classes
  *************************************/
 class BoxCollider : public Collider
 {
 public:
-	BoxCollider(const Vector3& offset = Vector3::ZERO) : Collider(offset) {}
+	BoxCollider(const Vector3 &extents = Vector3::ONE, const Vector3& offset = Vector3::ZERO) : Collider(offset) { this->extents = extents;}
 protected:
 	btCollisionShape* createCollisionShape()
 	{
-		//ToDo custom limits
-		return new btBoxShape(btVector3(0.5f, 1.0f, 0.1f));
+		return new btBoxShape(extents.bullet() * 0.5f);
 	}
+private:
+	Vector3 extents;
 };
 
 class StaticPlaneCollider : public Collider
@@ -45,6 +46,22 @@ protected:
 	{
 		return new btStaticPlaneShape(Vector3::UP.bullet(), offset.z);
 	}
+};
+
+class CapsuleCollider : public Collider
+{
+public:
+	CapsuleCollider(const float radius, const float height, const Vector3 &offset = Vector3::ZERO) : Collider(offset)
+	{
+		params = Vector2(radius, height * 0.5f);
+	}
+protected:
+	btCollisionShape* createCollisionShape()
+	{
+		return new btCapsuleShape(params.x, params.y);
+	}
+private:
+	Vector2 params;
 };
 
 

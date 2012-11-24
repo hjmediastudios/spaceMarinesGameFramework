@@ -12,7 +12,7 @@ Camera::Camera(const std::string &name, Renderer* renderer)
 	this->renderer = renderer;
 	gameObject = nullptr;
 	projMat = Matrix4();
-	setView(renderer->getWindowSize(), 60.0f, Vector2(0.1f, 1000.0f));
+	setView(renderer->getScreenSize(), 60.0f, Vector2(0.1f, 1000.0f));
 }
 
 Camera::~Camera()

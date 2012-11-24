@@ -98,7 +98,6 @@ void Shader::init(const char *vsSource, const char *fsSource, const char* vsFile
 	glAttachShader(shaderID, shader_vp);
 	glAttachShader(shaderID, shader_fp);
 
-	//TODO this can change
 	glBindAttribLocation(shaderID, 0, "in_position"); //vertex position
 	glBindAttribLocation(shaderID, 1, "in_color"); //vertex color
 

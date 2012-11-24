@@ -81,7 +81,7 @@ bool Renderer::setupWindow()
 	return true;
 }
 
-Vector2 Renderer::getWindowSize() const
+Vector2 Renderer::getScreenSize() const
 {
 	return windowSize;
 }
@@ -114,6 +114,19 @@ std::string Renderer::getAssetPath() const
 #else
 	return assetPath + "\\";
 #endif
+}
+
+Vector3 Renderer::getPositionFromViewport(const Vector2 &vec) const
+{
+	Matrix4 unprojectMat = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverted();
+	Vector4 v;
+	v.x = vec.x;
+	v.y = -vec.y; //TODO readPixel
+	v.z = 0.0f;
+	v.w = 1.0f;
+	v = unprojectMat * v;
+	float invV = 1.0f / v.w;
+	return Vector3(v.x * invV, v.y * invV, v.z * invV);
 }
 
 

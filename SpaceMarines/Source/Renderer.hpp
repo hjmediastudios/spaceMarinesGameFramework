@@ -18,13 +18,14 @@ public:
 	bool init();
 	void start();
 	bool loadResources();
-	Vector2 getWindowSize() const;
+	Vector2 getScreenSize() const;
 	H3DRes getPipelineHandle() const { return pipeline; }
 	void setCamera(Camera* camera);
 	GameObject* getCamera();
 	void update();
 	std::string getAssetPath() const;
 	DebugDrawer* getDebugDrawer() { return debugDrawer; }
+	Vector3 getPositionFromViewport(const Vector2 &vec) const;
 protected:
 	Camera* camera;
 	DebugDrawer* debugDrawer;

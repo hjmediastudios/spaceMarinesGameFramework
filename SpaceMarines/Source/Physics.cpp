@@ -68,13 +68,15 @@ void PhysicsWorld::debugDraw()
 /*************************************
  * 	Rigid body component
  *************************************/
-RigidBody::RigidBody(Collider* collider, float mass)
+RigidBody::RigidBody(Collider* collider, float mass, bool noSleep)
 {
 	this->collider = collider;
 	this->mass = mass;
 
 	transform = nullptr;
 	rigidBody = nullptr;
+	world = nullptr;
+	this->noSleep = noSleep;
 }
 
 RigidBody::~RigidBody()
@@ -105,7 +107,7 @@ void RigidBody::start()
 	collider->collisionShape->calculateLocalInertia(mass, inertia);
 	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, groundMotionState, collider->collisionShape, inertia);
 	rigidBody = new btRigidBody(rigidBodyCI);
-
+	rigidBody->setUserPointer(gameObject);
 	PhysicsWorld::getSingleton()->getBulletWorld()->addRigidBody(rigidBody);
 }
 
@@ -121,6 +123,18 @@ void RigidBody::fixedUpdate()
 Vector3 RigidBody::getVelocity() const
 {
 	return rigidBody->getLinearVelocity();
+}
+
+void RigidBody::applyForce(const Vector3 &force)
+{
+	if (!rigidBody->isActive()) rigidBody->activate();
+	rigidBody->applyCentralForce(force.bullet());
+}
+
+void RigidBody::applyForceAtRelativePoint(const Vector3 &force, const Vector3 &point)
+{
+	if (!rigidBody->isActive()) rigidBody->activate();
+	rigidBody->applyForce(force.bullet(), point.bullet());
 }
 
 } /* namespace SpaceMarines */

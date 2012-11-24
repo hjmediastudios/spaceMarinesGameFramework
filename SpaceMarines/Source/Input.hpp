@@ -2,6 +2,7 @@
 #include "Prerequisites.hpp"
 namespace SpaceMarines
 {
+
 namespace KeyCodes
 {
 enum codes
@@ -16,18 +17,32 @@ enum codes
 };
 }
 
-namespace Input
+class Input
 {
-static bool isKeyPressed(KeyCodes::codes code)
-{
-	return (glfwGetKey(code) == GLFW_PRESS);
-}
-static bool isKeyPressed(const char code)
-{
-	return (glfwGetKey(code) == GLFW_PRESS);
-}
+protected:
+	static Vector2 screenSize;
+	friend class Application;
+public:
+	static bool isKeyPressed(KeyCodes::codes code)
+	{
+		return (glfwGetKey(code) == GLFW_PRESS);
+	}
+	static bool isKeyPressed(const char code)
+	{
+		return (glfwGetKey(code) == GLFW_PRESS);
+	}
+	static Vector2 getMousePos()
+	{
+		static int x, y;
+		glfwGetMousePos(&x, &y);
+		return Vector2(x, y);
+	}
+	static Vector2 getMousePosNormalized()
+	{
+		return getMousePos() / screenSize * 2.0f - 1.0f;
+	}
 
 
-}
+};
 
 }

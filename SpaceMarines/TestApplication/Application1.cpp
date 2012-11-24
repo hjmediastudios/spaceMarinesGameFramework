@@ -27,8 +27,8 @@ void Application1::customSetupFunction()
 	runner->getComponent<AnimatedMeshRenderer>()->addAnimation("animations/Minifig/Body_Run.anim", "Body_Run", "Torso.Lower");
 	runner->getTransform()->setPosition(Vector3(0, 5, 0));
 	runner->getTransform()->setRotation(Quaternion(Vector3::UP, Math::degToRad(45)));
-	runner->addComponent(new BoxCollider(Vector3::UP));
-	runner->addComponent(new RigidBody(runner->getComponent<BoxCollider>(), 185.0f));
+	runner->addComponent(new CapsuleCollider(0.5f, 1.6f, Vector3(0, 0.8f, 0)));
+	runner->addComponent(new RigidBody(runner->getComponent<CapsuleCollider>(), 185.0f));
 	addObject(runner);
 
 	GameObject* camera = new GameObject();
@@ -71,12 +71,16 @@ void Application1::customLogicLoop()
 	renderer->getDebugDrawer()->drawAxis(runner->getTransform()->position, 2.0f, runner->getTransform()->rotation);
 	running = (speed > Math::Epsilon);
 
+	Vector3 pt = renderer->getPositionFromViewport(Input::getMousePosNormalized());
+	std::cout << pt << std::endl;
+	renderer->getDebugDrawer()->drawAxis(pt, 2.0f);
+
 	Transform* cameraTrans = renderer->getCamera()->getTransform();
 
 	if (Input::isKeyPressed(KeyCodes::Up))
-		cameraTrans->translate(cameraTrans->forward() * -3 * Time::deltaTimeF);
+		runner->getComponent<RigidBody>()->applyForce(Vector3::FORWARD * 80.0f);
 	if (Input::isKeyPressed(KeyCodes::Down))
-		cameraTrans->translate(cameraTrans->forward() * 3 * Time::deltaTimeF);
+		runner->getComponent<RigidBody>()->applyForce(Vector3::FORWARD * -80.0f);
 	if (Input::isKeyPressed(KeyCodes::Left))
 		cameraTrans->rotate(Quaternion(cameraTrans->up(), Time::deltaTimeF * 3));
 	if (Input::isKeyPressed(KeyCodes::Right))

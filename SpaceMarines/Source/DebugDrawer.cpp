@@ -77,16 +77,37 @@ void DebugDrawer::drawLine(const Vector3 &ptA, const Vector3 &ptB, const Vector3
 void DebugDrawer::drawAxis(const Vector3 &point, const float size, const Quaternion &rotation, const Vector3 &color)
 {
 	unsigned int centerIndex = vertices.size();
-	indices.push_back(centerIndex);
-	vertices.push_back(DebugVertex(point, (color == Vector3::ZERO ? Vector3::ONE : color)));
-	indices.push_back(centerIndex + 1);
-	vertices.push_back(DebugVertex(point + rotation * Vector3::RIGHT * size, (color == Vector3::ZERO ? Vector3::RIGHT : color)));
-	indices.push_back(centerIndex);
-	indices.push_back(centerIndex + 2);
-	vertices.push_back(DebugVertex(point + rotation * Vector3::UP * size, (color == Vector3::ZERO ? Vector3::UP : color)));
-	indices.push_back(centerIndex);
-	indices.push_back(centerIndex + 3);
-	vertices.push_back(DebugVertex(point + rotation * Vector3::FORWARD * size, (color == Vector3::ZERO ? Vector3::FORWARD : color)));
+
+	if (color != Vector3::ZERO)
+	{
+		indices.push_back(centerIndex);
+		vertices.push_back(DebugVertex(point, color));
+		indices.push_back(centerIndex + 1);
+		vertices.push_back(DebugVertex(point + rotation * Vector3::RIGHT * size, color));
+		indices.push_back(centerIndex);
+		indices.push_back(centerIndex + 2);
+		vertices.push_back(DebugVertex(point + rotation * Vector3::UP * size, color));
+		indices.push_back(centerIndex);
+		indices.push_back(centerIndex + 3);
+		vertices.push_back(DebugVertex(point + rotation * Vector3::FORWARD * size, color));
+		return;
+	}
+
+	indices.push_back(centerIndex++);
+	vertices.push_back(DebugVertex(point, Vector3::RIGHT));
+	indices.push_back(centerIndex++);
+	vertices.push_back(DebugVertex(point + rotation * Vector3::RIGHT * size, Vector3::RIGHT));
+
+	indices.push_back(centerIndex++);
+	vertices.push_back(DebugVertex(point, Vector3::UP));
+	indices.push_back(centerIndex++);
+	vertices.push_back(DebugVertex(point + rotation * Vector3::UP * size, Vector3::UP));
+
+	indices.push_back(centerIndex++);
+	vertices.push_back(DebugVertex(point, Vector3::FORWARD));
+	indices.push_back(centerIndex++);
+	vertices.push_back(DebugVertex(point + rotation * Vector3::FORWARD * size, Vector3::FORWARD));
+
 
 }
 
