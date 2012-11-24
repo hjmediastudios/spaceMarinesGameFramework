@@ -1,5 +1,6 @@
 #pragma once
 #include "../Prerequisites.hpp"
+#include "Interfaces.hpp"
 
 namespace SpaceMarines
 {
@@ -63,7 +64,6 @@ public:
 	virtual ~ActiveComponent() {}
 	virtual void start() = 0;
 	virtual void update() = 0;
-//	virtual void fixedUpdate() = 0; TODO PhysicsAffectableComponent
 	virtual const char* getComponentType() const = 0;
 };
 
@@ -113,7 +113,7 @@ public:
 	void setPosition(const Vector3 &position) { this->position = position; }
 	void setRotation(const Quaternion &rotation) { this->rotation = rotation; }
 	void setScale(const Vector3 &scale) { this->scale = scale; }
-	void rotate(const Quaternion &q) { this->rotation *= q; }
+	void rotate(const Quaternion &q) { this->rotation = q * this->rotation; }
 	void translate(const Vector3 &v) { position += v; }
 
 	void setForward(const Vector3 &fwd)
@@ -184,6 +184,10 @@ public:
 		else
 			passiveComponents.insert(std::pair<const char*, PassiveComponent*>(typeid(T).name(), (PassiveComponent*) comp));
 
+		HasFixedUpdate* compFixedUpdatable;
+		if ((compFixedUpdatable = dynamic_cast<HasFixedUpdate*>(comp)) != nullptr)
+			fixedUpdatables.push_back(compFixedUpdatable);
+
 		comp->setGameObject(this);
 	}
 
@@ -221,9 +225,9 @@ public:
 	}
 	void fixedUpdate()
 	{
-		for (std::map<const char*, ActiveComponent*>::iterator it = activeComponents.begin(); it != activeComponents.end(); it++)
+		for (size_t i = 0; i < fixedUpdatables.size(); i++)
 		{
-//			it->second->fixedUpdate();
+			fixedUpdatables[i]->fixedUpdate();
 		}
 	}
 
@@ -248,6 +252,7 @@ public:
 private:
 	std::map<const char*, ActiveComponent*> activeComponents;
 	std::map<const char*, PassiveComponent*> passiveComponents;
+	std::vector<HasFixedUpdate*> fixedUpdatables;
 	Transform transform;
 	GameObject* parent;
 

@@ -72,6 +72,7 @@ void Application::start()
 		while(accumulator >= Time::fixedDeltaTime)
 		{
 			//Fixed update
+			fixedUpdate();
 			accumulator -= Time::fixedDeltaTime;
 			Time::time += Time::fixedDeltaTime;
 			Time::timeF += Time::fixedDeltaTimeF;
@@ -84,12 +85,20 @@ void Application::start()
 void Application::update()
 {
 	customLogicLoop();
-
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->update();
 	}
 	renderer->update();
+}
+
+void Application::fixedUpdate()
+{
+	physics->fixedUpdate();
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		objects[i]->fixedUpdate();
+	}
 }
 
 void Application::addObject(GameObject* obj)

@@ -1,6 +1,8 @@
 #pragma once
 #include "Prerequisites.hpp"
 #include "Components/Camera.hpp"
+#include "Resources/Shader.hpp"
+
 namespace SpaceMarines
 {
 
@@ -17,6 +19,7 @@ public:
 	Vector2 getWindowSize() const;
 	H3DRes getPipelineHandle() const { return pipeline; }
 	void setCamera(Camera* camera);
+	GameObject* getCamera();
 	void update();
 	std::string getAssetPath() const;
 private:
@@ -27,6 +30,16 @@ private:
 	std::string pipelineFilePath;
 	Camera* camera;
 	unsigned short _started;
+private:
+	#ifdef PP_DebugDraw
+	void debugDraw();
+	Shader* debugShader;
+	GLuint Ldb_mvpMat;
+	GLuint Ldb_color;
+	GLuint LlinesVBO;
+
+	#endif
+
 };
 
 } /* namespace SpaceMarines */

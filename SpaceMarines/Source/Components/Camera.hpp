@@ -15,6 +15,8 @@ public:
 	void setView(const Vector2 &size, const float fovDegrees, const Vector2 &clipDistances);
 	void start();
 	const char* getComponentType() const { return "Camera";}
+	Matrix4 getProjectionMatrix() const { return projMat; }
+	Matrix4 getViewMatrix() const;
 protected:
 	H3DNode cameraNode;
 	friend class Renderer;
@@ -23,6 +25,7 @@ private:
 	float fovDegrees;
 	Vector2 clipDistances;
 	Renderer* renderer;
+	Matrix4 projMat;
 };
 
 } /* namespace SpaceMarines */

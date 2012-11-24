@@ -41,7 +41,6 @@
 			<DrawQuad material="compositing/fxaa.material.xml" context="FXAA" />
 			<UnbindBuffers />
 		</Stage>
-			
-		
+
 	</CommandQueue>
 </Pipeline>

@@ -8,12 +8,15 @@
 #include <typeinfo>
 #include <hash_set>
 
-#include <GL/glfw.h>
-#include <GL/gl.h>
 #include <tinyxml2.h>
 #include <horde3d/Horde3D.h>
 #include <horde3d/Horde3DUtils.h>
+
 #include <bullet/btBulletDynamicsCommon.h>
+
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <GL/glfw.h>
 
 
 class Exception : public std::exception
@@ -47,7 +50,7 @@ namespace SpaceMarines
 #include "HighLevelTypes/Interfaces.hpp"
 #include "HighLevelTypes/Object.hpp"
 
-//#define DEBUG
+#define PP_DebugDraw
 
 
 

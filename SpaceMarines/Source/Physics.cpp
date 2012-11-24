@@ -25,6 +25,7 @@ PhysicsWorld::PhysicsWorld()
 	collisionDispatcher = new btCollisionDispatcher(defaultCollisionConfiguration);
 	solver = new btSequentialImpulseConstraintSolver();
 	dynamicsWorld = new btDiscreteDynamicsWorld(collisionDispatcher, broadphase, solver, defaultCollisionConfiguration);
+	dynamicsWorld->setGravity(btVector3(0.0f, -9.81f, 0.0f));
 }
 
 PhysicsWorld::~PhysicsWorld()
@@ -41,9 +42,15 @@ btDiscreteDynamicsWorld* PhysicsWorld::getBulletWorld()
 	return dynamicsWorld;
 }
 
-void PhysicsWorld::addRigidBody(RigidBody* rigidBody)
+void PhysicsWorld::removeRigidBody(RigidBody* rigidBody)
 {
-	dynamicsWorld->addRigidBody(rigidBody->rigidBody);
+	if (rigidBody == nullptr) throw Exception("Attempting to remove a null RigidBody to PhysicsWorld");
+	dynamicsWorld->removeRigidBody(rigidBody->rigidBody);
+}
+
+void PhysicsWorld::fixedUpdate()
+{
+	dynamicsWorld->stepSimulation(Time::fixedDeltaTimeF, 10);
 }
 
 /*************************************
@@ -54,29 +61,54 @@ RigidBody::RigidBody(Collider* collider, float mass)
 	this->collider = collider;
 	this->mass = mass;
 
+	transform = nullptr;
 	rigidBody = nullptr;
 }
 
 RigidBody::~RigidBody()
 {
-	if (rigidBody != nullptr) delete rigidBody;
+	if (world != nullptr)
+		world->removeRigidBody(this);
+	if (rigidBody == nullptr) return;
+
+	delete rigidBody->getMotionState();
+	delete rigidBody;
 }
 
 void RigidBody::start()
 {
 	if (gameObject == nullptr) throw Exception("RigidBody doesn't have a GameObject");
 	if (collider == nullptr) throw Exception("RigidBody has no associated collider");
+	if (collider->collisionShape == nullptr) throw Exception("Collider's Bullet collider is null");
 
+	transform = gameObject->getTransform();
+	world = PhysicsWorld::getSingleton();
 
-	btVector3 fallInteria = btVector3(0, 0, 0);
-	btDefaultMotionState defaultMotionState = btDefaultMotionState(btTransform(
-			gameObject->getTransform()->getRotation().bullet(),
-			gameObject->getTransform()->getPosition().bullet()));
-	btRigidBody::btRigidBodyConstructionInfo constructionInfo(mass, &defaultMotionState, collider->collisionShape, fallInteria);
-	rigidBody = new btRigidBody(constructionInfo);
+	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(
+			gameObject->getTransform()->rotation.bullet(),
+			gameObject->getTransform()->position.bullet()
+			));
 
-	PhysicsWorld::getSingleton()->addRigidBody(this);
-	std::cout << "Starting RigidBody\n";
+	btVector3 inertia;
+	collider->collisionShape->calculateLocalInertia(mass, inertia);
+	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, groundMotionState, collider->collisionShape, inertia);
+	rigidBody = new btRigidBody(rigidBodyCI);
+
+	PhysicsWorld::getSingleton()->getBulletWorld()->addRigidBody(rigidBody);
+}
+
+void RigidBody::fixedUpdate()
+{
+	btTransform trans;
+	rigidBody->getMotionState()->getWorldTransform(trans);
+
+	transform->setRotation(trans.getRotation());
+	transform->setPosition(Vector3(trans.getOrigin()) + transform->rotation * -collider->offset);
+}
+
+Vector3 RigidBody::getVelocity() const
+{
+	return rigidBody->getLinearVelocity();
 }
 
 } /* namespace SpaceMarines */

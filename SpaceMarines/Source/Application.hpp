@@ -28,6 +28,7 @@ private:
 	std::string renderingPipeline;
 	std::vector<GameObject*> objects;
 	void update();
+	void fixedUpdate();
 	bool drawDebug;
 };
 

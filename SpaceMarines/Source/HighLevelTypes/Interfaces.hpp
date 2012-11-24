@@ -13,4 +13,10 @@ private:
 	bool dirty;
 };
 
+class HasFixedUpdate
+{
+public:
+	virtual void fixedUpdate() = 0;
+};
+
 }

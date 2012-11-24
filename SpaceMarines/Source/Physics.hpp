@@ -17,8 +17,9 @@ public:
 	virtual ~PhysicsWorld();
 	btDiscreteDynamicsWorld* getBulletWorld();
 
-	void addRigidBody(RigidBody* rigidBody);
+	void removeRigidBody(RigidBody* rigidBody);
 
+	void fixedUpdate();
 private:
 	static PhysicsWorld* instance;
 	PhysicsWorld();
@@ -33,18 +34,22 @@ private:
 /*************************************
  * 	Rigid body component
  *************************************/
-class RigidBody : public PassiveComponent
+class RigidBody : public PassiveComponent, public HasFixedUpdate
 {
 public:
 	RigidBody(Collider* collider, float mass = 1.0f);
 	~RigidBody();
 	const char* getComponentType() const { return "RigidBody"; }
 	void start();
+	void fixedUpdate();
+	Vector3 getVelocity() const;
 private:
+	PhysicsWorld* world;
 	Collider* collider;
 	float mass;
 	btRigidBody* rigidBody;
 	friend class PhysicsWorld;
+	Transform* transform;
 };
 
 

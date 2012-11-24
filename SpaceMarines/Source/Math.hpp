@@ -1,11 +1,12 @@
 #pragma once
-//#include "Prerequisites.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 #include <math.h>
 #include <bullet/btBulletDynamicsCommon.h>
-
+#include <vector>
 
 namespace SpaceMarines
 {
@@ -73,6 +74,39 @@ namespace Math
 		}
 		return hash;
 	}
+
+	static std::string textFileRead(const std::string &filename)
+	{
+		std::string file = std::string();
+		std::string line = std::string();
+
+		std::ifstream fileStream(filename);
+		if (!fileStream.good())
+		{
+			std::cerr << "Error opening file \"" + filename + "\"";
+			throw std::exception();
+		}
+		std::stringstream sstream;
+		sstream << fileStream.rdbuf();
+		fileStream.close();
+
+		return sstream.str();
+	}
+
+	static inline bool textContains(char* text, char ch)
+	{
+		while (*text)
+		{
+			if (*text++ == ch)
+				return true;
+		}
+		return false;
+	}
+	std::vector<std::string> splitString(const std::string &text, char* delims,
+			unsigned short maxParts = 0);
+	std::string firstLine(const std::string &text);
+	std::string firstWord(const std::string &text);
+
 
 //-------------------------------------------
 //			Binary File input
@@ -192,6 +226,7 @@ public:
 	explicit Vector3(Math::ForceNoInitialization) {}
 	Vector3(const float x, const float y, const float z) : x(x), y(y), z(z) {}
 	Vector3(const Vector3 &other) : x(other.x), y (other.y), z (other.z) {}
+	Vector3(const btVector3 &v) : x(v.x()), y(v.y()), z(v.z()) {}
 	//Vector3 accessors
 	float &operator[] (unsigned short index) { return *(&x + index); }
 	float operator[](unsigned short index) const { return *(&x + index); }
@@ -395,6 +430,13 @@ public:
 		Vector3 ax = axis * sinf(angle * 0.5f);
 		x = ax.x; y = ax.y; z = ax.z; w = cosf(angle * 0.5f);
 	}
+	Quaternion(const btQuaternion &q)
+	{
+		x = q.x();
+		y = q.y();
+		z = q.z();
+		w = q.w();
+	}
 
 	//Arithmetic with quaternions
 	Quaternion operator*(const Quaternion &q) const
@@ -506,6 +548,12 @@ public:
 
 	//Library conversion
 	btQuaternion bullet() const { return btQuaternion(x, y, z, w); }
+
+	friend std::ostream& operator<<(std::ostream &os, const Quaternion &q)
+	{
+		os << "<" << q.x << ", " << q.y << ", " << q.z << ", " << q.w << ">";
+		return os;
+	}
 };
 
 class Matrix4
@@ -569,6 +617,9 @@ public:
 		mat.m[15] = 0;
 		return mat;
 	}
+	/**
+	 * Updated to be Horde3D-compliant
+	 */
 	static Matrix4 initPerspMat(float degreeFOV, float aspect, float zNear, float zFar)
 	{
 		Matrix4 mat = Matrix4(0.0f);
@@ -578,9 +629,9 @@ public:
 		mat.mm[0][0] = 1.0f / (tanHalfFOV * aspect);
 		mat.mm[1][1] = 1.0f / tanHalfFOV;
 
-		mat.mm[2][2] = (-zNear - zFar) / zRange;
-		mat.mm[2][3] = 2.0f * zFar * zNear / zRange;
-		mat.mm[3][2] = 1.0f;
+		mat.mm[2][2] = (zNear + zFar) / zRange;
+		mat.mm[3][2] = 2.0f * zFar * zNear / zRange;
+		mat.mm[2][3] = -1.0f;
 
 		return mat;
 	}
@@ -649,9 +700,9 @@ public:
 	explicit Matrix4(Math::ForceNoInitialization) {}
 	Matrix4(const float *floatArray16)
 	{
-		for( unsigned int i = 0; i < 4; ++i )
+		for( unsigned int j = 0; j < 4; ++j )
 		{
-			for( unsigned int j = 0; j < 4; ++j )
+			for( unsigned int i = 0; i < 4; ++i )
 			{
 				mm[i][j] = floatArray16[i * 4 + j];
 			}
@@ -700,6 +751,11 @@ public:
 	Matrix4 &operator+=(const Matrix4 &mat)
 	{
 		return *this = *this + mat;
+	}
+
+	float* ptr()
+	{
+		return &m[0];
 	}
 
 	//Multiplication
@@ -904,6 +960,22 @@ public:
 		scale.z = sqrtf( mm[2][0] * mm[2][0] + mm[2][1] * mm[2][1] + mm[2][2] * mm[2][2] );
 		return scale;
 	}
+
+	friend std::ostream& operator<<(std::ostream &stream, const Matrix4 &m)
+	{
+		for (int y=0; y<4; y++)
+		{
+			for (int x=0; x<4; x++)
+			{
+				stream << m.mm[y][x] << "   ";
+			}
+			stream << std::endl;
+		}
+
+		return stream;
+	}
+
+	static const Matrix4 IDENTITY;
 
 };
 
