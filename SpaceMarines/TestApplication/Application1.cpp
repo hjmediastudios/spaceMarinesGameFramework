@@ -67,6 +67,7 @@ bool running = false;
 void Application1::customLogicLoop()
 {
 	float speed = runner->getComponent<RigidBody>()->getVelocity().lengthSquared();
+	renderer->getDebugDrawer()->drawLine(Vector3::ZERO, runner->getTransform()->getPosition());
 
 	running = (speed > Math::Epsilon);
 

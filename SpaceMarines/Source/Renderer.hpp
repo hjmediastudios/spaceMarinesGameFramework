@@ -24,8 +24,10 @@ public:
 	GameObject* getCamera();
 	void update();
 	std::string getAssetPath() const;
+	DebugDrawer* getDebugDrawer() { return debugDrawer; }
 protected:
 	Camera* camera;
+	DebugDrawer* debugDrawer;
 	friend class DebugDrawer;
 private:
 	std::string assetPath;
@@ -34,7 +36,6 @@ private:
 	H3DRes pipeline;
 	std::string pipelineFilePath;
 	unsigned short _started;
-	DebugDrawer* debugDrawer;
 
 };
 
