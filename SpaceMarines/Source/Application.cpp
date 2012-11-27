@@ -15,7 +15,10 @@ float Time::deltaTimeF = 0.0f;
 
 float Time::fps = 0.0f;
 const float Time::animationFPS = 24.0f;
+
 Vector2 Input::screenSize = Vector2(1, 1);
+Vector2 Input::mouseViewportPosition = Vector2(0, 0);
+Vector2 Input::lastMouseViewportPosition = Vector2(0, 0);
 
 Application::Application(const char* assetPath, const char* renderingPipeline, const Vector2 &windowSize, bool drawDebug)
 {
@@ -65,6 +68,7 @@ void Application::start()
 	//Run main loop
 	while (!Input::isKeyPressed(KeyCodes::Esc))
 	{
+		Input::pollMouse();
 		double newTime = glfwGetTime();
 		Time::deltaTime = newTime - currentTime;
 		Time::deltaTimeF = (float) Time::deltaTime;

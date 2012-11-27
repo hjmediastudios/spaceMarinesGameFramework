@@ -53,4 +53,30 @@ Matrix4 Camera::getViewMatrix() const
 	return Matrix4(view).inverted();
 }
 
+Vector2 Camera::viewportToScreen(const Vector2 &co) const
+{
+	return Vector2((co.x + 1.0f) * 0.5f, (co.y + 1.0f) * 0.5f) * renderer->getScreenSize();
+}
+
+Vector2 Camera::screenToViewport(const Vector2 &co) const
+{
+	return co / renderer->getScreenSize() * 2.0f - 1.0f;
+}
+
+Ray Camera::getPickRayViewport(const Vector2 &viewportCoordinates) const
+{
+	Ray ray;
+	h3dutPickRay(cameraNode, viewportCoordinates.x * 0.5f + 0.5f,
+			-viewportCoordinates.y * 0.5f + 0.5f,
+			&ray.origin.x, &ray.origin.y, &ray.origin.z,
+			&ray.direction.x, &ray.direction.y, &ray.direction.z);
+	ray.direction.normalize();
+	return ray;
+}
+
+Ray Camera::getPickRayScreen(const Vector2 &screenCoordinates) const
+{
+	return getPickRayViewport(screenToViewport(screenCoordinates));
+}
+
 } /* namespace SpaceMarines */

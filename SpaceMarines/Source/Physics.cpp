@@ -65,6 +65,46 @@ void PhysicsWorld::debugDraw()
 	dynamicsWorld->debugDrawWorld();
 }
 
+bool PhysicsWorld::rayCast(const Vector3 &start, const Vector3&direction, const float distance) const
+{
+	return rayCast(start, start + direction * distance);
+}
+
+bool PhysicsWorld::rayCast(const Vector3 &start, const Vector3 &end) const
+{
+	btDynamicsWorld::ClosestRayResultCallback callback(start.bullet(), end.bullet());
+	dynamicsWorld->rayTest(start.bullet(), end.bullet(), callback);
+	return callback.hasHit();
+}
+
+RayCastHit PhysicsWorld::rayCastComplex(const Vector3 &start, const Vector3 &end) const
+{
+	RayCastHit hit;
+	btDynamicsWorld::ClosestRayResultCallback callback(start.bullet(), end.bullet());
+	dynamicsWorld->rayTest(start.bullet(), end.bullet(), callback);
+	if (callback.hasHit())
+	{
+		hit.hasHit = true;
+		hit.collider = (Collider*) callback.m_collisionObject->getUserPointer();
+		hit.point = callback.m_hitPointWorld;
+		hit.normal = callback.m_hitNormalWorld;
+	}
+	else
+		hit.hasHit = false;
+
+	return hit;
+}
+
+RayCastHit PhysicsWorld::rayCastComplex(const Vector3 &start, const Vector3 &direction, float distance) const
+{
+	return rayCastComplex(start, start + direction * distance);
+}
+
+bool PhysicsWorld::sphereCast(const Vector3 &start, const Vector3 &direction, float distance, float radius) const
+{
+//	dynamicsWorld->convexSweepTest() ToDo SphereCast
+}
+
 /*************************************
  * 	Rigid body component
  *************************************/
@@ -77,6 +117,7 @@ RigidBody::RigidBody(Collider* collider, float mass, bool noSleep)
 	rigidBody = nullptr;
 	world = nullptr;
 	this->noSleep = noSleep;
+	keepUpright = false;
 }
 
 RigidBody::~RigidBody()
@@ -107,8 +148,9 @@ void RigidBody::start()
 	collider->collisionShape->calculateLocalInertia(mass, inertia);
 	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, groundMotionState, collider->collisionShape, inertia);
 	rigidBody = new btRigidBody(rigidBodyCI);
-	rigidBody->setUserPointer(gameObject);
+	rigidBody->setUserPointer(this);
 	PhysicsWorld::getSingleton()->getBulletWorld()->addRigidBody(rigidBody);
+	setKeepUpright(keepUpright);
 }
 
 void RigidBody::fixedUpdate()
@@ -125,16 +167,60 @@ Vector3 RigidBody::getVelocity() const
 	return rigidBody->getLinearVelocity();
 }
 
-void RigidBody::applyForce(const Vector3 &force)
+void RigidBody::applyForce(const Vector3 &force, ForceMode::List mode)
 {
 	if (!rigidBody->isActive()) rigidBody->activate();
-	rigidBody->applyCentralForce(force.bullet());
+	switch (mode)
+	{
+	case ForceMode::Force:
+		rigidBody->applyCentralForce(force.bullet());
+		break;
+	case ForceMode::Velocity:
+		rigidBody->setLinearVelocity(force.bullet());
+		break;
+	case ForceMode::Acceleration:
+		rigidBody->setLinearVelocity(rigidBody->getLinearVelocity() + force.bullet());
+		break;
+	case ForceMode::Impulse:
+		rigidBody->applyCentralImpulse(force.bullet());
+		break;
+	default:
+		rigidBody->applyCentralForce(force.bullet());
+		break;
+	}
 }
 
-void RigidBody::applyForceAtRelativePoint(const Vector3 &force, const Vector3 &point)
+void RigidBody::applyForceAtRelativePoint(const Vector3 &force, const Vector3 &point, ForceMode::List mode)
 {
 	if (!rigidBody->isActive()) rigidBody->activate();
-	rigidBody->applyForce(force.bullet(), point.bullet());
+	switch (mode)
+	{
+	case ForceMode::Force:
+		rigidBody->applyForce(force.bullet(), point.bullet());
+		break;
+	case ForceMode::Velocity:
+		rigidBody->setLinearVelocity(force.bullet());
+		break;
+	case ForceMode::Impulse:
+		rigidBody->applyImpulse(force.bullet(), point.bullet());
+		break;
+	case ForceMode::Acceleration:
+		rigidBody->setLinearVelocity(rigidBody->getLinearVelocity() + force.bullet());
+		break;
+	default:
+		rigidBody->applyCentralForce(force.bullet());
+		break;
+	}
+}
+
+void RigidBody::setKeepUpright(bool lock)
+{
+	keepUpright = lock;
+	if (rigidBody == nullptr) return;
+	else
+	{
+		rigidBody->setAngularFactor(btVector3(0, 1, 0));
+	}
 }
 
 } /* namespace SpaceMarines */

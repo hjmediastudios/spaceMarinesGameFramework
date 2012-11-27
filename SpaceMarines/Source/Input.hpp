@@ -22,6 +22,13 @@ class Input
 protected:
 	static Vector2 screenSize;
 	friend class Application;
+	static Vector2 lastMouseViewportPosition;
+	static Vector2 mouseViewportPosition;
+	static void pollMouse()
+	{
+		lastMouseViewportPosition = mouseViewportPosition;
+		mouseViewportPosition = screenToViewport(getMousePos());
+	}
 public:
 	static bool isKeyPressed(KeyCodes::codes code)
 	{
@@ -31,17 +38,29 @@ public:
 	{
 		return (glfwGetKey(code) == GLFW_PRESS);
 	}
+	static Vector2 getMouseViewportDelta()
+	{
+		return mouseViewportPosition - lastMouseViewportPosition;
+	}
+	static Vector2 getMouseViewportPos()
+	{
+		return mouseViewportPosition;
+	}
+	static bool isMouseButtonPressed(unsigned short index)
+	{
+		return (glfwGetMouseButton(index) == GLFW_PRESS);
+	}
+private:
+	static Vector2 screenToViewport(const Vector2 &pos)
+	{
+		return pos / screenSize * 2.0f - 1.0f;
+	}
 	static Vector2 getMousePos()
 	{
 		static int x, y;
 		glfwGetMousePos(&x, &y);
 		return Vector2(x, y);
 	}
-	static Vector2 getMousePosNormalized()
-	{
-		return getMousePos() / screenSize * 2.0f - 1.0f;
-	}
-
 
 };
 

@@ -12,24 +12,29 @@ namespace SpaceMarines
 
 Application1::Application1(const char* assetPath, const char* renderingPipeline, const Vector2 &windowSize, bool drawDebug) : Application(assetPath, renderingPipeline, windowSize, drawDebug)
 {
-
 }
 
 Application1::~Application1()
 {
+	for (size_t i = 0; i < Constant_NumMinifigs; i++ )
+	{
+		delete runners[i];
+	}
+	std::cout << "Done!\n";
 }
 
 void Application1::customSetupFunction()
 {
-	runner = new GameObject();
-	runner->addComponent(new AnimatedMeshRenderer("models/Minifig/Minifig.scene.xml"));
-	runner->getComponent<AnimatedMeshRenderer>()->addAnimation("animations/Minifig/Legs_Run.anim", "Run", "Root");
-	runner->getComponent<AnimatedMeshRenderer>()->addAnimation("animations/Minifig/Body_Run.anim", "Body_Run", "Torso.Lower");
-	runner->getTransform()->setPosition(Vector3(0, 5, 0));
-	runner->getTransform()->setRotation(Quaternion(Vector3::UP, Math::degToRad(45)));
-	runner->addComponent(new CapsuleCollider(0.5f, 1.6f, Vector3(0, 0.8f, 0)));
-	runner->addComponent(new RigidBody(runner->getComponent<CapsuleCollider>(), 185.0f));
-	addObject(runner);
+	renderer->getDebugDrawer()->setDrawMode(DebugDrawMode::SystemAndBullet);
+
+	for (size_t i = 0; i < Constant_NumMinifigs; i++)
+	{
+		runners[i] = new Minifig(Vector3(
+				Math::randomFloatInRange(-50.0f, 50.0f),
+				Math::randomFloatInRange(5.0f, 10.0f),
+				Math::randomFloatInRange(-50.0f, 50.0f)));
+		addObject(runners[i]);
+	}
 
 	GameObject* camera = new GameObject();
 	camera->addComponent(new Camera("Camera", renderer));
@@ -57,39 +62,42 @@ void Application1::customSetupFunction()
 
 	GameObject* plane = new GameObject();
 	plane->addComponent(new MeshRenderer("models/Plane/Plane.scene.xml"));
-	plane->addComponent(new StaticPlaneCollider());
-	plane->addComponent(new RigidBody(plane->getComponent<StaticPlaneCollider>(), 0.0f));
+	plane->getTransform()->setScale(Vector3(10.0f));
+	plane->addComponent(new GroundPlaneCollider());
+	plane->addComponent(new RigidBody(plane->getComponent<GroundPlaneCollider>(), 0.0f));
 	addObject(plane);
 }
 
-bool running = false;
-
 void Application1::customLogicLoop()
 {
-	float speed = runner->getComponent<RigidBody>()->getVelocity().lengthSquared();
-//	renderer->getDebugDrawer()->drawLine(Vector3::ZERO, runner->getTransform()->getPosition());
-	renderer->getDebugDrawer()->drawAxis(runner->getTransform()->position, 2.0f, runner->getTransform()->rotation);
-	running = (speed > Math::Epsilon);
 
-	Vector3 pt = renderer->getPositionFromViewport(Input::getMousePosNormalized());
-	std::cout << pt << std::endl;
-	renderer->getDebugDrawer()->drawAxis(pt, 2.0f);
+	Transform* cameraTrans = renderer->getCamera()->getGameObject()->getTransform();
+	//FixMe poll for mouse position
+	cameraTrans->rotate(Quaternion(Vector3::UP, -Input::getMouseViewportPos().x * 3.0f * Time::deltaTimeF));
+	cameraTrans->rotate(Quaternion(cameraTrans->right(), -Input::getMouseViewportPos().y * 1.25f * Time::deltaTimeF));
 
-	Transform* cameraTrans = renderer->getCamera()->getTransform();
-
-	if (Input::isKeyPressed(KeyCodes::Up))
-		runner->getComponent<RigidBody>()->applyForce(Vector3::FORWARD * 80.0f);
-	if (Input::isKeyPressed(KeyCodes::Down))
-		runner->getComponent<RigidBody>()->applyForce(Vector3::FORWARD * -80.0f);
-	if (Input::isKeyPressed(KeyCodes::Left))
-		cameraTrans->rotate(Quaternion(cameraTrans->up(), Time::deltaTimeF * 3));
-	if (Input::isKeyPressed(KeyCodes::Right))
-		cameraTrans->rotate(Quaternion(cameraTrans->up(), Time::deltaTimeF * -3));
-
-	if (running)
+	for (int i=0; i < Constant_NumMinifigs; i++)
 	{
-		runner->getComponent<AnimatedMeshRenderer>()->playAnimation("Run", 0, 0.25f);
-		runner->getComponent<AnimatedMeshRenderer>()->playAnimation("Body_Run", 1, 1.0f);
+		GameObject* runner = runners[i];
+		float speed = runner->getComponent<RigidBody>()->getVelocity().lengthSquared();
+		bool running = (speed > Math::Epsilon);
+
+		Vector3 pt = physics->rayCastComplex(renderer->getCamera()->getPickRayViewport(Input::getMouseViewportPos()), 100.0f).point;
+		renderer->getDebugDrawer()->drawAxis(pt, 1.1f);
+
+		if (Input::isMouseButtonPressed(0))
+		{
+			if (pt == Vector3::ZERO)
+				pt = runner->getTransform()->getPosition() + Vector3::UP * 50.0f;
+			renderer->getDebugDrawer()->drawLine(pt, runner->getTransform()->getPosition(), Vector3::UP);
+			runner->getComponent<RigidBody>()->applyForce((pt - runner->getTransform()->getPosition()).normalized() * 50.0f, ForceMode::Impulse);
+		}
+
+		if (running)
+		{
+			runner->getComponent<AnimatedMeshRenderer>()->playAnimation("Run", 0, 0.25f);
+			runner->getComponent<AnimatedMeshRenderer>()->playAnimation("Body_Run", 1, 1.0f);
+		}
 	}
 
 

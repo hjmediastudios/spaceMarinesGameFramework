@@ -107,6 +107,16 @@ namespace Math
 	std::string firstLine(const std::string &text);
 	std::string firstWord(const std::string &text);
 
+	static inline float randomFloat()
+	{
+		return (float)rand() / (float)RAND_MAX;
+	}
+
+	static inline float randomFloatInRange(float min = 0.0f, float max = 1.0f)
+	{
+		return min + (float)rand()/((float)RAND_MAX / (max - min));
+	}
+
 
 //-------------------------------------------
 //			Binary File input
@@ -1159,5 +1169,14 @@ inline float nearestDistToAABB( const Vector3 &pos, const Vector3 &mins, const V
 
 	return nearestVec.length();
 }
+
+/**
+ * Ray class
+ */
+struct Ray
+{
+	Vector3 origin;
+	Vector3 direction;
+};
 
 }

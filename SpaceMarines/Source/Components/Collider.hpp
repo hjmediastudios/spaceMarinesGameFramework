@@ -12,7 +12,11 @@ class Collider : public PassiveComponent
 public:
 	Collider(const Vector3 &offset) { collisionShape = nullptr; this->offset = offset; }
 	~Collider() { if (collisionShape != nullptr) delete collisionShape; }
-	void start() {collisionShape = createCollisionShape();}
+	void start()
+	{
+		collisionShape = createCollisionShape();
+		collisionShape->setUserPointer(this);
+	}
 	const char* getComponentType() const { return "Collider"; }
 protected:
 	btCollisionShape* collisionShape;
@@ -37,10 +41,10 @@ private:
 	Vector3 extents;
 };
 
-class StaticPlaneCollider : public Collider
+class GroundPlaneCollider : public Collider
 {
 public:
-	StaticPlaneCollider(const Vector3& offset = Vector3::ZERO) : Collider(offset) {}
+	GroundPlaneCollider(const Vector3& offset = Vector3::ZERO) : Collider(offset) {}
 protected:
 	btCollisionShape* createCollisionShape()
 	{

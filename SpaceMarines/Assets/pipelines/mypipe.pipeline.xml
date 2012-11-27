@@ -15,7 +15,7 @@
 		
 		<Stage id="Lighting" link="pipelines/globalSettings.material.xml">
 			<SwitchTarget target="COPYBUFFER" />
-			<ClearTarget colBuf0="true" />
+			<ClearTarget colBuf0="true" depthBuf="true"/>
 			
 			<!-- Copy depth buffer to allow occlusion culling of lights -->
 			<BindBuffer sampler="depthBuf" sourceRT="GBUFFER" bufIndex="32" />
@@ -37,10 +37,13 @@
 		<!-- Perform FXAA antialiasing -->
 		<Stage id="FXAA">
 			<SwitchTarget target="" />
+			
 			<BindBuffer sampler="buf0" sourceRT="COPYBUFFER" bufIndex="0" />
 			<DrawQuad material="compositing/fxaa.material.xml" context="FXAA" />
 			<UnbindBuffers />
+		
 		</Stage>
 
+		
 	</CommandQueue>
 </Pipeline>

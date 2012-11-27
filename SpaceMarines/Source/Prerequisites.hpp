@@ -19,18 +19,19 @@
 #include <GL/glfw.h>
 
 
-class Exception : public std::exception
-{
-public:
-	Exception(const std::string& message = "") : message(message) {}
-	virtual ~Exception() throw() {}
-	const char* what() const throw() {return message.c_str();}
-private:
-	std::string message;
-};
 
 namespace SpaceMarines
 {
+	class Exception : public std::exception
+	{
+	public:
+		Exception(const std::string& message = "") : message(message) {}
+		virtual ~Exception() throw() {}
+		const char* what() const throw() {return message.c_str();}
+	private:
+		std::string message;
+	};
+
 	struct Time
 	{
 		static double time;
@@ -42,6 +43,9 @@ namespace SpaceMarines
 		static float fps;
 		static const float animationFPS;
 	};
+
+	typedef unsigned short Layer;
+	static const unsigned short Constant_MaxNumLayers = 10;
 }
 
 #include "Math.hpp"
@@ -51,6 +55,8 @@ namespace SpaceMarines
 #include "HighLevelTypes/Object.hpp"
 
 #define PP_DebugDraw
+
+
 
 
 

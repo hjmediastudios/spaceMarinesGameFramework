@@ -1,4 +1,6 @@
 #include "DebugDrawer.hpp"
+#include <GL/gl.h>
+#include <GL/glew.h>
 namespace SpaceMarines
 {
 
@@ -18,11 +20,22 @@ DebugDrawer::DebugDrawer(Renderer* renderer)
 	glGenBuffers(1, &LlinesIBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, LlinesIBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	setDebugMode(0);
+	setDrawMode(DebugDrawMode::None);
+}
+
+void DebugDrawer::setDrawMode(DebugDrawMode::List mode)
+{
+	if (mode != DebugDrawMode::SystemAndBullet)
+		setDebugMode(btIDebugDraw::DBG_NoDebug);
+	else
+		setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+	this->mode = mode;
 }
 
 void DebugDrawer::render()
 {
+	if (mode == DebugDrawMode::None) return;
+
 	glPopAttrib();
 
 	glEnable(GL_BLEND);
@@ -68,6 +81,8 @@ DebugDrawer::~DebugDrawer()
 
 void DebugDrawer::drawLine(const Vector3 &ptA, const Vector3 &ptB, const Vector3 &color)
 {
+	if (mode == DebugDrawMode::None) return;
+
 	indices.push_back((unsigned int) vertices.size());
 	vertices.push_back(DebugVertex(ptA, color));
 	indices.push_back((unsigned int) vertices.size());
@@ -76,6 +91,8 @@ void DebugDrawer::drawLine(const Vector3 &ptA, const Vector3 &ptB, const Vector3
 
 void DebugDrawer::drawAxis(const Vector3 &point, const float size, const Quaternion &rotation, const Vector3 &color)
 {
+	if (mode == DebugDrawMode::None) return;
+
 	unsigned int centerIndex = vertices.size();
 
 	if (color != Vector3::ZERO)

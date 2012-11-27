@@ -51,6 +51,7 @@ public:
 	virtual bool isActive() = 0;
 	virtual const char* getComponentType() const = 0;
 	void setGameObject(GameObject* obj) { gameObject = obj; }
+	GameObject* getGameObject() { return gameObject; }
 protected:
 	GameObject* gameObject;
 };
@@ -153,6 +154,14 @@ public:
 	GameObject() : Object(), transform(Vector3::ZERO, Quaternion::IDENTITY, Vector3::ONE)
 	{
 		parent = nullptr;
+		layer = 0;
+	}
+
+
+
+	Layer getLayer() const
+	{
+		return layer;
 	}
 
 	template<typename T>
@@ -170,10 +179,16 @@ public:
 			}
 			catch (std::exception ex)
 			{
-				throw Exception(std::string("Component of type \"") + typeid(T).name() + "\" does not exist in this object.");
+				return nullptr;
 			}
 		}
 		return nullptr;
+	}
+
+	void setLayer(Layer layer)
+	{
+		if ((layer + 1) > Constant_MaxNumLayers) throw Exception("Can't set layers higher than the maximum");
+		this->layer = layer;
 	}
 
 	template<typename T>
@@ -249,12 +264,14 @@ public:
 		return parent;
 	}
 
+protected:
+	Transform transform;
+	Layer layer;
+	GameObject* parent;
 private:
 	std::map<const char*, ActiveComponent*> activeComponents;
 	std::map<const char*, PassiveComponent*> passiveComponents;
 	std::vector<HasFixedUpdate*> fixedUpdatables;
-	Transform transform;
-	GameObject* parent;
 
 };
 

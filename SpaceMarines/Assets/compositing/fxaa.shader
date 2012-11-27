@@ -1,6 +1,11 @@
 [[FX]]
 
 // Samplers
+sampler2D depthBuf = sampler_state {
+	Address = Clamp;
+	Filter = None;
+};
+
 sampler2D buf0 = sampler_state {
 	Address = Clamp;
 	Filter = None;
@@ -24,13 +29,12 @@ void main(void) {
 
 [[FS_FXAA]]
 
+uniform sampler2D depthBuf;
 uniform sampler2D buf0;
 uniform vec2 frameBufSize;
 varying vec2 texCoords;
 
 void main( void ) {
-	//gl_FragColor.xyz = texture2D(buf0,texCoords).xyz;
-	//return;
 
 	float FXAA_SPAN_MAX = 8.0;
 	float FXAA_REDUCE_MUL = 1.0/8.0;
@@ -42,7 +46,7 @@ void main( void ) {
 	vec3 rgbSE=texture2D(buf0,texCoords+(vec2(1.0,1.0)/frameBufSize)).xyz;
 	vec3 rgbM=texture2D(buf0,texCoords).xyz;
 	
-	vec3 luma=vec3(0.299, 0.587, 0.114);
+	vec3 luma = vec3(0.299, 0.587, 0.114);
 	float lumaNW = dot(rgbNW, luma);
 	float lumaNE = dot(rgbNE, luma);
 	float lumaSW = dot(rgbSW, luma);
@@ -80,4 +84,6 @@ void main( void ) {
 		gl_FragColor.xyz=rgbB;
 	}
 }
+
+
 	

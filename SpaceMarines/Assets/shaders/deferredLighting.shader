@@ -71,7 +71,6 @@ context COPY_DEPTH
 	PixelShader = compile GLSL FS_COPY_DEPTH;
 }
 
-
 [[VS_FSQUAD]]
 
 uniform mat4 projMat;
@@ -200,4 +199,5 @@ varying vec2 texCoords;
 void main( void )
 {
 	gl_FragDepth = texture2D( depthBuf, texCoords ).r;
+	gl_FragDepth = 0.5;
 }

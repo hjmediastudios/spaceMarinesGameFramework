@@ -6,6 +6,9 @@
  */
 
 #include "Renderer.hpp"
+#include <GL/gl.h>
+#include <GL/glew.h>
+#include <GL/glfw.h>
 
 namespace SpaceMarines
 {
@@ -13,7 +16,7 @@ namespace SpaceMarines
 Renderer::Renderer(const std::string &assetPath, const Vector2 &windowSize, const char *pipelineResource)
 {
 	this->assetPath = assetPath;
-	this->windowSize = windowSize;
+	this->screenSize = windowSize;
 	this->pipelineFilePath = pipelineResource;
 	pipeline = 0;
 	this->camera = nullptr;
@@ -72,7 +75,7 @@ void Renderer::start()
 
 bool Renderer::setupWindow()
 {
-	if (!glfwOpenWindow((int)windowSize.x, (int)windowSize.y, 8, 8, 8, 8, 24, 8, GLFW_WINDOW))
+	if (!glfwOpenWindow((int)screenSize.x, (int)screenSize.y, 8, 8, 8, 8, 24, 8, GLFW_WINDOW))
 	{
 		glfwTerminate();
 		return false;
@@ -83,7 +86,7 @@ bool Renderer::setupWindow()
 
 Vector2 Renderer::getScreenSize() const
 {
-	return windowSize;
+	return screenSize;
 }
 
 void Renderer::setCamera(Camera* camera)
@@ -91,9 +94,9 @@ void Renderer::setCamera(Camera* camera)
 	this->camera = camera;
 }
 
-GameObject* Renderer::getCamera()
+Camera* Renderer::getCamera()
 {
-	return camera->gameObject;
+	return camera;
 }
 
 void Renderer::update()
@@ -115,19 +118,5 @@ std::string Renderer::getAssetPath() const
 	return assetPath + "\\";
 #endif
 }
-
-Vector3 Renderer::getPositionFromViewport(const Vector2 &vec) const
-{
-	Matrix4 unprojectMat = (camera->getProjectionMatrix() * camera->getViewMatrix()).inverted();
-	Vector4 v;
-	v.x = vec.x;
-	v.y = -vec.y; //TODO readPixel
-	v.z = 0.0f;
-	v.w = 1.0f;
-	v = unprojectMat * v;
-	float invV = 1.0f / v.w;
-	return Vector3(v.x * invV, v.y * invV, v.z * invV);
-}
-
 
 } /* namespace SpaceMarines */

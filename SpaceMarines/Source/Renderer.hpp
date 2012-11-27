@@ -21,18 +21,18 @@ public:
 	Vector2 getScreenSize() const;
 	H3DRes getPipelineHandle() const { return pipeline; }
 	void setCamera(Camera* camera);
-	GameObject* getCamera();
+	Camera* getCamera();
 	void update();
 	std::string getAssetPath() const;
 	DebugDrawer* getDebugDrawer() { return debugDrawer; }
-	Vector3 getPositionFromViewport(const Vector2 &vec) const;
+
 protected:
 	Camera* camera;
 	DebugDrawer* debugDrawer;
 	friend class DebugDrawer;
 private:
 	std::string assetPath;
-	Vector2 windowSize;
+	Vector2 screenSize;
 	bool setupWindow();
 	H3DRes pipeline;
 	std::string pipelineFilePath;

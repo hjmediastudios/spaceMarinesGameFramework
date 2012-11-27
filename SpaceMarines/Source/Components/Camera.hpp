@@ -17,6 +17,13 @@ public:
 	const char* getComponentType() const { return "Camera";}
 	Matrix4 getProjectionMatrix() const { return projMat; }
 	Matrix4 getViewMatrix() const;
+
+	Ray getPickRayViewport(const Vector2 &viewportCoordinates) const;
+	Ray getPickRayScreen(const Vector2 &screenCoordinates) const;
+
+	Vector2 viewportToScreen(const Vector2 &co) const;
+	Vector2 screenToViewport(const Vector2 &co) const;
+
 protected:
 	H3DNode cameraNode;
 	friend class Renderer;
