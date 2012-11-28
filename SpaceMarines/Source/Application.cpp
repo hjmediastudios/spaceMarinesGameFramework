@@ -4,14 +4,14 @@
 namespace SpaceMarines
 {
 
-const double Time::fixedDeltaTime = 0.01;
-const float Time::fixedDeltaTimeF = (float) Time::fixedDeltaTime;
+const double Time::fixedDeltaTime_d = 0.01;
+const float Time::fixedDeltaTime = (float) Time::fixedDeltaTime_d;
 
-double Time::time = 0.0;
-float Time::timeF = 0.0f;
+double Time::time_d = 0.0;
+float Time::time = 0.0f;
 
-double Time::deltaTime = 0.0;
-float Time::deltaTimeF = 0.0f;
+double Time::deltaTime_d = 0.0;
+float Time::deltaTime = 0.0f;
 
 float Time::fps = 0.0f;
 const float Time::animationFPS = 24.0f;
@@ -61,7 +61,7 @@ void Application::start()
 
 	std::cout << "Done starting\n";
 
-	Time::time = 0.0;
+	Time::time_d = 0.0;
 	double currentTime = glfwGetTime();
 	double accumulator = 0.0;
 
@@ -70,19 +70,19 @@ void Application::start()
 	{
 		Input::pollMouse();
 		double newTime = glfwGetTime();
-		Time::deltaTime = newTime - currentTime;
-		Time::deltaTimeF = (float) Time::deltaTime;
-		Time::fps = 1.0f / Time::deltaTimeF;
+		Time::deltaTime_d = newTime - currentTime;
+		Time::deltaTime = (float) Time::deltaTime_d;
+		Time::fps = 1.0f / Time::deltaTime;
 		currentTime = newTime;
 
-		accumulator += Time::deltaTime;
-		while(accumulator >= Time::fixedDeltaTime)
+		accumulator += Time::deltaTime_d;
+		while(accumulator >= Time::fixedDeltaTime_d)
 		{
 			//Fixed update
 			fixedUpdate();
-			accumulator -= Time::fixedDeltaTime;
+			accumulator -= Time::fixedDeltaTime_d;
+			Time::time_d += Time::fixedDeltaTime_d;
 			Time::time += Time::fixedDeltaTime;
-			Time::timeF += Time::fixedDeltaTimeF;
 		}
 
 		update();

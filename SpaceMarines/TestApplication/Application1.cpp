@@ -72,9 +72,22 @@ void Application1::customLogicLoop()
 {
 
 	Transform* cameraTrans = renderer->getCamera()->getGameObject()->getTransform();
-	//FixMe poll for mouse position
-	cameraTrans->rotate(Quaternion(Vector3::UP, -Input::getMouseViewportPos().x * 3.0f * Time::deltaTimeF));
-	cameraTrans->rotate(Quaternion(cameraTrans->right(), -Input::getMouseViewportPos().y * 1.25f * Time::deltaTimeF));
+	if (Input::isMouseButtonPressed(1))
+	{
+		cameraTrans->rotate(Quaternion(Vector3::UP, -Input::getMouseViewportPos().x * 3.0f * Time::deltaTime * (fabs(Input::getMouseViewportPos().x) > 0.1f)));
+		cameraTrans->rotate(Quaternion(cameraTrans->right(), -Input::getMouseViewportPos().y * 1.25f * Time::deltaTime * (fabs(Input::getMouseViewportPos().y) > 0.1f)));
+	}
+	if (Input::isKeyPressed('W'))
+		cameraTrans->translate(-cameraTrans->forward() * Time::deltaTime * 10.0f);
+	if (Input::isKeyPressed('S'))
+		cameraTrans->translate(cameraTrans->forward() * Time::deltaTime * 10.0f);
+	if (Input::isKeyPressed('A'))
+		cameraTrans->translate(-cameraTrans->right() * Time::deltaTime * 10.0f);
+	if (Input::isKeyPressed('D'))
+		cameraTrans->translate(cameraTrans->right() * Time::deltaTime * 10.0f);
+
+	Vector3 pt = physics->rayCastComplex(renderer->getCamera()->getPickRayViewport(Input::getMouseViewportPos()), 100.0f).point;
+	renderer->getDebugDrawer()->drawAxis(pt, 1.1f);
 
 	for (int i=0; i < Constant_NumMinifigs; i++)
 	{
@@ -82,15 +95,14 @@ void Application1::customLogicLoop()
 		float speed = runner->getComponent<RigidBody>()->getVelocity().lengthSquared();
 		bool running = (speed > Math::Epsilon);
 
-		Vector3 pt = physics->rayCastComplex(renderer->getCamera()->getPickRayViewport(Input::getMouseViewportPos()), 100.0f).point;
-		renderer->getDebugDrawer()->drawAxis(pt, 1.1f);
+		runner->getTransform()->lookAt(pt);
 
 		if (Input::isMouseButtonPressed(0))
 		{
 			if (pt == Vector3::ZERO)
 				pt = runner->getTransform()->getPosition() + Vector3::UP * 50.0f;
 			renderer->getDebugDrawer()->drawLine(pt, runner->getTransform()->getPosition(), Vector3::UP);
-			runner->getComponent<RigidBody>()->applyForce((pt - runner->getTransform()->getPosition()).normalized() * 50.0f, ForceMode::Impulse);
+			runner->getComponent<RigidBody>()->applyForce((pt - runner->getTransform()->getPosition()), ForceMode::Impulse);
 		}
 
 		if (running)

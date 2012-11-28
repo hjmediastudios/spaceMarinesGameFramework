@@ -16,7 +16,7 @@ public:
 		transform.setRotation(Quaternion(Vector3::UP, Math::degToRad(45)));
 		addComponent(new CapsuleCollider(0.5f, 1.6f, Vector3(0, 0.8f, 0)));
 		addComponent(new RigidBody(getComponent<CapsuleCollider>(), 185.0f));
-		getComponent<RigidBody>()->setKeepUpright(true);
+		getComponent<RigidBody>()->setLockRotation(true);
 	}
 };
 

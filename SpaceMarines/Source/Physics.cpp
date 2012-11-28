@@ -50,7 +50,7 @@ void PhysicsWorld::removeRigidBody(RigidBody* rigidBody)
 
 void PhysicsWorld::fixedUpdate()
 {
-	dynamicsWorld->stepSimulation(Time::fixedDeltaTimeF, 10);
+	dynamicsWorld->stepSimulation(Time::fixedDeltaTime, 10);
 }
 
 void PhysicsWorld::setDebugDrawer(DebugDrawer* debugDrawer)
@@ -117,7 +117,7 @@ RigidBody::RigidBody(Collider* collider, float mass, bool noSleep)
 	rigidBody = nullptr;
 	world = nullptr;
 	this->noSleep = noSleep;
-	keepUpright = false;
+	lockRotation = false;
 }
 
 RigidBody::~RigidBody()
@@ -150,7 +150,7 @@ void RigidBody::start()
 	rigidBody = new btRigidBody(rigidBodyCI);
 	rigidBody->setUserPointer(this);
 	PhysicsWorld::getSingleton()->getBulletWorld()->addRigidBody(rigidBody);
-	setKeepUpright(keepUpright);
+	setLockRotation(lockRotation);
 }
 
 void RigidBody::fixedUpdate()
@@ -158,7 +158,7 @@ void RigidBody::fixedUpdate()
 	btTransform trans;
 	rigidBody->getMotionState()->getWorldTransform(trans);
 
-	transform->setRotation(trans.getRotation());
+	if (!lockRotation) transform->setRotation(trans.getRotation());
 	transform->setPosition(Vector3(trans.getOrigin()) + transform->rotation * -collider->offset);
 }
 
@@ -213,9 +213,9 @@ void RigidBody::applyForceAtRelativePoint(const Vector3 &force, const Vector3 &p
 	}
 }
 
-void RigidBody::setKeepUpright(bool lock)
+void RigidBody::setLockRotation(bool lock)
 {
-	keepUpright = lock;
+	lockRotation = lock;
 	if (rigidBody == nullptr) return;
 	else
 	{

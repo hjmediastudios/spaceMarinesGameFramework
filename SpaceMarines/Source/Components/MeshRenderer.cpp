@@ -86,7 +86,7 @@ void AnimatedMeshRenderer::playAnimation(const char* animationName, unsigned sho
 	}
 
 	if (weight > 0.0f)
-		h3dSetModelAnimParams(modelNode, clip->layer, (clip->animationTime += Time::deltaTime) * Time::animationFPS, clip->weight);
+		h3dSetModelAnimParams(modelNode, clip->layer, (clip->animationTime += Time::deltaTime_d) * Time::animationFPS, clip->weight);
 
 }
 

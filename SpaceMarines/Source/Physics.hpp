@@ -83,7 +83,7 @@ public:
 	void applyForce(const Vector3 &force, ForceMode::List mode = ForceMode::Force);
 	void applyForceAtRelativePoint(const Vector3 &force, const Vector3 &point, ForceMode::List mode = ForceMode::Force);
 
-	void setKeepUpright(bool lock);
+	void setLockRotation(bool lock);
 private:
 	PhysicsWorld* world;
 	Collider* collider;
@@ -92,7 +92,7 @@ private:
 	friend class PhysicsWorld;
 	Transform* transform;
 	bool noSleep;
-	bool keepUpright;
+	bool lockRotation;
 };
 
 

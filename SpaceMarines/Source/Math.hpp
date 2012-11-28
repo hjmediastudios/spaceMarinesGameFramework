@@ -369,11 +369,13 @@ public:
 
 	Vector3 normalized() const
 	{
+		if (lengthSquared() - 1.0f <= Math::Epsilon) return *this;
 		float invLength = 1.0f / length();
 		return Vector3(x*invLength, y*invLength, z*invLength);
 	}
 	void normalize()
 	{
+		if (lengthSquared() - 1.0f <= Math::Epsilon) return;
 		float invLength = 1.0f / length();
 		x *= invLength;
 		y *= invLength;
@@ -406,6 +408,15 @@ public:
 		o << "<" << v.x << ", " << v.y << ", " << v.z << ">";
 		return o;
 	}
+
+	static void orthoNormalize(Vector3 &normal, Vector3 &tangent)
+	{
+		normal.normalize();
+		Vector3 norm = normal;
+		Vector3 tan = tangent.normalized();
+		tangent = tan - (norm * norm.dot(tan));
+		tangent.normalize();
+	}
 };
 
 class Vector4
@@ -425,6 +436,24 @@ public:
 		return Vector4(x*f, y*f, z*f, w*f);
 	}
 	btVector4 bullet() { return btVector4(x, y, z, w); }
+};
+
+class Matrix3
+{
+public:
+	union
+	{
+		float mm[3][3];
+		float m[9];
+	};
+	Matrix3(float xx, float yx, float zx,
+			float xy, float yy, float zy,
+			float xz, float yz, float zz)
+	{
+		mm[0][0] = xx; mm[0][1] = yx; mm[0][2] = zx;
+		mm[1][0] = xy; mm[1][1] = yy; mm[1][2] = zy;
+		mm[2][0] = xz; mm[2][1] = yz; mm[2][2] = zz;
+	}
 };
 
 class Quaternion
@@ -459,6 +488,42 @@ public:
 		y = q.y();
 		z = q.z();
 		w = q.w();
+	}
+	Quaternion(const Matrix3 &mat)
+	{
+        float t = mat.mm[0][0] + mat.mm[1][1] + mat.mm[2][2];
+
+        // we protect the division by s by ensuring that s>=1
+        if (t >= 0) { // |w| >= .5
+            float s = sqrtf(t + 1); // |s|>=1 ...
+            w = 0.5f * s;
+            s = 0.5f / s;                 // so this division isn't bad
+            x = (mat.mm[2][1] - mat.mm[1][2]) * s;
+            y = (mat.mm[0][2] - mat.mm[2][0]) * s;
+            z = (mat.mm[1][0] - mat.mm[0][1]) * s;
+        } else if ((mat.mm[0][0] > mat.mm[1][1]) && (mat.mm[0][0] > mat.mm[2][2])) {
+            float s = sqrtf(1.0f + mat.mm[0][0] - mat.mm[1][1] - mat.mm[2][2]); // |s|>=1
+            x = s * 0.5f; // |x| >= .5
+            s = 0.5f / s;
+            y = (mat.mm[1][0] + mat.mm[0][1]) * s;
+            z = (mat.mm[0][2] + mat.mm[2][0]) * s;
+            w = (mat.mm[2][1] - mat.mm[1][2]) * s;
+        } else if (mat.mm[1][1] > mat.mm[2][2]) {
+            float s = sqrtf(1.0f + mat.mm[1][1] - mat.mm[0][0] - mat.mm[2][2]); // |s|>=1
+            y = s * 0.5f; // |y| >= .5
+            s = 0.5f / s;
+            x = (mat.mm[1][0] + mat.mm[0][1]) * s;
+            z = (mat.mm[2][1] + mat.mm[1][2]) * s;
+            w = (mat.mm[0][2] - mat.mm[2][0]) * s;
+        } else {
+            float s = sqrtf(1.0f + mat.mm[2][2] - mat.mm[0][0] - mat.mm[1][1]); // |s|>=1
+            z = s * 0.5f; // |z| >= .5
+            s = 0.5f / s;
+            x = (mat.mm[0][2] + mat.mm[2][0]) * s;
+            y = (mat.mm[2][1] + mat.mm[1][2]) * s;
+            w = (mat.mm[1][0] - mat.mm[0][1]) * s;
+        }
+
 	}
 
 	//Arithmetic with quaternions
@@ -567,6 +632,24 @@ public:
 		q.normalize();
 		return q;
 	}
+
+	static Quaternion rotationToDirection(const Vector3 &direction, const Vector3 &up)
+	{
+		Vector3 up1 = up.normalized();
+
+		Vector3 xAxis, yAxis, zAxis;
+
+		zAxis = direction.normalized();
+		xAxis = up1.cross(zAxis).normalized();
+		yAxis = zAxis.cross(xAxis).normalized();
+		Matrix3 mat = Matrix3(xAxis.x, yAxis.x, zAxis.x,
+				xAxis.y, yAxis.y, zAxis.y,
+				xAxis.z, yAxis.z, zAxis.z);
+
+		Quaternion ret(mat);
+		return ret;
+	}
+
 	static const Quaternion IDENTITY;
 
 	//Library conversion

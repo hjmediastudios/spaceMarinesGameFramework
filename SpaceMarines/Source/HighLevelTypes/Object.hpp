@@ -142,6 +142,9 @@ public:
 								  scale.x, scale.y, scale.z);
 	}
 
+	void lookInDirection(const Vector3 &direction, const Vector3 &up = Vector3::UP);
+	void lookAt(const Vector3 &pt, const Vector3 &up = Vector3::UP);
+
 	H3DNode getNode() const {return transformNode;}
 protected:
 	H3DNode transformNode;

@@ -32,7 +32,7 @@ public:
 		void reportErrorWarning(const char* error)
 			{ throw Exception(error); }
 		void draw3dText(const btVector3 &pos, const char* text)
-			{ /*TODO implement btDraw3DText in debug drawer*/ }
+			{}
 		void setDebugMode(int mode) { btDebugMode = mode; }
 		int getDebugMode() const { return btDebugMode; }
 	//}

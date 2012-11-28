@@ -34,12 +34,12 @@ namespace SpaceMarines
 
 	struct Time
 	{
-		static double time;
-		static double deltaTime;
-		static float timeF;
-		static float deltaTimeF;
-		static const double fixedDeltaTime;
-		static const float fixedDeltaTimeF;
+		static double time_d;
+		static double deltaTime_d;
+		static float time;
+		static float deltaTime;
+		static const double fixedDeltaTime_d;
+		static const float fixedDeltaTime;
 		static float fps;
 		static const float animationFPS;
 	};
