@@ -9,7 +9,8 @@
 
 namespace SpaceMarines
 {
-
+namespace Module
+{
 
 PhysicsWorld::PhysicsWorld()
 {
@@ -46,7 +47,7 @@ void PhysicsWorld::fixedUpdate()
 	dynamicsWorld->stepSimulation(Time::fixedDeltaTime, 10);
 }
 
-void PhysicsWorld::setDebugDrawer(DebugDrawer* debugDrawer)
+void PhysicsWorld::setDebugDrawer(Module::DebugDrawer* debugDrawer)
 {
 	std::cout << "Setting debug drawer!\n";
 	dynamicsWorld->setDebugDrawer(debugDrawer);
@@ -100,5 +101,5 @@ bool PhysicsWorld::sphereCast(const Vector3 &start, const Vector3 &direction, fl
 }
 
 
-
+}
 } /* namespace SpaceMarines */

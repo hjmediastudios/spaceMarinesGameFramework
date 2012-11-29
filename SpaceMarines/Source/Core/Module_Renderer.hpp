@@ -8,6 +8,10 @@ namespace SpaceMarines
 {
 
 class Camera;
+
+namespace Module
+{
+
 class DebugDrawer;
 
 class Renderer
@@ -40,4 +44,5 @@ private:
 
 };
 
+}
 } /* namespace SpaceMarines */

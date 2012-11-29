@@ -3,6 +3,8 @@
 #include <GL/glew.h>
 namespace SpaceMarines
 {
+namespace Module
+{
 
 DebugDrawer::DebugDrawer(Renderer* renderer)
 {
@@ -132,4 +134,5 @@ void DebugDrawer::drawAxis(const Vector3 &point, const float size, const Quatern
 
 }
 
+}
 }

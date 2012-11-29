@@ -44,6 +44,8 @@ namespace SpaceMarines
 		static const float animationFPS;
 	};
 
+	namespace Module{}
+
 	typedef unsigned short Layer;
 	static const unsigned short Constant_MaxNumLayers = 10;
 }

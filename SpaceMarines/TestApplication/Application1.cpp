@@ -25,7 +25,7 @@ Application1::~Application1()
 
 void Application1::customSetupFunction()
 {
-	Modules::debug().setDrawMode(DebugDrawMode::SystemAndBullet);
+	Modules::debug().setDrawMode(DebugDrawMode::None);
 
 	for (size_t i = 0; i < Constant_NumMinifigs; i++)
 	{
@@ -41,7 +41,6 @@ void Application1::customSetupFunction()
 	Modules::renderer().setCamera(camera->getComponent<Camera>());
 	camera->getTransform()->setPosition(Vector3(0, 2, -3));
 	camera->getTransform()->setRotation(Quaternion(Vector3::UP, Math::degToRad(180.0f)));
-//	camera->setParent(runner);
 	addObject(camera);
 
 	GameObject* shadowLamp = new GameObject();
@@ -96,7 +95,10 @@ void Application1::customLogicLoop()
 		bool running = (speed > Math::Epsilon);
 
 		if (Modules::input().isMouseButtonPressed(0))
+		{
+			Modules::debug().drawLine(runner->getTransform()->getPosition(), pt);
 			runner->getComponent<RigidBody>()->applyForce((pt - runner->getTransform()->getPosition()), ForceMode::Impulse);
+		}
 		runner->getTransform()->lookInDirection(runner->getComponent<RigidBody>()->getVelocityHorizontal());
 
 		if (running)

@@ -29,6 +29,9 @@ struct RayCastHit
 /*************************************
  * 	Base PhysicsWorld class
  *************************************/
+namespace Module
+{
+
 class PhysicsWorld
 {
 public:
@@ -38,7 +41,7 @@ public:
 	void removeRigidBody(RigidBody* rigidBody);
 
 	void fixedUpdate();
-	void setDebugDrawer(DebugDrawer* debugDrawer);
+	void setDebugDrawer(Module::DebugDrawer* debugDrawer);
 	void debugDraw();
 
 	bool rayCast(const Vector3 &start, const Vector3 &direction, const float distance) const;
@@ -50,9 +53,7 @@ public:
 
 	bool sphereCast(const Vector3 &start, const Vector3&direction, const float distance, const float radius) const;
 
-protected:
 	PhysicsWorld();
-	friend class Modules;
 private:
 	btBroadphaseInterface* broadphase;
 	btDefaultCollisionConfiguration* defaultCollisionConfiguration;
@@ -64,5 +65,5 @@ private:
 
 
 
-
+}
 } /* namespace SpaceMarines */

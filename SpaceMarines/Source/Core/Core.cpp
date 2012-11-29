@@ -9,9 +9,9 @@ Vector2 Modules::screenSize = Vector2(1280, 720);
 std::string Modules::renderingPipeline = "";
 
 //Defaults
-Renderer* Modules::module_renderer = nullptr;
-PhysicsWorld* Modules::module_physics = nullptr;
-Input* Modules::module_input = nullptr;
+Module::Renderer* Modules::module_renderer = nullptr;
+Module::PhysicsWorld* Modules::module_physics = nullptr;
+Module::Input* Modules::module_input = nullptr;
 
 void Modules::setAssetPath(const char* assetPath)
 {
@@ -33,11 +33,11 @@ bool Modules::init()
 	if (assetPath.empty() || assetPath == "") throw Exception("Asset path is empty!");
 	if (renderingPipeline.empty() || renderingPipeline == "") throw Exception("Rendering pipeline path is empty!");
 
-	module_renderer = new Renderer(assetPath, screenSize, renderingPipeline.c_str());
+	module_renderer = new Module::Renderer(assetPath, screenSize, renderingPipeline.c_str());
 	if (module_renderer == nullptr) throw Exception("Unable to create renderer module");
-	module_physics = new PhysicsWorld();
+	module_physics = new Module::PhysicsWorld();
 	if (module_physics == nullptr) throw Exception("Unable to create physics module");
-	module_input = new Input();
+	module_input = new Module::Input();
 	if (module_input == nullptr) throw Exception("Unable to create input module");
 
 	if (!module_renderer->init()) throw Exception("Error initializing Renderer module");
@@ -57,13 +57,13 @@ void Modules::cleanup()
 /**
  * Module return functions. These are all unchecked for performance reasons.
  */
-PhysicsWorld& Modules::physics()
+Module::PhysicsWorld& Modules::physics()
 	{return *module_physics;}
-Renderer& Modules::renderer()
+Module::Renderer& Modules::renderer()
 	{return *module_renderer;}
-DebugDrawer& Modules::debug()
+Module::DebugDrawer& Modules::debug()
 	{return *module_renderer->getDebugDrawer();}
-Input& Modules::input()
+Module::Input& Modules::input()
 	{ return *module_input; }
 
 }

@@ -17,10 +17,13 @@ enum codes
 };
 }
 
+namespace Module
+{
+
 class Input
 {
-protected:
-	friend class Modules;
+public:
+
 	Input()
 	{
 		screenSize = Vector2(1, 1);
@@ -35,7 +38,7 @@ protected:
 	Vector2 screenSize;
 	Vector2 lastMouseViewportPosition;
 	Vector2 mouseViewportPosition;
-public:
+
 	void pollMouse()
 	{
 		lastMouseViewportPosition = mouseViewportPosition;
@@ -75,4 +78,5 @@ private:
 
 };
 
+}
 }

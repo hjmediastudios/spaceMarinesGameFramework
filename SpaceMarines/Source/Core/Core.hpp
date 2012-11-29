@@ -18,10 +18,10 @@ public:
 	static void setRenderingPipelinePath(const char* renderingPipelinePath);
 	static void setScreenSize(const Vector2 &screenSize);
 
-	static PhysicsWorld& physics();
-	static Renderer& renderer();
-	static DebugDrawer& debug();
-	static Input &input();
+	static Module::PhysicsWorld& physics();
+	static Module::Renderer& renderer();
+	static Module::DebugDrawer& debug();
+	static Module::Input &input();
 
 private:
 	static std::string assetPath;
@@ -32,9 +32,9 @@ private:
 	static bool _isInitialized;
 
 	//Core modules
-	static Renderer* module_renderer;
-	static PhysicsWorld* module_physics;
-	static Input* module_input;
+	static Module::Renderer* module_renderer;
+	static Module::PhysicsWorld* module_physics;
+	static Module::Input* module_input;
 };
 
 }

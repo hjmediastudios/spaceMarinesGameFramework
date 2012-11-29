@@ -15,7 +15,11 @@ namespace ForceMode
 };}
 
 class Collider;
-class PhysicsWorld;
+
+namespace Module
+{
+	class PhysicsWorld;
+}
 
 class RigidBody : public PassiveComponent, public HasFixedUpdate
 {
@@ -36,7 +40,7 @@ private:
 	Collider* collider;
 	float mass;
 	btRigidBody* rigidBody;
-	friend class PhysicsWorld;
+	friend class Module::PhysicsWorld;
 	Transform* transform;
 	bool noSleep;
 	bool lockRotation;

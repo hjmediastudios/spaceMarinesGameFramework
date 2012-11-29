@@ -1,11 +1,10 @@
 #pragma once
 #include "../Core/Prerequisites.hpp"
-#include "../Core/Module_Renderer.hpp"
 
 namespace SpaceMarines
 {
 
-class Renderer;
+namespace Module{ class Renderer; }
 
 class Camera : public PassiveComponent
 {
@@ -26,7 +25,7 @@ public:
 
 protected:
 	H3DNode cameraNode;
-	friend class Renderer;
+	friend class Module::Renderer;
 private:
 	Vector2 viewSize;
 	float fovDegrees;

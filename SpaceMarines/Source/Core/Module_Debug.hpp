@@ -5,14 +5,17 @@
 namespace SpaceMarines
 {
 
-class Renderer;
-
 namespace DebugDrawMode
 { enum List {
 	None = 0,
 	SystemOnly,
 	SystemAndBullet
 };}
+
+namespace Module
+{
+
+class Renderer;
 
 class DebugDrawer : public btIDebugDraw
 {
@@ -65,4 +68,5 @@ private:
 
 };
 
+}
 }

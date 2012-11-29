@@ -12,6 +12,8 @@
 
 namespace SpaceMarines
 {
+namespace Module
+{
 
 Renderer::Renderer(const std::string &assetPath, const Vector2 &windowSize, const char *pipelineResource)
 {
@@ -114,4 +116,5 @@ std::string Renderer::getAssetPath() const
 #endif
 }
 
+}
 } /* namespace SpaceMarines */
