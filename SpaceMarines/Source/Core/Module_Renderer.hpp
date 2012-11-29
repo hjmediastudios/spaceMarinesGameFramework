@@ -1,8 +1,8 @@
 #pragma once
-#include "../Prerequisites.hpp"
+#include "Prerequisites.hpp"
 #include "../Components/Camera.hpp"
 #include "../Resources/Shader.hpp"
-#include "../DebugDrawer.hpp"
+#include "Module_Debug.hpp"
 
 namespace SpaceMarines
 {

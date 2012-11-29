@@ -20,42 +20,53 @@ enum codes
 class Input
 {
 protected:
-	static Vector2 screenSize;
-	friend class Application;
-	static Vector2 lastMouseViewportPosition;
-	static Vector2 mouseViewportPosition;
-	static void pollMouse()
+	friend class Modules;
+	Input()
+	{
+		screenSize = Vector2(1, 1);
+		mouseViewportPosition = Vector2(0, 0);
+		lastMouseViewportPosition = Vector2(0, 0);
+	}
+	~Input()
+	{
+
+	}
+
+	Vector2 screenSize;
+	Vector2 lastMouseViewportPosition;
+	Vector2 mouseViewportPosition;
+public:
+	void pollMouse()
 	{
 		lastMouseViewportPosition = mouseViewportPosition;
 		mouseViewportPosition = screenToViewport(getMousePos());
 	}
-public:
-	static bool isKeyPressed(KeyCodes::codes code)
+	bool isKeyPressed(KeyCodes::codes code)
 	{
 		return (glfwGetKey(code) == GLFW_PRESS);
 	}
-	static bool isKeyPressed(const char code)
+	bool isKeyPressed(const char code)
 	{
 		return (glfwGetKey(code) == GLFW_PRESS);
 	}
-	static Vector2 getMouseViewportDelta()
+	Vector2 getMouseViewportDelta()
 	{
 		return mouseViewportPosition - lastMouseViewportPosition;
 	}
-	static Vector2 getMouseViewportPos()
+	Vector2 getMouseViewportPos()
 	{
 		return mouseViewportPosition;
 	}
-	static bool isMouseButtonPressed(unsigned short index)
+	bool isMouseButtonPressed(unsigned short index)
 	{
 		return (glfwGetMouseButton(index) == GLFW_PRESS);
 	}
 private:
-	static Vector2 screenToViewport(const Vector2 &pos)
+	Vector2 screenToViewport(const Vector2 &pos)
 	{
 		return pos / screenSize * 2.0f - 1.0f;
 	}
-	static Vector2 getMousePos()
+	Vector2 getMousePos()
 	{
 		static int x, y;
 		glfwGetMousePos(&x, &y);

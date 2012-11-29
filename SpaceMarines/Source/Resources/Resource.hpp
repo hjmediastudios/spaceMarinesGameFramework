@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Prerequisites.hpp"
+#include "../Core/Prerequisites.hpp"
 
 namespace SpaceMarines
 {

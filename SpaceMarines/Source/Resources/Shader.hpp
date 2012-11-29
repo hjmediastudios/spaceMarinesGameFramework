@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Prerequisites.hpp"
-#include "../Math.hpp"
+#include "../Core/Prerequisites.hpp"
+#include "../Core/Math.hpp"
 
 #define INVALID_UNIFORM_LOCATION 0xFFFFFFFF
 

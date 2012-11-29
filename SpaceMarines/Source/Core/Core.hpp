@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../Prerequisites.hpp"
+#include "Prerequisites.hpp"
 #include "Module_Renderer.hpp"
 #include "Module_Physics.hpp"
+#include "Module_Input.hpp"
 
 namespace SpaceMarines
 {
@@ -20,6 +21,7 @@ public:
 	static PhysicsWorld& physics();
 	static Renderer& renderer();
 	static DebugDrawer& debug();
+	static Input &input();
 
 private:
 	static std::string assetPath;
@@ -32,6 +34,7 @@ private:
 	//Core modules
 	static Renderer* module_renderer;
 	static PhysicsWorld* module_physics;
+	static Input* module_input;
 };
 
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Prerequisites.hpp"
+#include "Prerequisites.hpp"
 
-#include "../DebugDrawer.hpp"
+#include "Module_Debug.hpp"
 #include "../Components/Collider.hpp"
 #include "../Components/RigidBody.hpp"
 

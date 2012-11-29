@@ -72,21 +72,21 @@ void Application1::customLogicLoop()
 {
 
 	Transform* cameraTrans = Modules::renderer().getCamera()->getGameObject()->getTransform();
-	if (Input::isMouseButtonPressed(1))
+	if (Modules::input().isMouseButtonPressed(1))
 	{
-		cameraTrans->rotate(Quaternion(Vector3::UP, -Input::getMouseViewportPos().x * 3.0f * Time::deltaTime * (fabs(Input::getMouseViewportPos().x) > 0.1f)));
-		cameraTrans->rotate(Quaternion(cameraTrans->right(), -Input::getMouseViewportPos().y * 1.25f * Time::deltaTime * (fabs(Input::getMouseViewportPos().y) > 0.1f)));
+		cameraTrans->rotate(Quaternion(Vector3::UP, -Modules::input().getMouseViewportPos().x * 3.0f * Time::deltaTime * (fabs(Modules::input().getMouseViewportPos().x) > 0.1f)));
+		cameraTrans->rotate(Quaternion(cameraTrans->right(), -Modules::input().getMouseViewportPos().y * 1.25f * Time::deltaTime * (fabs(Modules::input().getMouseViewportPos().y) > 0.1f)));
 	}
-	if (Input::isKeyPressed('W'))
+	if (Modules::input().isKeyPressed('W'))
 		cameraTrans->translate(-cameraTrans->forward() * Time::deltaTime * 10.0f);
-	if (Input::isKeyPressed('S'))
+	if (Modules::input().isKeyPressed('S'))
 		cameraTrans->translate(cameraTrans->forward() * Time::deltaTime * 10.0f);
-	if (Input::isKeyPressed('A'))
+	if (Modules::input().isKeyPressed('A'))
 		cameraTrans->translate(-cameraTrans->right() * Time::deltaTime * 10.0f);
-	if (Input::isKeyPressed('D'))
+	if (Modules::input().isKeyPressed('D'))
 		cameraTrans->translate(cameraTrans->right() * Time::deltaTime * 10.0f);
 
-	Vector3 pt = Modules::physics().rayCastComplex(Modules::renderer().getCamera()->getPickRayViewport(Input::getMouseViewportPos()), 100.0f).point;
+	Vector3 pt = Modules::physics().rayCastComplex(Modules::renderer().getCamera()->getPickRayViewport(Modules::input().getMouseViewportPos()), 100.0f).point;
 	Modules::renderer().getDebugDrawer()->drawAxis(pt, 1.1f);
 
 	for (int i=0; i < Constant_NumMinifigs; i++)
@@ -95,8 +95,8 @@ void Application1::customLogicLoop()
 		float speed = runner->getComponent<RigidBody>()->getVelocity().lengthSquared();
 		bool running = (speed > Math::Epsilon);
 
-		if (Input::isMouseButtonPressed(0))
-			runner->getComponent<RigidBody>()->applyForce((pt - runner->getTransform()->getPosition()) * 500.0f);
+		if (Modules::input().isMouseButtonPressed(0))
+			runner->getComponent<RigidBody>()->applyForce((pt - runner->getTransform()->getPosition()), ForceMode::Impulse);
 		runner->getTransform()->lookInDirection(runner->getComponent<RigidBody>()->getVelocityHorizontal());
 
 		if (running)

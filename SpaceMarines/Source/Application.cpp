@@ -16,10 +16,6 @@ float Time::deltaTime = 0.0f;
 float Time::fps = 0.0f;
 const float Time::animationFPS = 24.0f;
 
-Vector2 Input::screenSize = Vector2(1, 1);
-Vector2 Input::mouseViewportPosition = Vector2(0, 0);
-Vector2 Input::lastMouseViewportPosition = Vector2(0, 0);
-
 Application::Application(const char* assetPath, const char* renderingPipeline, const Vector2 &windowSize, bool drawDebug)
 {
 	objects = std::vector<GameObject*>();
@@ -55,7 +51,6 @@ void Application::start()
 	customSetupFunction();
 
 	Modules::renderer().start();
-	Input::screenSize = Modules::renderer().getScreenSize();
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -69,9 +64,9 @@ void Application::start()
 	double accumulator = 0.0;
 
 	//Run main loop
-	while (!Input::isKeyPressed(KeyCodes::Esc))
+	while (!Modules::input().isKeyPressed(KeyCodes::Esc))
 	{
-		Input::pollMouse();
+		Modules::input().pollMouse();
 		double newTime = glfwGetTime();
 		Time::deltaTime_d = newTime - currentTime;
 		Time::deltaTime = (float) Time::deltaTime_d;

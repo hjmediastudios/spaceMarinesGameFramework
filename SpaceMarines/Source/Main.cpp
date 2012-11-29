@@ -5,7 +5,7 @@
  *      Author: nick
  */
 
-#include "Prerequisites.hpp"
+#include "Core/Prerequisites.hpp"
 
 #include "../TestApplication/Application1.hpp"
 

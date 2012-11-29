@@ -11,6 +11,7 @@ std::string Modules::renderingPipeline = "";
 //Defaults
 Renderer* Modules::module_renderer = nullptr;
 PhysicsWorld* Modules::module_physics = nullptr;
+Input* Modules::module_input = nullptr;
 
 void Modules::setAssetPath(const char* assetPath)
 {
@@ -36,10 +37,12 @@ bool Modules::init()
 	if (module_renderer == nullptr) throw Exception("Unable to create renderer module");
 	module_physics = new PhysicsWorld();
 	if (module_physics == nullptr) throw Exception("Unable to create physics module");
+	module_input = new Input();
+	if (module_input == nullptr) throw Exception("Unable to create input module");
 
 	if (!module_renderer->init()) throw Exception("Error initializing Renderer module");
 	module_physics->setDebugDrawer(module_renderer->getDebugDrawer());
-
+	module_input->screenSize = module_renderer->getScreenSize();
 	_isInitialized = true;
 	return true;
 }
@@ -52,7 +55,7 @@ void Modules::cleanup()
 }
 
 /**
- * Module return functions
+ * Module return functions. These are all unchecked for performance reasons.
  */
 PhysicsWorld& Modules::physics()
 	{return *module_physics;}
@@ -60,6 +63,8 @@ Renderer& Modules::renderer()
 	{return *module_renderer;}
 DebugDrawer& Modules::debug()
 	{return *module_renderer->getDebugDrawer();}
+Input& Modules::input()
+	{ return *module_input; }
 
 }
 

@@ -49,10 +49,9 @@ namespace SpaceMarines
 }
 
 #include "Math.hpp"
-#include "Input.hpp"
 
-#include "HighLevelTypes/Interfaces.hpp"
-#include "HighLevelTypes/Object.hpp"
+#include "../HighLevelTypes/Interfaces.hpp"
+#include "../HighLevelTypes/Object.hpp"
 
 #define PP_DebugDraw
 
