@@ -1,12 +1,16 @@
 #pragma once
-#include "Prerequisites.hpp"
-#include "Components/Collider.hpp"
-#include "DebugDrawer.hpp"
+
+#include "../Prerequisites.hpp"
+
+#include "../DebugDrawer.hpp"
+#include "../Components/Collider.hpp"
+#include "../Components/RigidBody.hpp"
 
 namespace SpaceMarines
 {
-class RigidBody;
 
+class Collider;
+class RigidBody;
 
 namespace RayCastMode
 { enum List {
@@ -22,15 +26,12 @@ struct RayCastHit
 	Vector3 normal;
 };
 
-
-
 /*************************************
  * 	Base PhysicsWorld class
  *************************************/
 class PhysicsWorld
 {
 public:
-	static PhysicsWorld* getSingleton();
 	virtual ~PhysicsWorld();
 	btDiscreteDynamicsWorld* getBulletWorld();
 
@@ -49,10 +50,10 @@ public:
 
 	bool sphereCast(const Vector3 &start, const Vector3&direction, const float distance, const float radius) const;
 
-private:
-	static PhysicsWorld* instance;
+protected:
 	PhysicsWorld();
-
+	friend class Modules;
+private:
 	btBroadphaseInterface* broadphase;
 	btDefaultCollisionConfiguration* defaultCollisionConfiguration;
 	btCollisionDispatcher* collisionDispatcher;
@@ -60,40 +61,7 @@ private:
 	btDiscreteDynamicsWorld* dynamicsWorld;
 };
 
-/*************************************
- * 	Rigid body component
- *************************************/
-namespace ForceMode
-{ enum List {
-	Force = 0,
-	Impulse = 1,
-	Velocity = 2,
-	Acceleration = 3
-};}
-class RigidBody : public PassiveComponent, public HasFixedUpdate
-{
-public:
-	RigidBody(Collider* collider, float mass = 1.0f, bool noSleep = false);
-	~RigidBody();
-	const char* getComponentType() const { return "RigidBody"; }
-	void start();
-	void fixedUpdate();
-	Vector3 getVelocity() const;
 
-	void applyForce(const Vector3 &force, ForceMode::List mode = ForceMode::Force);
-	void applyForceAtRelativePoint(const Vector3 &force, const Vector3 &point, ForceMode::List mode = ForceMode::Force);
-
-	void setLockRotation(bool lock);
-private:
-	PhysicsWorld* world;
-	Collider* collider;
-	float mass;
-	btRigidBody* rigidBody;
-	friend class PhysicsWorld;
-	Transform* transform;
-	bool noSleep;
-	bool lockRotation;
-};
 
 
 

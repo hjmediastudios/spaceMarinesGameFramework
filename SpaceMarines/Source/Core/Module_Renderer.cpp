@@ -5,7 +5,7 @@
  *      Author: nick
  */
 
-#include "Renderer.hpp"
+#include "Module_Renderer.hpp"
 #include <GL/gl.h>
 #include <GL/glew.h>
 #include <GL/glfw.h>
@@ -21,9 +21,7 @@ Renderer::Renderer(const std::string &assetPath, const Vector2 &windowSize, cons
 	pipeline = 0;
 	this->camera = nullptr;
 	_started = 0;
-#ifdef PP_DebugDraw
 	this->debugDrawer = nullptr;
-#endif
 }
 
 Renderer::~Renderer()
@@ -104,9 +102,6 @@ void Renderer::update()
 	h3dRender(camera->cameraNode);
 	h3dFinalizeFrame();
 	debugDrawer->render();
-
-
-	// Finish rendering of frame
     glfwSwapBuffers();
 }
 

@@ -26,9 +26,13 @@ DebugDrawer::DebugDrawer(Renderer* renderer)
 void DebugDrawer::setDrawMode(DebugDrawMode::List mode)
 {
 	if (mode != DebugDrawMode::SystemAndBullet)
+	{
 		setDebugMode(btIDebugDraw::DBG_NoDebug);
+	}
 	else
+	{
 		setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+	}
 	this->mode = mode;
 }
 

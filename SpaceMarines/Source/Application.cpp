@@ -22,10 +22,12 @@ Vector2 Input::lastMouseViewportPosition = Vector2(0, 0);
 
 Application::Application(const char* assetPath, const char* renderingPipeline, const Vector2 &windowSize, bool drawDebug)
 {
-	renderer = new Renderer(assetPath, windowSize, renderingPipeline);
-	physics = PhysicsWorld::getSingleton();
 	objects = std::vector<GameObject*>();
 	this->drawDebug = drawDebug;
+	this->assetPath = std::string(assetPath);
+	this->renderingPipeline = std::string(renderingPipeline);
+	this->screenSize = windowSize;
+	//TODO screensize
 }
 
 Application::~Application()
@@ -34,15 +36,16 @@ Application::~Application()
 	{
 		delete objects[i];
 	}
-	delete renderer;
-	delete physics;
+	Modules::cleanup();
 }
 
 bool Application::init()
 {
-	if (!renderer->init()) return false;
-	physics->setDebugDrawer(renderer->getDebugDrawer());
-	if (drawDebug) h3dSetOption(H3DOptions::DebugViewMode, 1);
+	Modules::setAssetPath(assetPath.c_str());
+	Modules::setRenderingPipelinePath(renderingPipeline.c_str());
+	Modules::setScreenSize(screenSize);
+	Modules::init();
+
 	return true;
 }
 
@@ -51,8 +54,8 @@ void Application::start()
 	init();
 	customSetupFunction();
 
-	renderer->start();
-	Input::screenSize = renderer->getScreenSize();
+	Modules::renderer().start();
+	Input::screenSize = Modules::renderer().getScreenSize();
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -96,13 +99,13 @@ void Application::update()
 	{
 		objects[i]->update();
 	}
-	physics->debugDraw();
-	renderer->update();
+	Modules::physics().debugDraw();
+	Modules::renderer().update();
 }
 
 void Application::fixedUpdate()
 {
-	physics->fixedUpdate();
+	Modules::physics().fixedUpdate();
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->fixedUpdate();

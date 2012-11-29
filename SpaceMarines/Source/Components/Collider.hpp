@@ -1,5 +1,5 @@
 #pragma once
-#include "../Physics.hpp"
+#include "RigidBody.hpp"
 
 namespace SpaceMarines
 {

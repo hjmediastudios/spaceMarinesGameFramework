@@ -1,6 +1,6 @@
 #pragma once
 #include "Prerequisites.hpp"
-#include "Renderer.hpp"
+#include "Core/Module_Renderer.hpp"
 
 namespace SpaceMarines
 {
@@ -33,7 +33,7 @@ public:
 			{ throw Exception(error); }
 		void draw3dText(const btVector3 &pos, const char* text)
 			{}
-		void setDebugMode(int mode) { btDebugMode = mode; }
+		void setDebugMode(int mode) { btDebugMode = mode;}
 		int getDebugMode() const { return btDebugMode; }
 	//}
 protected:

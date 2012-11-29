@@ -1,8 +1,8 @@
 #pragma once
 #include "Prerequisites.hpp"
-#include "Renderer.hpp"
 #include "HighLevelTypes/Object.hpp"
-#include "Physics.hpp"
+#include "Core/Core.hpp"
+
 #include "Components/MeshRenderer.hpp"
 #include "Components/Light.hpp"
 #include "Components/Collider.hpp"
@@ -19,14 +19,13 @@ public:
 	virtual void customLogicLoop() = 0;
 	void start();
 protected:
-	Renderer* renderer;
-	PhysicsWorld* physics;
 	void addObject(GameObject* obj);
 private:
 	bool init();
 	std::string assetPath;
 	std::string renderingPipeline;
 	std::vector<GameObject*> objects;
+	Vector2 screenSize;
 	void update();
 	void fixedUpdate();
 	bool drawDebug;

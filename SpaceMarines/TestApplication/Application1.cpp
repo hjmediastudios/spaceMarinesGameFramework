@@ -25,7 +25,7 @@ Application1::~Application1()
 
 void Application1::customSetupFunction()
 {
-	renderer->getDebugDrawer()->setDrawMode(DebugDrawMode::SystemAndBullet);
+	Modules::debug().setDrawMode(DebugDrawMode::SystemAndBullet);
 
 	for (size_t i = 0; i < Constant_NumMinifigs; i++)
 	{
@@ -37,8 +37,8 @@ void Application1::customSetupFunction()
 	}
 
 	GameObject* camera = new GameObject();
-	camera->addComponent(new Camera("Camera", renderer));
-	renderer->setCamera(camera->getComponent<Camera>());
+	camera->addComponent(new Camera("Camera"));
+	Modules::renderer().setCamera(camera->getComponent<Camera>());
 	camera->getTransform()->setPosition(Vector3(0, 2, -3));
 	camera->getTransform()->setRotation(Quaternion(Vector3::UP, Math::degToRad(180.0f)));
 //	camera->setParent(runner);
@@ -71,7 +71,7 @@ void Application1::customSetupFunction()
 void Application1::customLogicLoop()
 {
 
-	Transform* cameraTrans = renderer->getCamera()->getGameObject()->getTransform();
+	Transform* cameraTrans = Modules::renderer().getCamera()->getGameObject()->getTransform();
 	if (Input::isMouseButtonPressed(1))
 	{
 		cameraTrans->rotate(Quaternion(Vector3::UP, -Input::getMouseViewportPos().x * 3.0f * Time::deltaTime * (fabs(Input::getMouseViewportPos().x) > 0.1f)));
@@ -86,8 +86,8 @@ void Application1::customLogicLoop()
 	if (Input::isKeyPressed('D'))
 		cameraTrans->translate(cameraTrans->right() * Time::deltaTime * 10.0f);
 
-	Vector3 pt = physics->rayCastComplex(renderer->getCamera()->getPickRayViewport(Input::getMouseViewportPos()), 100.0f).point;
-	renderer->getDebugDrawer()->drawAxis(pt, 1.1f);
+	Vector3 pt = Modules::physics().rayCastComplex(Modules::renderer().getCamera()->getPickRayViewport(Input::getMouseViewportPos()), 100.0f).point;
+	Modules::renderer().getDebugDrawer()->drawAxis(pt, 1.1f);
 
 	for (int i=0; i < Constant_NumMinifigs; i++)
 	{
@@ -95,15 +95,9 @@ void Application1::customLogicLoop()
 		float speed = runner->getComponent<RigidBody>()->getVelocity().lengthSquared();
 		bool running = (speed > Math::Epsilon);
 
-		runner->getTransform()->lookAt(pt);
-
 		if (Input::isMouseButtonPressed(0))
-		{
-			if (pt == Vector3::ZERO)
-				pt = runner->getTransform()->getPosition() + Vector3::UP * 50.0f;
-			renderer->getDebugDrawer()->drawLine(pt, runner->getTransform()->getPosition(), Vector3::UP);
-			runner->getComponent<RigidBody>()->applyForce((pt - runner->getTransform()->getPosition()), ForceMode::Impulse);
-		}
+			runner->getComponent<RigidBody>()->applyForce((pt - runner->getTransform()->getPosition()) * 500.0f);
+		runner->getTransform()->lookInDirection(runner->getComponent<RigidBody>()->getVelocityHorizontal());
 
 		if (running)
 		{
