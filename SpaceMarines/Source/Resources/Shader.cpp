@@ -159,11 +159,11 @@ Shader* Shader::newShaderFromOneFile(string filename)
 	string vertexString;
 	string fragmentString;
 
-	if (parts.size() > 4 || parts.size() < 3)
-	{
-		throw Exception(string("Error loading shader \"") + filepath + "\": Shader has too many parts");
-		return NULL;
-	}
+//	if (parts.size() > 4 || parts.size() < 3)
+//	{
+//		throw Exception(string("Error loading shader \"") + filepath + "\": Shader has too many parts");
+//		return nullptr;
+//	}
 
 	for (unsigned int i = 0; i < 3; i++)
 	{

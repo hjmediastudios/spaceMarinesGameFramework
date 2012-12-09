@@ -9,7 +9,7 @@ class Minifig : public GameObject
 public:
 	Minifig(const Vector3 &position) : GameObject()
 	{
-		addComponent(new AnimatedMeshRenderer("models/Minifig/Minifig.scene.xml"));
+		addComponent(new AnimatedMeshRenderer("models/Mini3/Mini3.scene.xml"));
 		getComponent<AnimatedMeshRenderer>()->addAnimation("animations/Minifig/Legs_Run.anim", "Run", "Root");
 		getComponent<AnimatedMeshRenderer>()->addAnimation("animations/Minifig/Body_Run.anim", "Body_Run", "Torso.Lower");
 		transform.setPosition(position);
@@ -28,7 +28,7 @@ public:
 	void customLogicLoop();
 	virtual ~Application1();
 private:
-#define Constant_NumMinifigs 25
+	static const unsigned int Constant_NumMinifigs = 50;
 	GameObject* runners[Constant_NumMinifigs];
 };
 

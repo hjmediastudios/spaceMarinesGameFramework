@@ -19,7 +19,7 @@ RigidBody::RigidBody(Collider* collider, float mass, bool noSleep)
 
 RigidBody::~RigidBody()
 {
-	//FIXME remove from world
+	Modules::physics().getBulletWorld()->removeRigidBody(this->rigidBody);
 	if (rigidBody == nullptr) return;
 
 	delete rigidBody->getMotionState();

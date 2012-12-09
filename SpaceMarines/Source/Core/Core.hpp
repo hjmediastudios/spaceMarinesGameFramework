@@ -4,6 +4,7 @@
 #include "Module_Renderer.hpp"
 #include "Module_Physics.hpp"
 #include "Module_Input.hpp"
+#include "Module_GUI.hpp"
 
 namespace SpaceMarines
 {
@@ -22,6 +23,7 @@ public:
 	static Module::Renderer& renderer();
 	static Module::DebugDrawer& debug();
 	static Module::Input &input();
+	static Module::GUI &gui();
 
 private:
 	static std::string assetPath;
@@ -35,6 +37,7 @@ private:
 	static Module::Renderer* module_renderer;
 	static Module::PhysicsWorld* module_physics;
 	static Module::Input* module_input;
+	static Module::GUI* module_gui;
 };
 
 }

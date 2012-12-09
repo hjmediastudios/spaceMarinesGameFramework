@@ -24,7 +24,6 @@ void MeshRenderer::start()
 	if (modelNode == 0) throw Exception("Model node is not added!");
 }
 
-void MeshRenderer::update() {}
 
 /*************************************
  * 	Animated Mesh Renderer stuff

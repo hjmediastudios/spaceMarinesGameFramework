@@ -1,6 +1,7 @@
 #pragma once
 #include "Prerequisites.hpp"
 #include "Module_Renderer.hpp"
+#include "Module_GUI_Math.hpp"
 
 namespace SpaceMarines
 {
@@ -20,6 +21,7 @@ class Renderer;
 class DebugDrawer : public btIDebugDraw
 {
 public:
+
 	Shader* debugShader;
 	DebugDrawer(Renderer* renderer);
 	~DebugDrawer();
@@ -48,17 +50,7 @@ private:
 	GLuint LlinesIBO;
 	GLuint Ldb_mvpMat;
 
-	struct DebugVertex
-	{
-		Vector3 pos;
-		Vector3 color;
-		DebugVertex() {}
-		DebugVertex(const Vector3 &pos, const Vector3 &color)
-		{
-			this->pos = pos;
-			this->color = color;
-		}
-	};
+
 
 	std::vector<DebugVertex> vertices;
 	std::vector<unsigned int> indices;

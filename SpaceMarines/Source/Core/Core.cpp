@@ -12,6 +12,7 @@ std::string Modules::renderingPipeline = "";
 Module::Renderer* Modules::module_renderer = nullptr;
 Module::PhysicsWorld* Modules::module_physics = nullptr;
 Module::Input* Modules::module_input = nullptr;
+Module::GUI* Modules::module_gui = nullptr;
 
 void Modules::setAssetPath(const char* assetPath)
 {
@@ -39,6 +40,8 @@ bool Modules::init()
 	if (module_physics == nullptr) throw Exception("Unable to create physics module");
 	module_input = new Module::Input();
 	if (module_input == nullptr) throw Exception("Unable to create input module");
+	module_gui = new Module::GUI(module_renderer);
+	if (module_gui == nullptr) throw Exception("Unable to create GUI module");
 
 	if (!module_renderer->init()) throw Exception("Error initializing Renderer module");
 	module_physics->setDebugDrawer(module_renderer->getDebugDrawer());
@@ -50,8 +53,11 @@ bool Modules::init()
 void Modules::cleanup()
 {
 	if (!_isInitialized) throw Exception("Trying to clean up modules without initializaiton");
+
 	delete module_physics;
 	delete module_renderer;
+	delete module_input;
+	delete module_gui;
 }
 
 /**
@@ -65,6 +71,8 @@ Module::DebugDrawer& Modules::debug()
 	{return *module_renderer->getDebugDrawer();}
 Module::Input& Modules::input()
 	{ return *module_input; }
+Module::GUI& Modules::gui()
+	{ return *module_gui; }
 
 }
 

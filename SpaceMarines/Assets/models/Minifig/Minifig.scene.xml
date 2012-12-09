@@ -69,9 +69,9 @@
 		</Joint>
 	</Joint>
 
-	<Mesh name="Minifig" material="materials/Blue.material.xml" batchStart="0" batchCount="1218" vertRStart="0" vertREnd="413" >
-		<Mesh name="Minifig0" material="materials/Red.material.xml" batchStart="1218" batchCount="1356" vertRStart="414" vertREnd="731" />
-		<Mesh name="Minifig1" material="materials/Yellow.material.xml" batchStart="2574" batchCount="3396" vertRStart="732" vertREnd="1630" />
-		<Mesh name="Minifig2" material="materials/Decals.material.xml" batchStart="5970" batchCount="330" vertRStart="1631" vertREnd="1730" />
+	<Mesh name="Minifig" material="materials/Blue.material.xml" batchStart="0" batchCount="1146" vertRStart="0" vertREnd="383" >
+		<Mesh name="Minifig0" material="materials/Decals.material.xml" batchStart="1146" batchCount="402" vertRStart="384" vertREnd="519" />
+		<Mesh name="Minifig1" material="materials/Red.material.xml" batchStart="1548" batchCount="1356" vertRStart="520" vertREnd="837" />
+		<Mesh name="Minifig2" material="materials/Yellow.material.xml" batchStart="2904" batchCount="3396" vertRStart="838" vertREnd="1736" />
 	</Mesh>
 </Model>

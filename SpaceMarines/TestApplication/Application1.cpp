@@ -25,7 +25,7 @@ Application1::~Application1()
 
 void Application1::customSetupFunction()
 {
-	Modules::debug().setDrawMode(DebugDrawMode::None);
+	Modules::debug().setDrawMode(DebugDrawMode::SystemOnly);
 
 	for (size_t i = 0; i < Constant_NumMinifigs; i++)
 	{
@@ -67,6 +67,7 @@ void Application1::customSetupFunction()
 	addObject(plane);
 }
 
+Vector3 targetPoint = Vector3::ZERO;
 void Application1::customLogicLoop()
 {
 
@@ -85,20 +86,25 @@ void Application1::customLogicLoop()
 	if (Modules::input().isKeyPressed('D'))
 		cameraTrans->translate(cameraTrans->right() * Time::deltaTime * 10.0f);
 
-	Vector3 pt = Modules::physics().rayCastComplex(Modules::renderer().getCamera()->getPickRayViewport(Modules::input().getMouseViewportPos()), 100.0f).point;
-	Modules::renderer().getDebugDrawer()->drawAxis(pt, 1.1f);
+	if (Modules::input().isMouseButtonPressed(0))
+		targetPoint = Modules::physics().rayCastComplex(Modules::renderer().getCamera()->getPickRayViewport(Modules::input().getMouseViewportPos()), 100.0f).point;
 
-	for (int i=0; i < Constant_NumMinifigs; i++)
+	Modules::renderer().getDebugDrawer()->drawAxis(targetPoint, 1.1f);
+
+	for (unsigned int i=0; i < Constant_NumMinifigs; i++)
 	{
 		GameObject* runner = runners[i];
 		float speed = runner->getComponent<RigidBody>()->getVelocity().lengthSquared();
 		bool running = (speed > Math::Epsilon);
 
-		if (Modules::input().isMouseButtonPressed(0))
-		{
-			Modules::debug().drawLine(runner->getTransform()->getPosition(), pt);
-			runner->getComponent<RigidBody>()->applyForce((pt - runner->getTransform()->getPosition()), ForceMode::Impulse);
-		}
+		Vector3 ptToTarget = targetPoint - runner->getTransform()->getPosition();
+
+		if (ptToTarget.lengthSquared() > 2.0f)
+			runner->getComponent<RigidBody>()->applyForce(ptToTarget, ForceMode::Impulse);
+		else
+			runner->getComponent<RigidBody>()->applyForce(runner->getComponent<RigidBody>()->getVelocity() * -3.0f, ForceMode::Impulse);
+
+
 		runner->getTransform()->lookInDirection(runner->getComponent<RigidBody>()->getVelocityHorizontal());
 
 		if (running)
@@ -108,6 +114,7 @@ void Application1::customLogicLoop()
 		}
 	}
 
+	std::cout << Time::fps << std::endl;
 
 }
 
