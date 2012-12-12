@@ -9,6 +9,7 @@
 
 namespace SpaceMarines
 {
+float Minifig::speed = 1000.0f;
 
 Application1::Application1(const char* assetPath, const char* renderingPipeline, const Vector2 &windowSize, bool drawDebug) : Application(assetPath, renderingPipeline, windowSize, drawDebug)
 {
@@ -23,16 +24,16 @@ Application1::~Application1()
 	std::cout << "Done!\n";
 }
 
-void Application1::customSetupFunction()
+void Application1::customInitFunction()
 {
 	Modules::debug().setDrawMode(DebugDrawMode::SystemOnly);
 
 	for (size_t i = 0; i < Constant_NumMinifigs; i++)
 	{
 		runners[i] = new Minifig(Vector3(
-				Math::randomFloatInRange(-50.0f, 50.0f),
+				Math::randomFloatInRange(-15.0f, 15.0f),
 				Math::randomFloatInRange(5.0f, 10.0f),
-				Math::randomFloatInRange(-50.0f, 50.0f)));
+				Math::randomFloatInRange(-15.0f, 15.0f)));
 		addObject(runners[i]);
 	}
 
@@ -44,10 +45,10 @@ void Application1::customSetupFunction()
 	addObject(camera);
 
 	GameObject* shadowLamp = new GameObject();
-	shadowLamp->addComponent(new SpotLight("materials/light.material.xml", 80.0f, 25.0f));
+	shadowLamp->addComponent(new SpotLight("materials/light.material.xml", 80.0f, 250.0f));
 	shadowLamp->getComponent<SpotLight>()->setLightRotation(Vector3(-60.0f, 90.0f, 0));
-	shadowLamp->getComponent<SpotLight>()->setColor(Vector3::ONE * 0.5f);
-	shadowLamp->getTransform()->setPosition(Vector3(10, 10, 0));
+	shadowLamp->getComponent<SpotLight>()->setColor(Vector3::ONE );
+	shadowLamp->getTransform()->setPosition(Vector3(50, 50, 0));
 	shadowLamp->getComponent<SpotLight>()->setShadowMaps(1);
 	addObject(shadowLamp);
 
@@ -61,10 +62,39 @@ void Application1::customSetupFunction()
 
 	GameObject* plane = new GameObject();
 	plane->addComponent(new MeshRenderer("models/Plane/Plane.scene.xml"));
-	plane->getTransform()->setScale(Vector3(10.0f));
-	plane->addComponent(new GroundPlaneCollider());
-	plane->addComponent(new RigidBody(plane->getComponent<GroundPlaneCollider>(), 0.0f));
+	plane->getTransform()->setScale(Vector3(1.0f));
+	plane->addComponent(new TriangleMeshColliderStatic(plane->getComponent<MeshRenderer>()));
+	plane->addComponent(new RigidBody(plane->getComponent<TriangleMeshColliderStatic>(), 0.0f));
+	plane->getTransform()->setPosition(Vector3::ZERO);
 	addObject(plane);
+
+	for (unsigned int i=0; i < Constant_NumCubes; i++)
+	{
+		cubes[i] = new GameObject();
+		cubes[i]->addComponent(new MeshRenderer("models/Cube/Cube.scene.xml"));
+
+		cubes[i]->getTransform()->setPosition(Vector3(Math::randomFloatInRange(-25.0f, 25.0f), 2.0f, Math::randomFloatInRange(-25.0f, 25.0f)));
+		addObject(cubes[i]);
+	}
+
+//	GameObject* plane2 = new GameObject();
+//	plane2->addComponent(new GroundPlaneCollider());
+//	plane2->addComponent(new RigidBody(plane2->getComponent<GroundPlaneCollider>(), 0.0f));
+//	addObject(plane2);
+	Modules::gui().addPanel("Settings");
+}
+
+void Application1::customStartFunction()
+{
+	for (unsigned int i = 0; i < Constant_NumCubes; i++)
+	{
+		Vector3 pt = Vector3(Math::randomFloatInRange(-25.0f, 25.0f),
+				25.0f, Math::randomFloatInRange(-25.0f, 25.0f));
+		cubes[i]->getTransform()->position = Modules::physics().rayCastComplex(pt, -Vector3::UP, 28.0f).point + Vector3::UP * 1.5f;
+		cubes[i]->addComponent(new BoxCollider(Vector3::ONE * 2.0f));
+		cubes[i]->addComponent(new RigidBody(cubes[i]->getComponent<BoxCollider>(), 0.0f));
+		cubes[i]->start();
+	}
 }
 
 Vector3 targetPoint = Vector3::ZERO;
@@ -93,17 +123,25 @@ void Application1::customLogicLoop()
 
 	for (unsigned int i=0; i < Constant_NumMinifigs; i++)
 	{
+		if (runners[i] == nullptr)
+			continue;
 		GameObject* runner = runners[i];
+		if (runner->getTransform()->getPosition().y < -2.0f)
+		{
+//			delete runner; StartHere deletion of objects
+			continue;
+		}
+
 		float speed = runner->getComponent<RigidBody>()->getVelocity().lengthSquared();
 		bool running = (speed > Math::Epsilon);
 
 		Vector3 ptToTarget = targetPoint - runner->getTransform()->getPosition();
+		Modules::debug().drawLine(runners[i]->getTransform()->getPosition(), targetPoint, Vector3::FORWARD);
 
 		if (ptToTarget.lengthSquared() > 2.0f)
-			runner->getComponent<RigidBody>()->applyForce(ptToTarget, ForceMode::Impulse);
+			runner->getComponent<RigidBody>()->applyForce(Vector3(ptToTarget.x, 0, ptToTarget.z).normalized() * Minifig::speed, ForceMode::Force);
 		else
-			runner->getComponent<RigidBody>()->applyForce(runner->getComponent<RigidBody>()->getVelocity() * -3.0f, ForceMode::Impulse);
-
+			runner->getComponent<RigidBody>()->setVelocity(Vector3::ZERO);
 
 		runner->getTransform()->lookInDirection(runner->getComponent<RigidBody>()->getVelocityHorizontal());
 
@@ -114,7 +152,7 @@ void Application1::customLogicLoop()
 		}
 	}
 
-	std::cout << Time::fps << std::endl;
+//	std::cout << Time::fps << std::endl;
 
 }
 

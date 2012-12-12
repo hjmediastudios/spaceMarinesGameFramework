@@ -13,6 +13,8 @@ const Matrix4 Matrix4::IDENTITY = Matrix4();
 
 const Quaternion Quaternion::IDENTITY = Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
 
+const Vector4 Vector4::ONE = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+
 namespace Math
 {
 std::vector<std::string> splitString(const std::string &text, char* delims, unsigned short maxParts)

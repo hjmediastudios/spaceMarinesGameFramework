@@ -15,7 +15,8 @@ class Application
 public:
 	Application(const char* assetPath, const char* renderingPipeline, const Vector2 &windowSize, bool drawDebug);
 	virtual ~Application();
-	virtual void customSetupFunction() = 0;
+	virtual void customInitFunction() = 0;
+	virtual void customStartFunction() = 0;
 	virtual void customLogicLoop() = 0;
 	void start();
 protected:

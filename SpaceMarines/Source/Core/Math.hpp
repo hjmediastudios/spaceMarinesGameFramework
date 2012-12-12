@@ -436,7 +436,21 @@ public:
 		return Vector4(x*f, y*f, z*f, w*f);
 	}
 	btVector4 bullet() { return btVector4(x, y, z, w); }
+	static const Vector4 ONE;
 };
+
+namespace Math
+{
+static inline unsigned int colorToUnsignedInt(const Vector4 &vec)
+{
+	unsigned char r = (unsigned char) Math::clamp(vec.x * 255.0f, 0.0f, 255.0f);
+	unsigned char g = (unsigned char) Math::clamp(vec.y * 255.0f, 0.0f, 255.0f);
+	unsigned char b = (unsigned char) Math::clamp(vec.z * 255.0f, 0.0f, 255.0f);
+	unsigned char a = (unsigned char) Math::clamp(vec.z * 255.0f, 0.0f, 255.0f);
+
+	return (r) | (g << 8) | (b << 16) | (a << 24);
+}
+}
 
 class Matrix3
 {

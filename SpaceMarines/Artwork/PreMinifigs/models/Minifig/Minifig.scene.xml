@@ -1,0 +1,81 @@
+<Model name="Minifig" geometry="models/Minifig/Minifig.geo" lodDist1="25">
+    <Joint name="Root" rx="90" ry="0" rz="-0" jointIndex="1">
+        <Joint name="IK.Leg.R" tx="-0.17271" ty="-0.03431" tz="0.11656" rx="90" ry="0" rz="180" jointIndex="2"/>
+        <Joint name="IK.Leg.L" tx="0.17271" ty="-0.03431" tz="0.11656" rx="90" ry="0" rz="180" jointIndex="3"/>
+        <Joint name="Pole.Leg.R" tx="-0.17271" ty="0.30427" tz="-0.29536" rx="90" ry="0" rz="-180" jointIndex="4"/>
+        <Joint name="Pole.Leg.L" tx="0.17271" ty="0.30427" tz="-0.29536" rx="90" ry="0" rz="-180" jointIndex="5"/>
+        <Joint name="Hips" tx="-0" ty="0.00038" tz="-0.50072" rx="-0.103672" ry="-3.64155e-07" rz="3.64144e-07" jointIndex="6">
+            <Joint name="Torso.Lower" tx="-0" ty="-0" tz="-0.20773" rx="0.10368" ry="3.63497e-07" rz="-3.63508e-07" jointIndex="7">
+                <Joint name="Torso.Middle" tx="-0" ty="-0" tz="-0.22966" rx="0" ry="-2.8249e-28" rz="-4.55277e-21" jointIndex="8">
+                    <Joint name="Torso.Upper" tx="-0" ty="0" tz="-0.1907" rx="-1.79129e-11" ry="2.42296e-12" rz="-3.2093e-05" jointIndex="9">
+                        <Joint name="IK.Arm.L" tx="1.00898" ty="0.00676" tz="0.00081" rx="3.62986e-05" ry="-90" rz="90" jointIndex="10"/>
+                        <Joint name="IK.Arm.R" tx="-1.00898" ty="0.00676" tz="0.0008" rx="-3.12896e-05" ry="90" rz="-90" jointIndex="11"/>
+                        <Joint name="Head" tx="0" ty="0" tz="-0.10371" rx="-1.79129e-11" ry="-2.42297e-12" rz="3.2093e-05" jointIndex="12"/>
+                        <Joint name="Bicep.L" tx="0.26834" ty="0.00338" tz="0.00419" rx="3.59016e-05" ry="-88.0129" rz="88.0129" jointIndex="13">
+                            <Joint name="Forearm.L" tx="-0" ty="0" tz="-0.19497" rx="-1.98594" ry="-0.068936" rz="1.98833" jointIndex="14">
+                                <Joint name="Wrist.L" tx="0" ty="0" tz="-0.22432" rx="-11.6625" ry="-2.74323" rz="12.2304" jointIndex="15">
+                                    <Joint name="Thumb.2.L" tx="0.06835" ty="-0.01884" tz="-0.11022" rx="-2.5786" ry="-13.6272" rz="0.0587432" jointIndex="16">
+                                        <Joint name="Thumb.3.L" tx="0" ty="-0" tz="-0.06376" rx="6.04728" ry="37.6716" rz="3.09419" jointIndex="17">
+                                            <Joint name="Thumb.4.L" tx="-0" ty="-0" tz="-0.06235" rx="7.53034" ry="37.4678" rz="2.66407" jointIndex="18"/>
+                                        </Joint>
+                                    </Joint>
+                                    <Joint name="Finger.2.L" tx="-0.07245" ty="0.01018" tz="-0.11094" rx="3.36804" ry="20.7603" rz="1.34907" jointIndex="19">
+                                        <Joint name="Finger.3.L" tx="0" ty="-0" tz="-0.05221" rx="-7.12853" ry="-35.1728" rz="2.09424" jointIndex="20">
+                                            <Joint name="Finger.4.L" tx="0" ty="0" tz="-0.06049" rx="-7.33181" ry="-36.9491" rz="1.97897" jointIndex="21"/>
+                                        </Joint>
+                                    </Joint>
+                                </Joint>
+                            </Joint>
+                        </Joint>
+                        <Joint name="Bicep.R" tx="-0.26834" ty="0.00338" tz="0.00419" rx="-3.0779e-05" ry="88.0128" rz="-88.0129" jointIndex="22">
+                            <Joint name="Forearm.R" tx="-0" ty="0" tz="-0.19497" rx="-1.98594" ry="0.068936" rz="-1.98833" jointIndex="23">
+                                <Joint name="Wrist.R" tx="-0" ty="-0" tz="-0.22432" rx="-11.6625" ry="2.74323" rz="-12.2304" jointIndex="24">
+                                    <Joint name="Thumb.2.R" tx="-0.06835" ty="-0.01884" tz="-0.11022" rx="-2.5786" ry="13.6272" rz="-0.0587575" jointIndex="25">
+                                        <Joint name="Thumb.3.R" tx="0" ty="0" tz="-0.06376" rx="6.04728" ry="-37.6716" rz="-3.09415" jointIndex="26">
+                                            <Joint name="Thumb.4.R" tx="0" ty="-0" tz="-0.06236" rx="7.53034" ry="-37.4678" rz="-2.66404" jointIndex="27"/>
+                                        </Joint>
+                                    </Joint>
+                                    <Joint name="Finger.2.R" tx="0.07245" ty="0.01018" tz="-0.11094" rx="3.36804" ry="-20.7603" rz="-1.34904" jointIndex="28">
+                                        <Joint name="Finger.3.R" tx="0" ty="-0" tz="-0.05221" rx="-7.12853" ry="35.1728" rz="-2.09427" jointIndex="29">
+                                            <Joint name="Finger.4.R" tx="0" ty="-0" tz="-0.06049" rx="-7.3318" ry="36.9491" rz="-1.979" jointIndex="30"/>
+                                        </Joint>
+                                    </Joint>
+                                </Joint>
+                            </Joint>
+                        </Joint>
+                    </Joint>
+                </Joint>
+            </Joint>
+            <Joint name="Thigh.L" tx="0.17271" ty="-0" tz="0" rx="-0.392772" ry="-180" rz="-180" jointIndex="31">
+                <Joint name="Shin.L" tx="-0" ty="-0" tz="-0.26776" rx="7.55344" ry="1.32096e-14" rz="4.75398e-08" jointIndex="32">
+                    <Joint name="Foot.L" tx="0" ty="-0" tz="-0.16798" rx="-82.1575" ry="180" rz="5.00896e-06" jointIndex="33">
+                        <Joint name="Toes.L" tx="0" ty="0" tz="-0.13224" rx="-3.79152e-22" ry="-0" rz="-5.36412e-06" jointIndex="34"/>
+                    </Joint>
+                </Joint>
+            </Joint>
+            <Joint name="Thigh.R" tx="-0.17271" ty="-0" tz="0" rx="-0.392772" ry="-180" rz="-180" jointIndex="35">
+                <Joint name="Shin.R" tx="-0" ty="-0" tz="-0.26776" rx="7.55344" ry="1.32096e-14" rz="4.75398e-08" jointIndex="36">
+                    <Joint name="Foot.R" tx="-0" ty="0" tz="-0.16798" rx="-82.1575" ry="180" rz="5.00896e-06" jointIndex="37">
+                        <Joint name="Toes.R" tx="0" ty="0" tz="-0.13224" rx="-3.79152e-22" ry="-0" rz="-5.36412e-06" jointIndex="38"/>
+                    </Joint>
+                </Joint>
+            </Joint>
+        </Joint>
+        <Joint name="Master.Leg.R" tx="-0.17271" ty="-0.03198" tz="0.02815" rx="90" ry="0" rz="180" jointIndex="39">
+            <Joint name="Control.Toes.R" tx="0" ty="0" tz="-0.10932" rx="0" ry="-0" rz="5.00896e-06" jointIndex="40"/>
+        </Joint>
+        <Joint name="Master.Leg.L" tx="0.17271" ty="-0.03198" tz="0.02815" rx="90" ry="0" rz="180" jointIndex="41">
+            <Joint name="Control.Toes.L" tx="0" ty="-0" tz="-0.10932" rx="0" ry="-0" rz="5.00896e-06" jointIndex="42"/>
+        </Joint>
+    </Joint>
+    <Mesh name="Minifig_lod0" material="materials/Blue.material.xml" batchStart="0" batchCount="1146" vertRStart="0" vertREnd="383" lodLevel="0">
+        <Mesh name="Minifig_lod00" material="materials/Decals.material.xml" batchStart="1146" batchCount="402" vertRStart="384" vertREnd="519" lodLevel="0"/>
+        <Mesh name="Minifig_lod01" material="materials/Red.material.xml" batchStart="1548" batchCount="1356" vertRStart="520" vertREnd="837" lodLevel="0"/>
+        <Mesh name="Minifig_lod02" material="materials/Yellow.material.xml" batchStart="2904" batchCount="3396" vertRStart="838" vertREnd="1738" lodLevel="0"/>
+    </Mesh>
+    <Mesh name="Minifig_lod0" material="materials/Red.material.xml" batchStart="6300" batchCount="558" vertRStart="1739" vertREnd="2078" lodLevel="1">
+        <Mesh name="Minifig_lod10" material="materials/Yellow.material.xml" batchStart="6858" batchCount="1224" vertRStart="2078" vertREnd="2848" lodLevel="1"/>
+        <Mesh name="Minifig_lod11" material="materials/Decals.material.xml" batchStart="8082" batchCount="258" vertRStart="2849" vertREnd="2950" lodLevel="1"/>
+        <Mesh name="Minifig_lod12" material="materials/Blue.material.xml" batchStart="8340" batchCount="318" vertRStart="2951" vertREnd="3148" lodLevel="1"/>
+    </Mesh>
+</Model>

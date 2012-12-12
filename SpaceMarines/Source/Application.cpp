@@ -42,13 +42,14 @@ bool Application::init()
 	Modules::setScreenSize(screenSize);
 	Modules::init();
 
+
 	return true;
 }
 
 void Application::start()
 {
 	init();
-	customSetupFunction();
+	customInitFunction();
 
 	Modules::renderer().start();
 
@@ -58,6 +59,8 @@ void Application::start()
 	}
 
 	std::cout << "Done starting\n";
+
+	customStartFunction();
 
 	Time::time_d = 0.0;
 	double currentTime = glfwGetTime();

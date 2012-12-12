@@ -61,6 +61,11 @@ Vector3 RigidBody::getVelocity() const
 	return rigidBody->getLinearVelocity();
 }
 
+void RigidBody::setVelocity(const Vector3 &vel)
+{
+	rigidBody->setLinearVelocity(vel.bullet());
+}
+
 Vector3 RigidBody::getVelocityHorizontal() const
 {
 	btVector3 vel = rigidBody->getLinearVelocity();

@@ -11,36 +11,37 @@ GUI::GUI(Renderer* renderer)
 {
 	if (renderer == nullptr) throw Exception("Attempted to create a GUI module with a null renderer");
 	this->renderer = renderer;
-
-	Lvbo = 0;
-	Libo = 0;
-	guiShader = nullptr; //TODO shader
+	hey = 0.0f;
 }
 
 GUI::~GUI()
 {
+	TwTerminate();
 }
 
 bool GUI::init()
 {
-	glGenBuffers(1, &Lvbo);
-	glBindBuffer(GL_ARRAY_BUFFER, Lvbo);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	if (!renderer) throw Exception("Attempting to create a GUI without a renderer.");
+	TwInit(TW_OPENGL, nullptr);
+	TwWindowSize(renderer->getScreenSize().x, renderer->getScreenSize().y);
 
-	glGenBuffers(1, &Libo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Libo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 	return true;
 }
 
+void GUI::addPanel(const char* name)
+{
+	TwBar* tweakBar;
+	tweakBar = TwNewBar(name); //TODO GUIPanel object
+	TwAddVarRW(tweakBar, "Variable", TW_TYPE_FLOAT, &hey, "");
+}
+
+
 void GUI::render()
 {
+	TwDraw();
 }
 
-void GUI::drawRectangle()
-{
-
-}
 
 } /* namespace Module */
 } /* namespace SpaceMarines */

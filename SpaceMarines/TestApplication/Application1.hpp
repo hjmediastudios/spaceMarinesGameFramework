@@ -9,7 +9,7 @@ class Minifig : public GameObject
 public:
 	Minifig(const Vector3 &position) : GameObject()
 	{
-		addComponent(new AnimatedMeshRenderer("models/Mini3/Mini3.scene.xml"));
+		addComponent(new AnimatedMeshRenderer("models/Minifig/Minifig.scene.xml"));
 		getComponent<AnimatedMeshRenderer>()->addAnimation("animations/Minifig/Legs_Run.anim", "Run", "Root");
 		getComponent<AnimatedMeshRenderer>()->addAnimation("animations/Minifig/Body_Run.anim", "Body_Run", "Torso.Lower");
 		transform.setPosition(position);
@@ -18,18 +18,22 @@ public:
 		addComponent(new RigidBody(getComponent<CapsuleCollider>(), 185.0f));
 		getComponent<RigidBody>()->setLockRotation(true);
 	}
+	static float speed;
 };
 
 class Application1 : public Application
 {
 public:
 	Application1(const char* assetPath, const char* renderingPipeline, const Vector2 &windowSize, bool drawDebug);
-	void customSetupFunction();
+	void customInitFunction();
 	void customLogicLoop();
+	void customStartFunction();
 	virtual ~Application1();
 private:
 	static const unsigned int Constant_NumMinifigs = 50;
 	GameObject* runners[Constant_NumMinifigs];
+	static const unsigned int Constant_NumCubes = 50;
+	GameObject* cubes[Constant_NumCubes];
 };
 
 } /* namespace SpaceMarines */

@@ -85,8 +85,10 @@ RayCastHit PhysicsWorld::rayCastComplex(const Vector3 &start, const Vector3 &end
 		hit.normal = callback.m_hitNormalWorld;
 	}
 	else
+	{
 		hit.hasHit = false;
-
+		hit.normal = Vector3::UP;
+	}
 	return hit;
 }
 

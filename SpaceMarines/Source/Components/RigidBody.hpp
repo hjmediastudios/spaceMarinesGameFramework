@@ -31,6 +31,7 @@ public:
 	void fixedUpdate();
 	Vector3 getVelocity() const;
 	Vector3 getVelocityHorizontal() const;
+	void setVelocity(const Vector3 &vel = Vector3::ZERO);
 
 	void applyForce(const Vector3 &force, ForceMode::List mode = ForceMode::Force);
 	void applyForceAtRelativePoint(const Vector3 &force, const Vector3 &point, ForceMode::List mode = ForceMode::Force);

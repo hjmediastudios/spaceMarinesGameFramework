@@ -17,11 +17,22 @@ MeshRenderer::~MeshRenderer()
 
 void MeshRenderer::start()
 {
+	if (modelNode != 0) return;
 	if (gameObject == nullptr) throw Exception("SpotLight isn't attached to a GameObject");
 	if (!h3dIsResLoaded(modelResource)) throw Exception("Model resource is not loaded!");
 	modelNode = h3dAddNodes(gameObject->getTransform()->getNode(), modelResource);
 
 	if (modelNode == 0) throw Exception("Model node is not added!");
+}
+
+H3DNode MeshRenderer::getModelNode() const
+{
+	return modelNode;
+}
+
+void MeshRenderer::getMeshParameters(H3DNode node)
+{
+
 }
 
 

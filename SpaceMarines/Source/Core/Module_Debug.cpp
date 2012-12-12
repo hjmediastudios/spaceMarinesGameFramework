@@ -33,7 +33,7 @@ void DebugDrawer::setDrawMode(DebugDrawMode::List mode)
 	}
 	else
 	{
-		setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+		setDebugMode(btIDebugDraw::DBG_MAX_DEBUG_DRAW_MODE);
 	}
 	this->mode = mode;
 }

@@ -15,6 +15,8 @@ public:
 	virtual ~MeshRenderer();
 	void start();
 	virtual const char* getComponentType() const { return "MeshRenderer"; }
+	H3DNode getModelNode() const;
+	static void getMeshParameters(H3DNode node);
 protected:
 	H3DRes modelResource;
 	H3DNode modelNode;

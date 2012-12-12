@@ -5,8 +5,11 @@
 #include "Module_Debug.hpp"
 #include "../Components/Camera.hpp"
 
+#include <AntTweakBar.h>
+
 namespace SpaceMarines
 {
+
 namespace Module
 {
 
@@ -17,15 +20,10 @@ public:
 	virtual ~GUI();
 	void render();
 	bool init();
+	void addPanel(const char* name);
 private:
-	Shader* guiShader;
-	void drawRectangle();
 	Renderer* renderer;
-
-	GLuint Lvbo;
-	GLuint Libo;
-	std::vector<DebugVertex> vertices;
-	std::vector<unsigned int> indices;
+	float hey;
 };
 
 } /* namespace Module */

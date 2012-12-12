@@ -5,6 +5,7 @@
  *      Author: nick
  */
 
+#include "Core.hpp"
 #include "Module_Renderer.hpp"
 #include <GL/gl.h>
 #include <GL/glew.h>
@@ -104,6 +105,7 @@ void Renderer::update()
 	h3dRender(camera->cameraNode);
 	h3dFinalizeFrame();
 	debugDrawer->render();
+	Modules::gui().render();
     glfwSwapBuffers();
 }
 

@@ -46,6 +46,7 @@ bool Modules::init()
 	if (!module_renderer->init()) throw Exception("Error initializing Renderer module");
 	module_physics->setDebugDrawer(module_renderer->getDebugDrawer());
 	module_input->screenSize = module_renderer->getScreenSize();
+	if (!module_gui->init()) throw Exception("Error initializing GUI");
 	_isInitialized = true;
 	return true;
 }
