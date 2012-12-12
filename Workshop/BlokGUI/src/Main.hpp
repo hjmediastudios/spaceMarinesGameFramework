@@ -3,6 +3,8 @@
 #include <GL/glfw.h>
 #include <GL/gl.h>
 #include <string>
+#include <iostream>
+#include <math.h>
 
 namespace BlokGUI
 {

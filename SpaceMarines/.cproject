@@ -27,6 +27,7 @@
 								<option id="gnu.cpp.compiler.exe.debug.option.debugging.level.1308371735" name="Debug Level" superClass="gnu.cpp.compiler.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1335519" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/usr/local/include/bullet"/>
+									<listOptionValue builtIn="false" value="/home/nick/Apps/AntTweakBar/include"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.998702637" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++0x" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.989128165" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -49,6 +50,7 @@
 									<listOptionValue builtIn="false" value="BulletCollision"/>
 									<listOptionValue builtIn="false" value="LinearMath"/>
 									<listOptionValue builtIn="false" value="tinyxml2"/>
+									<listOptionValue builtIn="false" value="AntTweakBar"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.419766692" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/local/lib"/>
