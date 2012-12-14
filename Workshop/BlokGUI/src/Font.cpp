@@ -13,6 +13,7 @@ Core::Font::Font(const char* fontPath, unsigned short size)
 		throw Exception("Error creating font");
 	font->FaceSize(size*FontScalingFactor);
 	scalingFactorInv = 1.0f / FontScalingFactor;
+	heightf = font->FaceSize() * scalingFactorInv;
 }
 
 Core::Font::~Font()
@@ -30,11 +31,15 @@ void Core::Font::render(const char* text, float x, float y, unsigned int color, 
 	{
 	case 1:
 		transX = x - font->Advance(text)*0.5f*scalingFactorInv;
-		transY = y + font->FaceSize() * scalingFactorInv, 0.0f;
+		transY = y + font->FaceSize() * scalingFactorInv;
+		break;
+	case 2:
+		transX = x - font->Advance(text)*scalingFactorInv;
+		transY = y + font->FaceSize() * scalingFactorInv;
 		break;
 	default:
 		transX = x;
-		transY = y, 0.0f;
+		transY = y + font->FaceSize()*scalingFactorInv;
 		break;
 	}
 	glTranslatef(transX, transY, 0.0f);
@@ -44,9 +49,9 @@ void Core::Font::render(const char* text, float x, float y, unsigned int color, 
 	glTranslatef(-transX, -transY, 0.0f);
 }
 
-unsigned short Core::Font::height() const
+float Core::Font::height() const
 {
-	return font->FaceSize() * scalingFactorInv;
+	return heightf;
 }
 
 }

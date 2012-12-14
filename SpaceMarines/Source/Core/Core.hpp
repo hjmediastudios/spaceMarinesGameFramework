@@ -11,6 +11,14 @@ namespace SpaceMarines
 
 class Modules
 {
+private:
+	//Event handling
+	struct Events
+	{
+//		Event<void> start;
+	};
+
+	static Events _events;
 public:
 	static bool init();
 	static void cleanup();
@@ -24,6 +32,7 @@ public:
 	static Module::DebugDrawer& debug();
 	static Module::Input &input();
 	static Module::GUI &gui();
+	static Modules::Events &events();
 
 private:
 	static std::string assetPath;

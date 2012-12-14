@@ -3,10 +3,10 @@
 namespace BlokGUI
 {
 
-void Core::renderText(int x, int y, const char* text, unsigned int color, short alignment)
+void Core::renderText(int x, int y, const char* text, unsigned int color, short alignment, char flags)
 {
 	if (!systemFont) return;
-	systemFont->render(text, x, y, color, alignment);
+	systemFont->render(text, x, y + (flags == 0 ? 0 : systemFont->height()/2), color, alignment);
 }
 
 void Core::renderPolygon(const float* coords, unsigned int numCoords, float fth, unsigned int color)
@@ -81,16 +81,6 @@ void Core::renderPolygon(const float* coords, unsigned int numCoords, float fth,
 	}
 
 	glEnd();
-
-
-//	glColor4ubv((GLubyte*) &color);
-//	glBegin(GL_TRIANGLE_FAN);
-//
-//	for (unsigned int i = 0; i < numCoords; i += 2)
-//	{
-//		glVertex2f(coords[2*i + 0], coords[2*i + 1]);
-//	}
-//	glEnd();
 }
 
 void Core::renderRect(float x, float y, float w, float h, float fth, unsigned int color)
@@ -193,7 +183,6 @@ void Core::renderGUI()
 	glBlendEquation(GL_ADD);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-
 	for (unsigned int i=0; i < commandQueueSize; i++)
 	{
 		Command &cmd = commandQueue[i];
@@ -206,7 +195,7 @@ void Core::renderGUI()
 				renderRoundedRect(cmd.rect.x, cmd.rect.y, cmd.rect.w, cmd.rect.h, cmd.rect.rounding, 1.25f, cmd.color);
 			break;
 		case CommandType::Text:
-			renderText(cmd.text.x, cmd.text.y, cmd.text.text, cmd.color, cmd.text.align);
+			renderText(cmd.text.x, cmd.text.y, cmd.text.text, cmd.color, cmd.text.align, cmd.flags);
 			break;
 		case CommandType::Line:
 			renderLine(cmd.line.x0, cmd.line.y0, cmd.line.x1, cmd.line.y1, cmd.line.radius, 1.25f, cmd.color);

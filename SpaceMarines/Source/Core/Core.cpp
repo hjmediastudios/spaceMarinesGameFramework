@@ -14,6 +14,8 @@ Module::PhysicsWorld* Modules::module_physics = nullptr;
 Module::Input* Modules::module_input = nullptr;
 Module::GUI* Modules::module_gui = nullptr;
 
+Modules::Events Modules::_events = Modules::Events();
+
 void Modules::setAssetPath(const char* assetPath)
 {
 	Modules::assetPath = std::string(assetPath);
@@ -47,7 +49,9 @@ bool Modules::init()
 	module_physics->setDebugDrawer(module_renderer->getDebugDrawer());
 	module_input->screenSize = module_renderer->getScreenSize();
 	if (!module_gui->init()) throw Exception("Error initializing GUI");
+
 	_isInitialized = true;
+
 	return true;
 }
 
@@ -74,6 +78,8 @@ Module::Input& Modules::input()
 	{ return *module_input; }
 Module::GUI& Modules::gui()
 	{ return *module_gui; }
+Modules::Events& Modules::events()
+	{ return _events; }
 
 }
 

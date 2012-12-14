@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <math.h>
+#include <sstream>
 
 namespace BlokGUI
 {
@@ -17,4 +18,15 @@ namespace BlokGUI
 	private:
 		std::string message;
 	};
+
+	static float clamp(float val, float min, float max)
+	{
+		if (val > max)
+			return max;
+		else if (val < min)
+			return min;
+		else
+			return val;
+	}
+
 }

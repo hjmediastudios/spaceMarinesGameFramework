@@ -4,16 +4,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/BlokGUI_AutoLayout.cpp \
 ../src/BlokGUI_Command.cpp \
 ../src/BlokGUI_Render.cpp \
 ../src/Font.cpp 
 
 OBJS += \
+./src/BlokGUI_AutoLayout.o \
 ./src/BlokGUI_Command.o \
 ./src/BlokGUI_Render.o \
 ./src/Font.o 
 
 CPP_DEPS += \
+./src/BlokGUI_AutoLayout.d \
 ./src/BlokGUI_Command.d \
 ./src/BlokGUI_Render.d \
 ./src/Font.d 

@@ -31,11 +31,25 @@ Core::Core(int windowX, int windowY)
     input.scroll = 0;
     input.mouseL = false; input.mouseLPressed = false; input.mouseLReleased = false;
     input.mouseR = false; input.mouseRPressed = false; input.mouseRReleased = false;
+
+    activeID = 0;
+    lastActiveID = 0;
+
+    buttonHeight = 24;
+    buttonWidth = buttonHeight * 6;
+    halfButtonWidth = buttonHeight * 3;
+    padding = 4;
+
+    maxX = 0;
+    maxY = 0;
+    lastX = 0;
 }
 
 bool Core::setSystemFont(const char* fontPath, unsigned short size)
 {
 	systemFont = new Font(fontPath, size);
+//    buttonHeight = systemFont->height();
+//    buttonWidth = buttonWidth * 6;
 	return (systemFont != nullptr);
 }
 
@@ -53,7 +67,6 @@ void Core::beginFrame(int mouseX, int mouseY, int scroll, bool mouseL, bool mous
 	input.mouseRPressed = !input.mouseR && mouseR;
 	input.mouseRReleased = input.mouseR && !mouseR;
 	input.mouseR = mouseR;
-
 }
 
 void Core::endFrame()
@@ -61,6 +74,10 @@ void Core::endFrame()
 	renderGUI();
 	//Render
 
+	if (!input.mouseL)
+		lastActiveID = 0;
+
+	activeID = 0;
 	commandQueueSize = 0;
 	textPoolSize = 0;
 	glDisable(GL_BLEND);
@@ -78,6 +95,7 @@ const char* Core::allocateText(const char* text)
 
 void Core::drawText(int x, int y, const char* text, unsigned int color, TextAlign::List alignment, bool alignVCenter)
 {
+	activeID++;
 	if (commandQueueSize >= maxCommandQueueSize) return;
 	Command &cmd = commandQueue[commandQueueSize++];
 	cmd.type = CommandType::Text;
@@ -90,6 +108,7 @@ void Core::drawText(int x, int y, const char* text, unsigned int color, TextAlig
 }
 void Core::drawRect(int x, int y, int w, int h, unsigned int color)
 {
+	activeID++;
 	if (commandQueueSize >= maxCommandQueueSize) return;
 	Command &cmd = commandQueue[commandQueueSize++];
 	cmd.type = CommandType::Rect;
@@ -103,6 +122,7 @@ void Core::drawRect(int x, int y, int w, int h, unsigned int color)
 }
 void Core::drawRoundedRect(int x, int y, int w, int h, int rounding, unsigned int color)
 {
+	activeID++;
 	if (commandQueueSize >= maxCommandQueueSize) return;
 	Command &cmd = commandQueue[commandQueueSize++];
 	cmd.type = CommandType::Rect;
@@ -117,6 +137,7 @@ void Core::drawRoundedRect(int x, int y, int w, int h, int rounding, unsigned in
 
 void Core::drawLine(int x0, int y0, int x1, int y1, int width, unsigned int color)
 {
+	activeID++;
 	if (commandQueueSize >= maxCommandQueueSize) return;
 	Command &cmd = commandQueue[commandQueueSize++];
 	cmd.type = CommandType::Line;
@@ -142,10 +163,86 @@ bool Core::isMouseInRect(int x, int y, int w, int h)
 
 bool Core::drawButton(const char* text, int x, int y, int w, int h, unsigned int color, bool continuousActivation, unsigned int textColor)
 {
+	activeID++;
 	drawRoundedRect(x, y, w, h, 5, color);
 	drawText(x + w*0.5f, y+ h/2 - systemFont->height()/2, text, textColor, TextAlign::Center);
 
-	return (isMouseInRect(x, y, w, h) && (continuousActivation ? input.mouseL : input.mouseLReleased));
+	bool ret = false;
+	if (continuousActivation)
+	{
+		ret = input.mouseL && (isMouseInRect(x, y, w, h) || lastActiveID == activeID);
+	}
+	else
+	{
+		ret = (isMouseInRect(x, y, w, h) && input.mouseLReleased);
+	}
+	if (ret) lastActiveID = activeID;
+	return ret;
+}
+
+void Core::drawSlider(int x, int y, int w, int h, float* value, float valMin, float valMax, unsigned int sliderColor, unsigned int barColor)
+{
+	activeID++;
+	float sliderMargin = h / 8.0f;
+	float sliderWidth = w / 10.0f;
+
+	*value = clamp(*value, valMin, valMax);
+	float barFactor = (*value - valMin) / (valMax - valMin);
+
+	float sliderCenter = clamp(x + barFactor*w, x + sliderWidth*0.5f, x + w - sliderWidth*0.5f);
+	float sliderX = clamp(sliderCenter - sliderWidth*0.5f, x, x + w - sliderWidth);
+
+	drawRoundedRect(x, y, w, h, 4, barColor);
+	drawRoundedRect(clamp(sliderX, x, x + w - sliderWidth), y, sliderWidth, h, 4, sliderColor);
+
+	float halfHeight = h * 0.5f;
+	drawText(x - 3, y - halfHeight, toString(valMin), barColor, TextAlign::Right, true);
+	drawText(x + w + 3, y - halfHeight, toString(valMax), barColor, TextAlign::Left, true);
+
+	if (input.mouseL && (isMouseInRect(sliderX, y, sliderWidth, h) || lastActiveID == activeID))
+	{
+		lastActiveID = activeID;
+		*value = clamp(*value + (input.mouseX - sliderCenter) / ((float)w) * (valMax - valMin), valMin, valMax);
+		drawText(sliderCenter, y - systemFont->height() - 2, toString(*value), sliderColor, TextAlign::Center);
+	}
+}
+
+void Core::drawVSlider(int x, int y, int w, int h, float* value, float valMin, float valMax, unsigned int sliderColor, unsigned int barColor)
+{
+	activeID++;
+	float sliderMargin = w / 8.0f;
+	float sliderHeight = h / 10.0f;
+	float halfWidth = x + w/2;
+	*value = clamp(*value, valMin, valMax);
+	float barFactor = (*value - valMin) / (valMax - valMin);
+
+	float sliderY = y + h - barFactor*h;
+	float sliderCenter = sliderY + sliderHeight*0.5f;
+
+	drawRoundedRect(x+sliderMargin, y, w-sliderMargin, h, 4, barColor);
+	drawRoundedRect(x, clamp(sliderY, y, y + h - sliderHeight), w, sliderHeight, 4, sliderColor);
+
+	drawText(halfWidth, y - systemFont->height() - 2, toString(valMax), barColor, TextAlign::Center, true);
+	drawText(halfWidth, y + h, toString(valMin), barColor, TextAlign::Center, true);
+
+	if (input.mouseL && (isMouseInRect(x, sliderY, w, sliderHeight) || lastActiveID == activeID))
+	{
+		lastActiveID = activeID;
+		*value = clamp(*value + (sliderCenter - input.mouseY) / ((float)h) * (valMax - valMin), valMin, valMax);
+	}
+}
+
+void Core::drawCheckBox(int x, int y, int w, int h, bool* value, unsigned int color)
+{
+	activeID++;
+	float margin = w/4.0f;
+	float margin2 = 2.0f * margin;
+	drawRoundedRect(x, y, w, h, 4, color);
+
+	if (isMouseInRect(x, y, w, h) && input.mouseLReleased)
+		*value = !(*value);
+	if (*value)
+		drawRoundedRect(x + margin, y + margin, w - margin2 + 1, h - margin2 + 1, 4, rgba255(180, 180, 180, 255));
 }
 
 }

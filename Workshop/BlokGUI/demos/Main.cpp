@@ -1,6 +1,7 @@
 #include <GL/glfw.h>
 #include "../src/BlokGUI.hpp"
 #include <iostream>
+#include <sstream>
 
 int main(int argc, char* argv[])
 {
@@ -15,32 +16,41 @@ int main(int argc, char* argv[])
 	core.setSystemFont("/home/nick/git/spaceMarinesGameFramework/Workshop/BlokGUI/assets/fonts/DroidSans.ttf", 12);
 	double time = glfwGetTime();
 	double newTime = 0.0;
-
+	float floatValue = 0.5f;
+	float floatValue1 = 2.0f;
+	bool checked = false;
 
 	int mouseX, mouseY, mouseScroll;
 	while (!glfwGetKey(GLFW_KEY_ESC))
 	{
 		//Select input
+		glClear(GL_COLOR_BUFFER_BIT);
 		glfwGetMousePos(&mouseX, &mouseY);
 		mouseScroll = glfwGetMouseWheel();
 
+
 		core.beginFrame(mouseX, mouseY, mouseScroll, glfwGetMouseButton(0), glfwGetMouseButton(1));
 
-		core.drawRoundedRect(590, 505, 10, 10, 5,
-				core.drawButton("Button 0", 500, 500, 80, 25, BlokGUI::Color::Blue, true, BlokGUI::Color::White) ? BlokGUI::Color::Green : BlokGUI::Color::Red);
+		core.beginPanel(10, 10);
+		core.button("Howdy");
+		if (core.button("Hey, boss!")) std::cout << "Hey\n";
+		core.newRow();
+		core.button("Howdy");
+		core.button("Howdy");
+		core.button("Howdy");
+		core.newRow();
+		core.label("Fig Speed");
+		core.slider(&floatValue, 0.0f, 1.0f);
 
-		core.drawRoundedRect(590, 535, 10, 10, 5,
-						core.drawButton("Button 1", 500, 530, 80, 25, BlokGUI::Color::Orange, true, BlokGUI::Color::White) ? BlokGUI::Color::Green : BlokGUI::Color::Red);
-		core.drawLine(600, 600, 800, 500, 2, BlokGUI::Color::LimeGreen);
-		core.endFrame();
-
-		glfwSwapBuffers();
+		core.endPanel();
 
 		//Time
 		newTime = glfwGetTime();
 		float frameTime = ((float) newTime) - ((float) time);
-		std::cout << 1.0f / (frameTime) << " fps\n";
 		time = newTime;
+
+		core.endFrame();
+		glfwSwapBuffers();
 	}
 	glfwTerminate();
 }

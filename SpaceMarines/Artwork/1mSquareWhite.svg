@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="128"
+   height="128"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="New document 1">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="3.959798"
+     inkscape:cx="76.876004"
+     inkscape:cy="65.330154"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:snap-page="true"
+     inkscape:object-nodes="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1056"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-924.36218)">
+    <rect
+       style="fill:#f4f4f4;fill-opacity:1;stroke:none"
+       id="rect3024"
+       width="128"
+       height="128"
+       x="0"
+       y="0"
+       transform="translate(0,924.36218)" />
+    <path
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#010101;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:6;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans"
+       d="M -0.34375 -3.03125 A 3.0003 3.0003 0 0 0 -0.625 -3 L -3 -3 L -3 -0.5625 A 3.0003 3.0003 0 0 0 -3 0.5 L -3 127.75 L -3 128 A 3.0052038 3.0052038 0 0 0 -3 128.34375 L -3 131 L -0.15625 131 L 0 131 A 3.0052038 3.0052038 0 0 0 0.125 131 L 127.75 131 L 128 131 A 3.0052038 3.0052038 0 0 0 128.03125 131 L 128.34375 131 L 131 131 L 131 128.15625 A 3.0052038 3.0052038 0 0 0 131 128 L 131 127.875 L 131 0.4375 A 3.0003 3.0003 0 0 0 131 -0.46875 L 131 -3 L 128.5625 -3 A 3.0003 3.0003 0 0 0 127.9375 -3.03125 A 3.0003 3.0003 0 0 0 127.625 -3 L 0.4375 -3 A 3.0003 3.0003 0 0 0 -0.03125 -3.03125 A 3.0003 3.0003 0 0 0 -0.34375 -3.03125 z M 7.25 3 L 120.75 3 L 77.4375 46.3125 L 85.9375 46.3125 L 125 7.25 L 125 120.75 L 85.9375 81.6875 L 77.4375 81.6875 L 120.75 125 L 7.25 125 L 50.5625 81.6875 L 42.0625 81.6875 L 3 120.75 L 3 7.25 L 42.0625 46.3125 L 50.5625 46.3125 L 7.25 3 z "
+       id="rect2985"
+       transform="translate(0,924.36218)" />
+    <g
+       id="g3001"
+       transform="translate(126.75573,-6.4213066)">
+      <flowRoot
+         transform="translate(163.44935,912.21235)"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         id="flowRoot2991"
+         xml:space="preserve"><flowRegion
+           id="flowRegion2993"><rect
+             y="57.289322"
+             x="-261.62952"
+             height="68.690376"
+             width="170.21071"
+             id="rect2995" /></flowRegion><flowPara
+           style="font-weight:bold;-inkscape-font-specification:Sans Bold"
+           id="flowPara2997">1m</flowPara></flowRoot>    </g>
+  </g>
+</svg>

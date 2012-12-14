@@ -18,6 +18,10 @@ public:
 		addComponent(new RigidBody(getComponent<CapsuleCollider>(), 185.0f));
 		getComponent<RigidBody>()->setLockRotation(true);
 	}
+	void startFunc()
+	{
+		std::cout << "Hey!\n" << std::endl;
+	}
 	static float speed;
 };
 
@@ -31,7 +35,7 @@ public:
 	virtual ~Application1();
 private:
 	static const unsigned int Constant_NumMinifigs = 50;
-	GameObject* runners[Constant_NumMinifigs];
+	Minifig* runners[Constant_NumMinifigs];
 	static const unsigned int Constant_NumCubes = 50;
 	GameObject* cubes[Constant_NumCubes];
 };

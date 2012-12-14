@@ -24,6 +24,7 @@ Application1::~Application1()
 	std::cout << "Done!\n";
 }
 
+
 void Application1::customInitFunction()
 {
 	Modules::debug().setDrawMode(DebugDrawMode::SystemOnly);
@@ -71,7 +72,7 @@ void Application1::customInitFunction()
 	for (unsigned int i=0; i < Constant_NumCubes; i++)
 	{
 		cubes[i] = new GameObject();
-		cubes[i]->addComponent(new MeshRenderer("models/Cube/Cube.scene.xml"));
+		cubes[i]->addComponent(new MeshRenderer("models/Box/Box.scene.xml"));
 
 		cubes[i]->getTransform()->setPosition(Vector3(Math::randomFloatInRange(-25.0f, 25.0f), 2.0f, Math::randomFloatInRange(-25.0f, 25.0f)));
 		addObject(cubes[i]);
@@ -90,7 +91,9 @@ void Application1::customStartFunction()
 	{
 		Vector3 pt = Vector3(Math::randomFloatInRange(-25.0f, 25.0f),
 				25.0f, Math::randomFloatInRange(-25.0f, 25.0f));
-		cubes[i]->getTransform()->position = Modules::physics().rayCastComplex(pt, -Vector3::UP, 28.0f).point + Vector3::UP * 1.5f;
+		RayCastHit hit = Modules::physics().rayCastComplex(pt, -Vector3::UP, 28.0f);
+		cubes[i]->getTransform()->position = hit.point + Vector3::UP * 0.5f;
+		cubes[i]->getTransform()->rotation = Quaternion::rotationBetweenVectors(Vector3::UP, hit.normal);
 		cubes[i]->addComponent(new BoxCollider(Vector3::ONE * 2.0f));
 		cubes[i]->addComponent(new RigidBody(cubes[i]->getComponent<BoxCollider>(), 0.0f));
 		cubes[i]->start();

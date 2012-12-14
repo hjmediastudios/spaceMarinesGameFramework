@@ -48,6 +48,8 @@ namespace SpaceMarines
 
 	typedef unsigned short Layer;
 	static const unsigned short Constant_MaxNumLayers = 10;
+
+	struct voidTemplateParameter{};
 }
 
 #include "Math.hpp"
