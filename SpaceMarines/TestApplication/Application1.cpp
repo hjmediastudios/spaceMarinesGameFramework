@@ -31,6 +31,7 @@ void Application1::customInitFunction()
 
 	for (size_t i = 0; i < Constant_NumMinifigs; i++)
 	{
+		std::cout << "Start!\n";
 		runners[i] = new Minifig(Vector3(
 				Math::randomFloatInRange(-15.0f, 15.0f),
 				Math::randomFloatInRange(5.0f, 10.0f),
@@ -159,7 +160,7 @@ void Application1::customLogicLoop()
 		}
 	}
 
-//	std::cout << Time::fps << std::endl;
+	std::cout << Time::fps << std::endl;
 
 }
 

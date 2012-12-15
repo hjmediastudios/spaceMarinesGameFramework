@@ -15,7 +15,7 @@ MeshRenderer::~MeshRenderer()
 	h3dRemoveNode(modelNode);
 }
 
-void MeshRenderer::start()
+void MeshRenderer::registerStart()
 {
 	if (modelNode != 0) return;
 	if (gameObject == nullptr) throw Exception("SpotLight isn't attached to a GameObject");

@@ -26,11 +26,13 @@ RigidBody::~RigidBody()
 	delete rigidBody;
 }
 
-void RigidBody::start()
+void RigidBody::registerStart()
 {
 	if (gameObject == nullptr) throw Exception("RigidBody doesn't have a GameObject");
 	if (collider == nullptr) throw Exception("RigidBody has no associated collider");
 	if (collider->collisionShape == nullptr) throw Exception("Collider's Bullet collider is null");
+
+	gameObject->eventFixedUpdate.addListener<RigidBody, &RigidBody::fixedUpdate>(this);
 
 	transform = gameObject->getTransform();
 	btDefaultMotionState* groundMotionState = new btDefaultMotionState(btTransform(

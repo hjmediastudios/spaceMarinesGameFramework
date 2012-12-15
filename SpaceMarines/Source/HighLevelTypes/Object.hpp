@@ -1,6 +1,8 @@
 #pragma once
 #include "../Core/Prerequisites.hpp"
+#include "../Core/Reflection.hpp"
 #include "Interfaces.hpp"
+#include "../Core/Event.hpp"
 
 namespace SpaceMarines
 {
@@ -47,36 +49,12 @@ public:
 		gameObject = nullptr;
 	}
 	virtual ~Component() {}
-	virtual void start() = 0;
-	virtual bool isActive() = 0;
+	virtual void registerStart() = 0;
 	virtual const char* getComponentType() const = 0;
 	void setGameObject(GameObject* obj) { gameObject = obj; }
 	GameObject* getGameObject() { return gameObject; }
 protected:
 	GameObject* gameObject;
-};
-
-class ActiveComponent : public Component
-{
-public:
-	static const ObjectTypeName type = ObjectType::ActiveComponent;
-	bool isActive() {return true;}
-	ActiveComponent() : Component() {}
-	virtual ~ActiveComponent() {}
-	virtual void start() = 0;
-	virtual void update() = 0;
-	virtual const char* getComponentType() const = 0;
-};
-
-class PassiveComponent : public Component
-{
-public:
-	static const ObjectTypeName type = ObjectType::PassiveComponent;
-	bool isActive() {return false;}
-	PassiveComponent() : Component() {}
-	virtual ~PassiveComponent() {}
-	virtual void start() = 0;
-	virtual const char* getComponentType() const = 0;
 };
 
 /************************************************************8
@@ -153,14 +131,15 @@ protected:
 class GameObject : public Object
 {
 public:
+	Event<> eventUpdate;
+	Event<> eventFixedUpdate;
+
 	static const ObjectTypeName type = ObjectType::GameObject;
 	GameObject() : Object(), transform(Vector3::ZERO, Quaternion::IDENTITY, Vector3::ONE)
 	{
 		parent = nullptr;
 		layer = 0;
 	}
-
-
 
 	Layer getLayer() const
 	{
@@ -172,18 +151,11 @@ public:
 	{
 		try
 		{
-			return (T*) activeComponents.at(typeid(T).name());
+			return (T*) components.at(GetTypeName<T>());
 		}
-		catch(std::exception ex)
+		catch(std::exception &ex)
 		{
-			try
-			{
-				return (T*) passiveComponents.at(typeid(T).name());
-			}
-			catch (std::exception ex)
-			{
-				return nullptr;
-			}
+			return nullptr;
 		}
 		return nullptr;
 	}
@@ -197,25 +169,14 @@ public:
 	template<typename T>
 	void addComponent(T* comp)
 	{
-		if (comp->isActive())
-			activeComponents.insert(std::pair<const char*, ActiveComponent*>(typeid(T).name(), (ActiveComponent*) comp));
-		else
-			passiveComponents.insert(std::pair<const char*, PassiveComponent*>(typeid(T).name(), (PassiveComponent*) comp));
-
-		HasFixedUpdate* compFixedUpdatable;
-		if ((compFixedUpdatable = dynamic_cast<HasFixedUpdate*>(comp)) != nullptr)
-			fixedUpdatables.push_back(compFixedUpdatable);
-
-		comp->setGameObject(this);
+		Component* c = dynamic_cast<Component*>(comp);
+		components.insert(std::pair<const char*, Component*>(GetTypeName<T>(), c));
+		c->setGameObject(this);
 	}
 
 	virtual ~GameObject()
 	{
-		for (std::map<const char*, ActiveComponent*>::iterator it = activeComponents.begin(); it != activeComponents.end(); it++)
-		{
-			delete it->second;
-		}
-		for (std::map<const char*, PassiveComponent*>::iterator it = passiveComponents.begin(); it != passiveComponents.end(); it++)
+		for (std::map<const char*, Component*>::iterator it = components.begin(); it != components.end(); it++)
 		{
 			delete it->second;
 		}
@@ -223,30 +184,21 @@ public:
 
 	void start()
 	{
-		for (std::map<const char*, ActiveComponent*>::iterator it = activeComponents.begin(); it != activeComponents.end(); it++)
+		for (std::map<const char*, Component*>::iterator it = components.begin(); it != components.end(); it++)
 		{
-			it->second->start();
-		}
-		for (std::map<const char*, PassiveComponent*>::iterator it = passiveComponents.begin(); it != passiveComponents.end(); it++)
-		{
-			it->second->start();
+			it->second->registerStart();
 		}
 	}
 
 	void update()
 	{
-		for (std::map<const char*, ActiveComponent*>::iterator it = activeComponents.begin(); it != activeComponents.end(); it++)
-		{
-			it->second->update();
-		}
+		eventUpdate.fire();
 		transform.update();
 	}
 	void fixedUpdate()
 	{
-		for (size_t i = 0; i < fixedUpdatables.size(); i++)
-		{
-			fixedUpdatables[i]->fixedUpdate();
-		}
+		eventFixedUpdate.fire();
+		transform.update();
 	}
 
 	Transform* getTransform()
@@ -272,10 +224,7 @@ protected:
 	Layer layer;
 	GameObject* parent;
 private:
-	std::map<const char*, ActiveComponent*> activeComponents;
-	std::map<const char*, PassiveComponent*> passiveComponents;
-	std::vector<HasFixedUpdate*> fixedUpdatables;
-
+	std::map<const char*, Component*> components;
 };
 
 }

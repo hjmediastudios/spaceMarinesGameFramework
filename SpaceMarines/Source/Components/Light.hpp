@@ -4,12 +4,12 @@
 namespace SpaceMarines
 {
 
-class Light : public PassiveComponent
+class Light : public Component
 {
 public:
 	Light(const char* lightMaterialResourceFilename);
 	virtual ~Light();
-	void start();
+	void registerStart();
 	void setColor(const Vector3 &color);
 protected:
 	H3DNode lightNode;

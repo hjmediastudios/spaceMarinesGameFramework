@@ -8,12 +8,12 @@ namespace SpaceMarines
 /*************************************
  * 	Base Collider class
  *************************************/
-class Collider : public PassiveComponent
+class Collider : public Component
 {
 public:
 	Collider(const Vector3 &offset) { collisionShape = nullptr; this->offset = offset; }
 	~Collider() { if (collisionShape != nullptr) delete collisionShape; }
-	void start()
+	void registerStart()
 	{
 		collisionShape = createCollisionShape();
 		collisionShape->setUserPointer(this);
@@ -80,7 +80,7 @@ public:
 protected:
 	btCollisionShape* createCollisionShape()
 	{
-		if (mesh->getModelNode() == 0) mesh->start();
+		if (mesh->getModelNode() == 0) mesh->registerStart();
 
 		m_btTriangleMesh = new btTriangleMesh();
 		H3DNode meshNode = h3dGetNodeChild(mesh->getModelNode(), 0); //TODO handle multi-mesh stuff
@@ -161,7 +161,7 @@ public:
 protected:
 	btCollisionShape* createCollisionShape()
 	{
-		if (mesh->getModelNode() == 0) mesh->start();
+		if (mesh->getModelNode() == 0) mesh->registerStart();
 
 		m_btTriangleMesh = new btTriangleMesh();
 		H3DNode meshNode = h3dGetNodeChild(mesh->getModelNode(), 0); //TODO handle multi-mesh stuff

@@ -49,8 +49,10 @@ bool Application::init()
 void Application::start()
 {
 	init();
+
 	customInitFunction();
 
+	if (&Modules::renderer() == nullptr) throw Exception("Renderer oops");
 	Modules::renderer().start();
 
 	for (size_t i = 0; i < objects.size(); i++)

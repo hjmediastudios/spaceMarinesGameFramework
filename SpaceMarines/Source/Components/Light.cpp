@@ -22,7 +22,7 @@ Light::~Light()
 	h3dRemoveNode(lightNode);
 }
 
-void Light::start()
+void Light::registerStart()
 {
 	if (gameObject == nullptr) throw Exception("Light isn't attached to a GameObject");
 	h3dSetNodeParent(lightNode, gameObject->getTransform()->getNode());

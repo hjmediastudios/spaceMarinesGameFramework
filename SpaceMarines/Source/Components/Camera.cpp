@@ -40,7 +40,7 @@ void Camera::setView(const Vector2 &size, const float fovDegrees, const Vector2 
 	projMat = Matrix4::initPerspMat(fovDegrees, size.x / size.y, clipDistances.x, clipDistances.y);
 }
 
-void Camera::start()
+void Camera::registerStart()
 {
 	if (gameObject == nullptr) throw Exception("Camera isn't attached to a GameObject");
 	h3dSetNodeParent(cameraNode, gameObject->getTransform()->getNode());

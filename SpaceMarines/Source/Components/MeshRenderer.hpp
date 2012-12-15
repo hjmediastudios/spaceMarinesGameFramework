@@ -7,13 +7,13 @@ namespace SpaceMarines
 /*************************************
  * 	Mesh Renderer class
  *************************************/
-class MeshRenderer : public PassiveComponent
+class MeshRenderer : public Component
 {
 public:
 	static const ObjectTypeName type = ObjectType::MeshRenderer;
 	MeshRenderer(const char* assetPath);
 	virtual ~MeshRenderer();
-	void start();
+	void registerStart();
 	virtual const char* getComponentType() const { return "MeshRenderer"; }
 	H3DNode getModelNode() const;
 	static void getMeshParameters(H3DNode node);

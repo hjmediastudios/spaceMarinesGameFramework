@@ -6,13 +6,13 @@ namespace SpaceMarines
 
 namespace Module{ class Renderer; }
 
-class Camera : public PassiveComponent
+class Camera : public Component
 {
 public:
 	Camera(const std::string &name);
 	virtual ~Camera();
 	void setView(const Vector2 &size, const float fovDegrees, const Vector2 &clipDistances);
-	void start();
+	void registerStart();
 	const char* getComponentType() const { return "Camera";}
 	Matrix4 getProjectionMatrix() const { return projMat; }
 	Matrix4 getViewMatrix() const;
