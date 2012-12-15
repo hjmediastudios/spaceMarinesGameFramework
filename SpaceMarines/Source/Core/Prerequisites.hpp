@@ -57,6 +57,9 @@ namespace SpaceMarines
 #include "../HighLevelTypes/Interfaces.hpp"
 #include "../HighLevelTypes/Object.hpp"
 
+#include "Delegate.hpp"
+#include "Event.hpp"
+
 #define PP_DebugDraw
 
 

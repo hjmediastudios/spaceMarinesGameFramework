@@ -9,7 +9,7 @@ namespace SpaceMarines
  * Type enums
  */
 namespace ObjectType
-{ enum _enum {
+{ enum List {
 	Object = 0,
 	GameObject = 1,
 	Component = 2,
@@ -17,7 +17,7 @@ namespace ObjectType
 	PassiveComponent = 4,
 	MeshRenderer = 10
 };}
-typedef ObjectType::_enum ObjectTypeName;
+typedef ObjectType::List ObjectTypeName;
 
 /************************************************************8
  * Basic object class
@@ -34,10 +34,10 @@ public:
  */
 class GameObject;
 namespace ComponentType
-{ enum _enum {
+{ enum List {
 	MeshRenderer = 10,
 };}
-typedef ComponentType::_enum CompTypeName;
+typedef ComponentType::List CompTypeName;
 class Component : public Object
 {
 public:

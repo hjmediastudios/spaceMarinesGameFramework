@@ -18,7 +18,7 @@ public:
 		addComponent(new RigidBody(getComponent<CapsuleCollider>(), 185.0f));
 		getComponent<RigidBody>()->setLockRotation(true);
 	}
-	void startFunc()
+	void startFunc(int a)
 	{
 		std::cout << "Hey!\n" << std::endl;
 	}
@@ -38,6 +38,7 @@ private:
 	Minifig* runners[Constant_NumMinifigs];
 	static const unsigned int Constant_NumCubes = 50;
 	GameObject* cubes[Constant_NumCubes];
+	Event<int> startEvent;
 };
 
 } /* namespace SpaceMarines */

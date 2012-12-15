@@ -78,6 +78,8 @@ void Application1::customInitFunction()
 		addObject(cubes[i]);
 	}
 
+	startEvent.addListener<Minifig, &Minifig::startFunc>(runners[0]);
+
 //	GameObject* plane2 = new GameObject();
 //	plane2->addComponent(new GroundPlaneCollider());
 //	plane2->addComponent(new RigidBody(plane2->getComponent<GroundPlaneCollider>(), 0.0f));
@@ -123,6 +125,8 @@ void Application1::customLogicLoop()
 		targetPoint = Modules::physics().rayCastComplex(Modules::renderer().getCamera()->getPickRayViewport(Modules::input().getMouseViewportPos()), 100.0f).point;
 
 	Modules::renderer().getDebugDrawer()->drawAxis(targetPoint, 1.1f);
+
+	startEvent.fire(5);
 
 	for (unsigned int i=0; i < Constant_NumMinifigs; i++)
 	{
