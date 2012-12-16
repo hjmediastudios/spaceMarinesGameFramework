@@ -98,6 +98,7 @@ void Application1::customStartFunction()
 		cubes[i]->addComponent(new RigidBody(cubes[i]->getComponent<BoxCollider>(), 0.0f));
 		cubes[i]->start();
 	}
+	track = true;
 }
 
 Vector3 targetPoint = Vector3::ZERO;
@@ -143,7 +144,7 @@ void Application1::customLogicLoop()
 		Vector3 ptToTarget = targetPoint - runner->getTransform()->getPosition();
 		Modules::debug().drawLine(runners[i]->getTransform()->getPosition(), targetPoint, Vector3::FORWARD);
 
-		if (ptToTarget.lengthSquared() > 2.0f)
+		if (ptToTarget.lengthSquared() > 2.0f && track)
 			runner->getComponent<RigidBody>()->applyForce(Vector3(ptToTarget.x, 0, ptToTarget.z).normalized() * Minifig::speed * 1000.0f, ForceMode::Force);
 		else
 			runner->getComponent<RigidBody>()->setVelocity(Vector3::ZERO);
@@ -157,11 +158,15 @@ void Application1::customLogicLoop()
 		}
 	}
 
-	BlokGUI::BeginPanel(5, 5);
-	BlokGUI::Slider(&Minifig::speed, 0.0f, 5.0f);
-	BlokGUI::EndPanel();
+	BlokGUI::AutoBeginPanel(5, 5);
+	BlokGUI::AutoLabel("Fig speed:");
+	BlokGUI::AutoSlider(&Minifig::speed, 0.0f, 5.0f);
+	BlokGUI::AutoSeparator();
+	BlokGUI::AutoLabel("FPS:");
+	BlokGUI::AutoLabel(BlokGUI::FloatToString(Time::fps));
+	BlokGUI::AutoCheckBox("Track:", &track);
 
-	std::cout << Time::fps << std::endl;
+	BlokGUI::AutoEndPanel();
 
 }
 

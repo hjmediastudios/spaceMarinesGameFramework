@@ -36,6 +36,7 @@ private:
 	static const unsigned int Constant_NumCubes = 50;
 	GameObject* cubes[Constant_NumCubes];
 	Event<int> startEvent;
+	bool track;
 };
 
 } /* namespace SpaceMarines */

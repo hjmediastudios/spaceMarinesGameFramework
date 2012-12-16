@@ -63,6 +63,15 @@ void Core::slider(float* value, float min, float max)
 	cols += 4;
 }
 
+void Core::checkBox(const char* text, bool* value)
+{
+	int x = lastX + padding, y = lastY + padding;
+	drawCheckBox(x + halfButtonWidth - buttonHeight, y, buttonHeight, buttonHeight, value, defaultColor);
+	drawText(x + halfButtonWidth - buttonHeight - 3, y, text, defaultColor, TextAlign::Right, true);
+	lastX = x + halfButtonWidth;
+	cols ++;
+}
+
 void Core::label(const char* text)
 {
 	int x = lastX + padding, y = lastY + padding;

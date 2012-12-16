@@ -3,6 +3,7 @@
 	<name>SpaceMarines</name>
 	<comment></comment>
 	<projects>
+		<project>BlokGUI</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

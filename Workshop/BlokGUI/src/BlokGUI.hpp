@@ -195,6 +195,7 @@ public:
 	bool button(const char* text, bool enabled = true);
 	void slider(float* value, float min, float max);
 	void label(const char* text);
+	void checkBox(const char* text, bool* value);
 	void newRow();
 	void endPanel();
 
