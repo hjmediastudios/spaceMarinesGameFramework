@@ -52,6 +52,12 @@ public:
 	{
 		return (glfwGetKey(code) == GLFW_PRESS);
 	}
+	Vector2 getMousePos()
+	{
+		static int x, y;
+		glfwGetMousePos(&x, &y);
+		return Vector2(x, y);
+	}
 	Vector2 getMouseViewportDelta()
 	{
 		return mouseViewportPosition - lastMouseViewportPosition;
@@ -69,12 +75,7 @@ private:
 	{
 		return pos / screenSize * 2.0f - 1.0f;
 	}
-	Vector2 getMousePos()
-	{
-		static int x, y;
-		glfwGetMousePos(&x, &y);
-		return Vector2(x, y);
-	}
+
 
 };
 

@@ -54,6 +54,7 @@ bool Renderer::init()
 		throw Exception("Unable to load asset data.");
 	}
 
+	BlokGUI::Init(screenSize.x, screenSize.y, "/home/nick/git/spaceMarinesGameFramework/SpaceMarines/Assets/fonts/BlueHighway.ttf");
 	_started = 1;
 	return true;
 }
@@ -105,7 +106,7 @@ void Renderer::update()
 	h3dRender(camera->cameraNode);
 	h3dFinalizeFrame();
 	debugDrawer->render();
-	Modules::gui().render();
+	Modules::gui().render(Modules::input().getMousePos().x, Modules::input().getMousePos().y, Modules::input().isMouseButtonPressed(0));
     glfwSwapBuffers();
 }
 

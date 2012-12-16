@@ -15,8 +15,9 @@ private:
 	//Event handling
 	struct Events
 	{
-		Event<(void)> start;
-		Event<(void)> update;
+		Event<()> start;
+		Event<()> update;
+		Event<()> onGUI;
 	};
 
 	static Events _events;

@@ -41,10 +41,12 @@
 							<tool errorParsers="" id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1410215615" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug">
 								<option id="gnu.cpp.link.option.libs.522913711" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="Horde3D"/>
+									<listOptionValue builtIn="false" value="BlokGUI"/>
 									<listOptionValue builtIn="false" value="Horde3DUtils"/>
 									<listOptionValue builtIn="false" value="GL"/>
 									<listOptionValue builtIn="false" value="GLEW"/>
 									<listOptionValue builtIn="false" value="GLU"/>
+									<listOptionValue builtIn="false" value="ftgl"/>
 									<listOptionValue builtIn="false" value="glfw"/>
 									<listOptionValue builtIn="false" value="BulletDynamics"/>
 									<listOptionValue builtIn="false" value="BulletCollision"/>

@@ -18,10 +18,7 @@ public:
 		addComponent(new RigidBody(getComponent<CapsuleCollider>(), 185.0f));
 		getComponent<RigidBody>()->setLockRotation(true);
 	}
-	void startFunc(int a)
-	{
-		std::cout << "Hey!\n" << std::endl;
-	}
+
 	static float speed;
 };
 

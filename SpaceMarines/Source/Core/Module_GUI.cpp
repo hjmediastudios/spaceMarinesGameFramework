@@ -16,14 +16,11 @@ GUI::GUI(Renderer* renderer)
 
 GUI::~GUI()
 {
-	TwTerminate();
 }
 
 bool GUI::init()
 {
 	if (!renderer) throw Exception("Attempting to create a GUI without a renderer.");
-	TwInit(TW_OPENGL, nullptr);
-	TwWindowSize(renderer->getScreenSize().x, renderer->getScreenSize().y);
 
 
 	return true;
@@ -31,15 +28,14 @@ bool GUI::init()
 
 void GUI::addPanel(const char* name)
 {
-	TwBar* tweakBar;
-	tweakBar = TwNewBar(name); //TODO GUIPanel object
-	TwAddVarRW(tweakBar, "Variable", TW_TYPE_FLOAT, &hey, "");
+
 }
 
 
-void GUI::render()
+void GUI::render(int mouseX, int mouseY, bool isMouseClicked)
 {
-	TwDraw();
+	BlokGUI::BeginFrame(mouseX, mouseY, isMouseClicked);
+	BlokGUI::EndFrame();
 }
 
 

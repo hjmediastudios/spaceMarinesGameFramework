@@ -9,7 +9,7 @@
 
 namespace SpaceMarines
 {
-float Minifig::speed = 1000.0f;
+float Minifig::speed = 1.0f;
 
 Application1::Application1(const char* assetPath, const char* renderingPipeline, const Vector2 &windowSize, bool drawDebug) : Application(assetPath, renderingPipeline, windowSize, drawDebug)
 {
@@ -23,7 +23,6 @@ Application1::~Application1()
 	}
 	std::cout << "Done!\n";
 }
-
 
 void Application1::customInitFunction()
 {
@@ -78,8 +77,6 @@ void Application1::customInitFunction()
 		cubes[i]->getTransform()->setPosition(Vector3(Math::randomFloatInRange(-25.0f, 25.0f), 2.0f, Math::randomFloatInRange(-25.0f, 25.0f)));
 		addObject(cubes[i]);
 	}
-
-	startEvent.addListener<Minifig, &Minifig::startFunc>(runners[0]);
 
 //	GameObject* plane2 = new GameObject();
 //	plane2->addComponent(new GroundPlaneCollider());
@@ -147,7 +144,7 @@ void Application1::customLogicLoop()
 		Modules::debug().drawLine(runners[i]->getTransform()->getPosition(), targetPoint, Vector3::FORWARD);
 
 		if (ptToTarget.lengthSquared() > 2.0f)
-			runner->getComponent<RigidBody>()->applyForce(Vector3(ptToTarget.x, 0, ptToTarget.z).normalized() * Minifig::speed, ForceMode::Force);
+			runner->getComponent<RigidBody>()->applyForce(Vector3(ptToTarget.x, 0, ptToTarget.z).normalized() * Minifig::speed * 1000.0f, ForceMode::Force);
 		else
 			runner->getComponent<RigidBody>()->setVelocity(Vector3::ZERO);
 
@@ -159,6 +156,10 @@ void Application1::customLogicLoop()
 			runner->getComponent<AnimatedMeshRenderer>()->playAnimation("Body_Run", 1, 1.0f);
 		}
 	}
+
+	BlokGUI::BeginPanel(5, 5);
+	BlokGUI::Slider(&Minifig::speed, 0.0f, 5.0f);
+	BlokGUI::EndPanel();
 
 	std::cout << Time::fps << std::endl;
 

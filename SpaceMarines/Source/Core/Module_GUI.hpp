@@ -5,7 +5,7 @@
 #include "Module_Debug.hpp"
 #include "../Components/Camera.hpp"
 
-#include <AntTweakBar.h>
+#include <BlokGUI.hpp>
 
 namespace SpaceMarines
 {
@@ -18,7 +18,7 @@ class GUI
 public:
 	GUI(Renderer* renderer);
 	virtual ~GUI();
-	void render();
+	void render(int mouseX, int mouseY, bool isMouseClicked);
 	bool init();
 	void addPanel(const char* name);
 private:
