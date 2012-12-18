@@ -1,6 +1,6 @@
 #include "BlokGUI.hpp"
 
-namespace BlokGUI
+namespace BlokGUIInternal
 {
 
 void Core::renderText(int x, int y, const char* text, unsigned int color, short alignment, char flags)
@@ -177,15 +177,15 @@ void Core::renderGUI()
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
-	gluOrtho2D(0, windowX, windowY, 0);
+	glOrtho(0, windowX, windowY, 0, 0.0f, 10.0f);
 	//Enable alpha blending
 	glEnable(GL_BLEND);
 	glBlendEquation(GL_ADD);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	for (unsigned int i=0; i < commandQueueSize; i++)
+	for (std::list<Command>::iterator it = commandQueue.begin(); it != commandQueue.end(); it++)
 	{
-		Command &cmd = commandQueue[i];
+		Command &cmd = *it;
 		switch (cmd.type)
 		{
 		case CommandType::Rect:

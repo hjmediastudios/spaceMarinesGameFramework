@@ -2,8 +2,9 @@
 
 #include "Main.hpp"
 #include <FTGL/ftgl.h>
+#include <list>
 
-namespace BlokGUI
+namespace BlokGUIInternal
 {
 
 namespace CommandType
@@ -67,8 +68,8 @@ public:
 	bool drawButton(const char* text, int x, int y, int w, int h, unsigned int color, bool continuousActivation = false, unsigned int textColor = Color::White);
 
 	void drawText(int x, int y, const char* text, unsigned int color = Color::White, TextAlign::List alignment = TextAlign::Left, bool alignVCenter = false);
-	void drawRect(int x, int y, int w, int h, unsigned int color = Color::DarkGray);
-	void drawRoundedRect(int x, int y, int w, int h, int rounding, unsigned int color = Color::DarkGray);
+	void drawRect(int x, int y, int w, int h, unsigned int color = Color::DarkGray, bool atBack = false);
+	void drawRoundedRect(int x, int y, int w, int h, int rounding, unsigned int color = Color::DarkGray, bool atBack = false);
 	void drawLine(int x0, int y0, int x1, int y1, int width, unsigned int color = Color::LightGray);
 	void drawSlider(int x, int y, int w, int h, float* value, float valMin = 0.0f, float valMax = 1.0f, unsigned int sliderColor = Color::LightGray, unsigned int barColor = Color::DarkGray);
 	void drawVSlider(int x, int y, int w, int h, float* value, float valMin = 0.0f, float valMax = 1.0f, unsigned int sliderColor = Color::LightGray, unsigned int barColor = Color::DarkGray);
@@ -128,7 +129,7 @@ private:
 	const char* allocateText(const char* text);
 
 	static const unsigned int maxCommandQueueSize = 4000;
-	Command commandQueue[maxCommandQueueSize];
+	std::list<Command> commandQueue;
 	unsigned int commandQueueSize;
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,6 +180,7 @@ private:
 	unsigned short buttonWidth;
 	unsigned short padding;
 	static const unsigned int defaultColor;
+	static const unsigned int defaultTextColor;
 	bool addRight;
 
 	unsigned short panelX;
@@ -196,6 +198,7 @@ public:
 	void slider(float* value, float min, float max);
 	void label(const char* text);
 	void checkBox(const char* text, bool* value);
+	void separatorLine();
 	void newRow();
 	void endPanel();
 

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <math.h>
 
-namespace BlokGUI
+namespace BlokGUIInternal
 {
 
 //Command queue and setup functions
@@ -48,8 +48,6 @@ Core::Core(int windowX, int windowY)
 bool Core::setSystemFont(const char* fontPath, unsigned short size)
 {
 	systemFont = new Font(fontPath, size);
-//    buttonHeight = systemFont->height();
-//    buttonWidth = buttonWidth * 6;
 	return (systemFont != nullptr);
 }
 
@@ -79,6 +77,7 @@ void Core::endFrame()
 
 	activeID = 0;
 	commandQueueSize = 0;
+	commandQueue.clear();
 	textPoolSize = 0;
 	glDisable(GL_BLEND);
 }
@@ -95,9 +94,10 @@ const char* Core::allocateText(const char* text)
 
 void Core::drawText(int x, int y, const char* text, unsigned int color, TextAlign::List alignment, bool alignVCenter)
 {
+	if (systemFont == nullptr) return;
 	activeID++;
 	if (commandQueueSize >= maxCommandQueueSize) return;
-	Command &cmd = commandQueue[commandQueueSize++];
+	Command cmd;
 	cmd.type = CommandType::Text;
 	cmd.text.x = (short) x;
 	cmd.text.y = (short) y;
@@ -105,12 +105,13 @@ void Core::drawText(int x, int y, const char* text, unsigned int color, TextAlig
 	cmd.flags = (char) (alignVCenter ? 1 : 0);
 	cmd.color = color;
 	cmd.text.text = allocateText(text);
+	commandQueue.push_back(cmd);
 }
-void Core::drawRect(int x, int y, int w, int h, unsigned int color)
+void Core::drawRect(int x, int y, int w, int h, unsigned int color, bool atBack)
 {
 	activeID++;
 	if (commandQueueSize >= maxCommandQueueSize) return;
-	Command &cmd = commandQueue[commandQueueSize++];
+	Command cmd;
 	cmd.type = CommandType::Rect;
 	cmd.flags = 0;
 	cmd.rect.x = (short) x;
@@ -119,12 +120,16 @@ void Core::drawRect(int x, int y, int w, int h, unsigned int color)
 	cmd.rect.h = (short) h;
 	cmd.color = color;
 	cmd.rect.rounding = 0;
+	if (atBack)
+		commandQueue.push_front(cmd);
+	else
+		commandQueue.push_back(cmd);
 }
-void Core::drawRoundedRect(int x, int y, int w, int h, int rounding, unsigned int color)
+void Core::drawRoundedRect(int x, int y, int w, int h, int rounding, unsigned int color, bool atBack)
 {
 	activeID++;
 	if (commandQueueSize >= maxCommandQueueSize) return;
-	Command &cmd = commandQueue[commandQueueSize++];
+	Command cmd;
 	cmd.type = CommandType::Rect;
 	cmd.flags = 0;
 	cmd.rect.x = (short) x;
@@ -133,13 +138,17 @@ void Core::drawRoundedRect(int x, int y, int w, int h, int rounding, unsigned in
 	cmd.rect.h = (short) h;
 	cmd.rect.rounding = rounding;
 	cmd.color = color;
+	if (atBack)
+		commandQueue.push_front(cmd);
+	else
+		commandQueue.push_back(cmd);
 }
 
 void Core::drawLine(int x0, int y0, int x1, int y1, int width, unsigned int color)
 {
 	activeID++;
 	if (commandQueueSize >= maxCommandQueueSize) return;
-	Command &cmd = commandQueue[commandQueueSize++];
+	Command cmd;
 	cmd.type = CommandType::Line;
 	cmd.flags = 0;
 	cmd.line.x0 = (short) x0;
@@ -148,6 +157,7 @@ void Core::drawLine(int x0, int y0, int x1, int y1, int width, unsigned int colo
 	cmd.line.y1 = (short) y1;
 	cmd.line.radius = width;
 	cmd.color = color;
+	commandQueue.push_back(cmd);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -165,7 +175,7 @@ bool Core::drawButton(const char* text, int x, int y, int w, int h, unsigned int
 {
 	activeID++;
 	drawRoundedRect(x, y, w, h, 5, color);
-	drawText(x + w*0.5f, y+ h/2 - systemFont->height()/2, text, textColor, TextAlign::Center);
+	if (systemFont) drawText(x + w*0.5f, y+ h/2 - systemFont->height()/2, text, textColor, TextAlign::Center);
 
 	bool ret = false;
 	if (continuousActivation)
@@ -196,8 +206,8 @@ void Core::drawSlider(int x, int y, int w, int h, float* value, float valMin, fl
 	drawRoundedRect(clamp(sliderX, x, x + w - sliderWidth), y, sliderWidth, h, 4, sliderColor);
 
 	float halfHeight = h * 0.5f;
-	drawText(x - 3, y - halfHeight, toString(valMin), barColor, TextAlign::Right, true);
-	drawText(x + w + 3, y - halfHeight, toString(valMax), barColor, TextAlign::Left, true);
+	drawText(x - 3, y - h, toString(valMin), sliderColor, TextAlign::Right, true);
+	drawText(x + w + 3, y - h, toString(valMax), sliderColor, TextAlign::Left, true);
 
 	if (input.mouseL && (isMouseInRect(sliderX, y, sliderWidth, h) || lastActiveID == activeID))
 	{

@@ -7,7 +7,7 @@
 #include <math.h>
 #include <sstream>
 
-namespace BlokGUI
+namespace BlokGUIInternal
 {
 	class Exception : public std::exception
 	{

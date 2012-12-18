@@ -1,7 +1,7 @@
 #include "BlokGUI.hpp"
 
 
-namespace BlokGUI
+namespace BlokGUIInternal
 {
 
 const float Core::Font::FontScalingFactor = 1.0f;
