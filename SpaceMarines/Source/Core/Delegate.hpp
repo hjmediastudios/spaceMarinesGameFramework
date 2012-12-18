@@ -45,10 +45,11 @@ public:
     	return !(operator bool());
     }
 
-    Delegate operator=(const Delegate &other)
+    Delegate& operator=(const Delegate &other)
     {
     	object_ptr = other.object_ptr;
     	stub_ptr = other.stub_ptr;
+    	return *this;
     }
 
 

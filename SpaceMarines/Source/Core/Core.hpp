@@ -15,11 +15,18 @@ private:
 	//Event handling
 	struct Events
 	{
-		Event<()> start;
-		Event<()> update;
-		Event<()> onGUI;
+		Event<void()> start;
+		Event<void()> update;
+		Event<void()> onGUI;
 	};
 
+	struct Invocable
+	{
+		float triggerTime;
+		Delegate<void()> invokable;
+	};
+
+	static std::list<Invocable*> invocables;
 	static Events _events;
 public:
 	static bool init();
@@ -35,6 +42,14 @@ public:
 	static Module::Input &input();
 	static Module::GUI &gui();
 	static Modules::Events &events();
+
+	template <class C, void (C::*Method)()>
+	static void InvokeLater(C* obj)
+	{
+		Invocable* iv = new Invocable();
+		iv->invokable = Delegate<void()>::FromMethod<C, Method>(obj);
+		invocables.push_back(iv);
+	}
 
 private:
 	static std::string assetPath;

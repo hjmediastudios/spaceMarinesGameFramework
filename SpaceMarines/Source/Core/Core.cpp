@@ -14,6 +14,8 @@ Module::PhysicsWorld* Modules::module_physics = nullptr;
 Module::Input* Modules::module_input = nullptr;
 Module::GUI* Modules::module_gui = nullptr;
 
+std::list<Modules::Invocable*> Modules::invocables = std::list<Modules::Invocable*>();
+
 Modules::Events Modules::_events = Modules::Events();
 
 void Modules::setAssetPath(const char* assetPath)
@@ -63,9 +65,11 @@ void Modules::cleanup()
 	delete module_renderer;
 	delete module_input;
 	delete module_gui;
+	for (auto i : invocables)
+		delete i;
 }
 
-/**
+/*
  * Module return functions. These are all unchecked for performance reasons.
  */
 Module::PhysicsWorld& Modules::physics()
@@ -80,6 +84,11 @@ Module::GUI& Modules::gui()
 	{ return *module_gui; }
 Modules::Events& Modules::events()
 	{ return _events; }
+
+/*
+ * Invoker functions
+ */
+
 
 }
 

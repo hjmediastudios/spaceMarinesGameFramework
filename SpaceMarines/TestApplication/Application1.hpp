@@ -30,6 +30,7 @@ public:
 	void customLogicLoop();
 	void customStartFunction();
 	virtual ~Application1();
+	void quitFunc();
 private:
 	static const unsigned int Constant_NumMinifigs = 50;
 	Minifig* runners[Constant_NumMinifigs];

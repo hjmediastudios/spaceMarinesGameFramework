@@ -24,6 +24,12 @@ Application1::~Application1()
 	std::cout << "Done!\n";
 }
 
+void Application1::quitFunc()
+{
+	cout << "Sheez " << Time::time_d << endl;
+	throw Exception("Time's up!");
+}
+
 void Application1::customInitFunction()
 {
 	Modules::debug().setDrawMode(DebugDrawMode::SystemOnly);
@@ -77,6 +83,8 @@ void Application1::customInitFunction()
 		cubes[i]->getTransform()->setPosition(Vector3(Math::randomFloatInRange(-25.0f, 25.0f), 2.0f, Math::randomFloatInRange(-25.0f, 25.0f)));
 		addObject(cubes[i]);
 	}
+
+	Modules::InvokeLater<Application1, &Application1::quitFunc>(this);
 
 //	GameObject* plane2 = new GameObject();
 //	plane2->addComponent(new GroundPlaneCollider());
