@@ -88,7 +88,23 @@ Modules::Events& Modules::events()
 /*
  * Invoker functions
  */
-
+void Modules::checkInvocables()
+{
+	for (std::list<Invocable*>::iterator it = invocables.begin(); it != invocables.end();)
+	{
+		if (Time::time >= (*it)->triggerTime)
+		{
+			if ((*it)->invokable)
+			{
+				if (*it == nullptr) throw Exception("Null invocable");
+				(*it)->invokable.invoke();
+				invocables.erase(it++);
+			}
+		}
+		else
+			it++;
+	}
+}
 
 }
 

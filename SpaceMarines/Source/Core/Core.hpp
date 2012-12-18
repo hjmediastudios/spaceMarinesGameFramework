@@ -44,12 +44,15 @@ public:
 	static Modules::Events &events();
 
 	template <class C, void (C::*Method)()>
-	static void InvokeLater(C* obj)
+	static void InvokeLater(C* obj, float time)
 	{
 		Invocable* iv = new Invocable();
 		iv->invokable = Delegate<void()>::FromMethod<C, Method>(obj);
+		iv->triggerTime = Time::time + time;
 		invocables.push_back(iv);
 	}
+
+	static void checkInvocables();
 
 private:
 	static std::string assetPath;

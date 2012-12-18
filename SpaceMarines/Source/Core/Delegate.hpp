@@ -37,7 +37,7 @@ public:
 
     operator bool() const
 	{
-    	return stub_ptr != 0;
+    	return stub_ptr != nullptr;
 	}
 
     bool operator !() const

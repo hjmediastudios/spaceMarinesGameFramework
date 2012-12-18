@@ -26,8 +26,8 @@ Application1::~Application1()
 
 void Application1::quitFunc()
 {
-	cout << "Sheez " << Time::time_d << endl;
-	throw Exception("Time's up!");
+	cout << "Tick..." << Time::time_d << endl;
+	Modules::InvokeLater<Application1, &Application1::quitFunc>(this, 1.0f);
 }
 
 void Application1::customInitFunction()
@@ -84,7 +84,7 @@ void Application1::customInitFunction()
 		addObject(cubes[i]);
 	}
 
-	Modules::InvokeLater<Application1, &Application1::quitFunc>(this);
+	Modules::InvokeLater<Application1, &Application1::quitFunc>(this, 1.0f);
 
 //	GameObject* plane2 = new GameObject();
 //	plane2->addComponent(new GroundPlaneCollider());
@@ -172,6 +172,8 @@ void Application1::customLogicLoop()
 	BlokGUI::AutoSeparator();
 	BlokGUI::AutoLabel("FPS:");
 	BlokGUI::AutoLabel(BlokGUI::FloatToString(Time::fps));
+	BlokGUI::AutoLabel("Time: ");
+	BlokGUI::AutoLabel(BlokGUI::FloatToString(Time::time));
 	BlokGUI::AutoCheckBox("Track:", &track);
 
 	BlokGUI::AutoEndPanel();

@@ -101,6 +101,7 @@ void Application::update()
 	}
 	Modules::physics().debugDraw();
 	Modules::renderer().update();
+	Modules::checkInvocables();
 }
 
 void Application::fixedUpdate()
