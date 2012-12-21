@@ -54,7 +54,6 @@ bool Renderer::init()
 		throw Exception("Unable to load asset data.");
 	}
 
-	BlokGUI::Init(screenSize.x, screenSize.y, "/home/nick/git/spaceMarinesGameFramework/SpaceMarines/Assets/fonts/BlueHighway.ttf");
 	_started = 1;
 	return true;
 }

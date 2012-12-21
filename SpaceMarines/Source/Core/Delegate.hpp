@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _Header_Delegate_
+#define _Header_Delegate_
+
 #include <cstddef>
 #include <algorithm>
 #include <utility>
@@ -92,3 +94,5 @@ private:
 };
 
 }
+
+#endif

@@ -2,7 +2,7 @@
 #include "Prerequisites.hpp"
 #include "Module_Renderer.hpp"
 #include "Module_GUI_Math.hpp"
-
+#include <BlokGL.hpp>
 namespace SpaceMarines
 {
 
@@ -22,7 +22,7 @@ class DebugDrawer : public btIDebugDraw
 {
 public:
 
-	Shader* debugShader;
+	BlokGL::Shader* debugShader;
 	DebugDrawer(Renderer* renderer);
 	~DebugDrawer();
 	void drawLine(const Vector3 &ptA, const Vector3 &ptB, const Vector3 &color = Vector3::ONE);

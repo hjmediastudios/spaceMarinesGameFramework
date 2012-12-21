@@ -17,8 +17,9 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glfw.h>
+#include <FreeImage.h>
 
-
+#include <BlokShader.hpp>
 
 namespace SpaceMarines
 {

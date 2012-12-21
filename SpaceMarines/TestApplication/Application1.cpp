@@ -6,7 +6,7 @@
  */
 
 #include "Application1.hpp"
-
+using namespace std;
 namespace SpaceMarines
 {
 float Minifig::speed = 1.0f;
@@ -27,7 +27,6 @@ Application1::~Application1()
 void Application1::quitFunc()
 {
 	cout << "Tick..." << Time::time_d << endl;
-	Modules::InvokeLater<Application1, &Application1::quitFunc>(this, 1.0f);
 }
 
 void Application1::customInitFunction()
@@ -166,17 +165,23 @@ void Application1::customLogicLoop()
 		}
 	}
 
-	BlokGUI::AutoBeginPanel(5, 5);
-	BlokGUI::AutoLabel("Fig speed:");
-	BlokGUI::AutoSlider(&Minifig::speed, 0.0f, 5.0f);
-	BlokGUI::AutoSeparator();
-	BlokGUI::AutoLabel("FPS:");
-	BlokGUI::AutoLabel(BlokGUI::FloatToString(Time::fps));
-	BlokGUI::AutoLabel("Time: ");
-	BlokGUI::AutoLabel(BlokGUI::FloatToString(Time::time));
-	BlokGUI::AutoCheckBox("Track:", &track);
+	BlokGUI::DrawRoundedRect(500, 100, 100, 100, 25, BlokGUI::Color1(1.0f, 0.0f, 0.0f, 1.0f));
 
-	BlokGUI::AutoEndPanel();
+	Vector2 posPoint = Modules::renderer().getCamera()->worldToScreen(targetPoint);
+	BlokGUI::DrawRect(posPoint.x, posPoint.y, 100, 100, BlokGUI::Color1(0.0f, 0.5f, 0.0f, 1.0f));
+
+//	BlokGUI::AutoBeginPanel(5, 5);
+//	BlokGUI::AutoLabel("Fig speed:");
+//	BlokGUI::AutoSlider(&Minifig::speed, 0.0f, 5.0f);
+//	BlokGUI::AutoSeparator();
+//	BlokGUI::AutoLabel("FPS:");
+//	BlokGUI::AutoLabel(BlokGUI::FloatToString(Time::fps));
+//	BlokGUI::AutoLabel("Time: ");
+//	BlokGUI::AutoLabel(BlokGUI::FloatToString(Time::time));
+//	BlokGUI::AutoCheckBox("Track:", &track);
+//	BlokGUI::DrawTexture(150, 400, 100, 100, "textures/models/1mSquareDarkTan.png");
+//
+//	BlokGUI::AutoEndPanel();
 
 }
 

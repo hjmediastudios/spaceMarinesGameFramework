@@ -25,6 +25,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.1335519" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/usr/local/include/bullet"/>
 									<listOptionValue builtIn="false" value="/home/nick/Apps/AntTweakBar/include"/>
+									<listOptionValue builtIn="false" value="/usr/local/include"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.998702637" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -std=c++0x" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.387727528" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
@@ -41,18 +42,19 @@
 							<tool errorParsers="" id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1410215615" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug">
 								<option id="gnu.cpp.link.option.libs.522913711" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="Horde3D"/>
-									<listOptionValue builtIn="false" value="BlokGUI"/>
 									<listOptionValue builtIn="false" value="Horde3DUtils"/>
+									<listOptionValue builtIn="false" value="BlokGUI"/>
+									<listOptionValue builtIn="false" value="BlokGL"/>
+									<listOptionValue builtIn="false" value="freeimage"/>
 									<listOptionValue builtIn="false" value="GL"/>
 									<listOptionValue builtIn="false" value="GLEW"/>
 									<listOptionValue builtIn="false" value="GLU"/>
-									<listOptionValue builtIn="false" value="ftgl"/>
 									<listOptionValue builtIn="false" value="glfw"/>
 									<listOptionValue builtIn="false" value="BulletDynamics"/>
 									<listOptionValue builtIn="false" value="BulletCollision"/>
 									<listOptionValue builtIn="false" value="LinearMath"/>
 									<listOptionValue builtIn="false" value="tinyxml2"/>
-									<listOptionValue builtIn="false" value="AntTweakBar"/>
+									<listOptionValue builtIn="false" value="ftgl"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.419766692" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/local/lib"/>
@@ -63,6 +65,7 @@
 								</inputType>
 							</tool>
 							<tool errorParsers="" id="cdt.managedbuild.tool.gnu.assembler.exe.debug.383532184" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug">
+								<option id="gnu.both.asm.option.include.paths.1237392552" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths"/>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1583731788" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
@@ -108,6 +111,9 @@
 								</inputType>
 							</tool>
 							<tool errorParsers="" id="cdt.managedbuild.tool.gnu.assembler.exe.release.1868720391" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.release">
+								<option id="gnu.both.asm.option.include.paths.1026551034" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/usr/local/include"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1438299429" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
@@ -172,6 +178,9 @@
 								</inputType>
 							</tool>
 							<tool errorParsers="" id="cdt.managedbuild.tool.gnu.assembler.exe.debug.1482816471" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug">
+								<option id="gnu.both.asm.option.include.paths.760547697" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="/usr/local/include"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.511936694" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>

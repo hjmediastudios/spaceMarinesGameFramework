@@ -41,7 +41,6 @@ class PassiveComponent;
 class Transform;
 class Resource;
 class ModelResource;
-class Shader;
 class Application;
 
 template <> inline const char* GetTypeName<char>() { return "char"; }
@@ -85,7 +84,6 @@ template <> inline const char* GetTypeName<Transform>() { return "Transform"; }
 template <> inline const char* GetTypeName<Layer>() { return "Layer"; }
 template <> inline const char* GetTypeName<Resource>() { return "Resource"; }
 template <> inline const char* GetTypeName<ModelResource>() { return "ModelResource"; }
-template <> inline const char* GetTypeName<Shader>() { return "Shader"; }
 template <> inline const char* GetTypeName<Application>() { return "Application"; }
 
 }

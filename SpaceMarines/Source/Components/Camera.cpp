@@ -74,6 +74,23 @@ Ray Camera::getPickRayViewport(const Vector2 &viewportCoordinates) const
 	return ray;
 }
 
+Vector2 Camera::worldToViewport(const Vector3 &worldCoordinates) const
+{
+	const float *nodeTrans;
+	h3dGetNodeTransMats(cameraNode, 0, &nodeTrans);
+	Matrix4 view = Matrix4(nodeTrans).inverted();
+	Vector4 v = projMat * view * Vector4(worldCoordinates);
+
+	float invW = 1.0f / v.w;
+
+	return Vector2(v.x * invW, -v.y * invW);
+}
+
+Vector2 Camera::worldToScreen(const Vector3 &worldCoordinates) const
+{
+	return viewportToScreen(worldToViewport(worldCoordinates));
+}
+
 Ray Camera::getPickRayScreen(const Vector2 &screenCoordinates) const
 {
 	return getPickRayViewport(screenToViewport(screenCoordinates));

@@ -1,6 +1,7 @@
 #include "Module_Debug.hpp"
 #include <GL/gl.h>
 #include <GL/glew.h>
+
 namespace SpaceMarines
 {
 namespace Module
@@ -10,9 +11,9 @@ DebugDrawer::DebugDrawer(Renderer* renderer)
 {
 	this->renderer = renderer;
 	glPushAttrib(GL_ALL_ATTRIB_BITS);
-	debugShader = Shader::newShaderFromOneFile(renderer->getAssetPath() + "shaders/debugShader.glsl");
+	debugShader = BlokGL::Shader::NewShaderFromOneFile( (renderer->getAssetPath() + "shaders/debugShader.glsl").c_str() );
 	Ldb_mvpMat = debugShader->getUniformLocation("mvpMat");
-	if (Ldb_mvpMat == INVALID_UNIFORM_LOCATION)
+	if (Ldb_mvpMat == BlokShader::INVALID_UNIFORM)
 		throw Exception("Error finding debug uniforms!");
 
 	glGenBuffers(1, &LlinesVBO);

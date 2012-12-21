@@ -21,7 +21,7 @@ GUI::~GUI()
 bool GUI::init()
 {
 	if (!renderer) throw Exception("Attempting to create a GUI without a renderer.");
-
+	BlokGUI::Init(renderer->getScreenSize().x, renderer->getScreenSize().y, renderer->getAssetPath().c_str(), "fonts/BlueHighway.ttf");
 
 	return true;
 }

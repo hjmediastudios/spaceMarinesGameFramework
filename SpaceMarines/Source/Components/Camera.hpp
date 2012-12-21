@@ -23,6 +23,9 @@ public:
 	Vector2 viewportToScreen(const Vector2 &co) const;
 	Vector2 screenToViewport(const Vector2 &co) const;
 
+	Vector2 worldToViewport(const Vector3 &worldCoordinates) const;
+	Vector2 worldToScreen(const Vector3 &worldCoordiantes) const;
+
 protected:
 	H3DNode cameraNode;
 	friend class Module::Renderer;
@@ -31,6 +34,7 @@ private:
 	float fovDegrees;
 	Vector2 clipDistances;
 	Matrix4 projMat;
+	Matrix4 viewMat;
 };
 
 } /* namespace SpaceMarines */
