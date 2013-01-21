@@ -6,6 +6,7 @@
  */
 
 #include "Application1.hpp"
+
 using namespace std;
 namespace SpaceMarines
 {
@@ -42,7 +43,7 @@ void Application1::customInitFunction()
 				Math::randomFloatInRange(-15.0f, 15.0f)));
 		addObject(runners[i]);
 	}
-
+	//StartHere GUITextures without debug drawing
 	GameObject* camera = new GameObject();
 	camera->addComponent(new Camera("Camera"));
 	Modules::renderer().setCamera(camera->getComponent<Camera>());
@@ -89,7 +90,7 @@ void Application1::customInitFunction()
 //	plane2->addComponent(new GroundPlaneCollider());
 //	plane2->addComponent(new RigidBody(plane2->getComponent<GroundPlaneCollider>(), 0.0f));
 //	addObject(plane2);
-	Modules::gui().addPanel("Settings");
+	Modules::gui().loadGUIDoc("gui/Sample.rml");
 }
 
 void Application1::customStartFunction()
@@ -101,7 +102,7 @@ void Application1::customStartFunction()
 		RayCastHit hit = Modules::physics().rayCastComplex(pt, -Vector3::UP, 28.0f);
 		cubes[i]->getTransform()->position = hit.point + Vector3::UP * 0.5f;
 		cubes[i]->getTransform()->rotation = Quaternion::rotationBetweenVectors(Vector3::UP, hit.normal);
-		cubes[i]->addComponent(new BoxCollider(Vector3::ONE * 2.0f));
+		cubes[i]->addComponent(new BoxCollider(Vector3::ONE));
 		cubes[i]->addComponent(new RigidBody(cubes[i]->getComponent<BoxCollider>(), 0.0f));
 		cubes[i]->start();
 	}
@@ -165,10 +166,10 @@ void Application1::customLogicLoop()
 		}
 	}
 
-	BlokGUI::DrawRoundedRect(500, 100, 100, 100, 25, BlokGUI::Color1(1.0f, 0.0f, 0.0f, 1.0f));
+//	BlokGUI::DrawRoundedRect(500, 100, 100, 100, 25, BlokGUI::Color1(1.0f, 0.0f, 0.0f, 1.0f));
 
 	Vector2 posPoint = Modules::renderer().getCamera()->worldToScreen(targetPoint);
-	BlokGUI::DrawRect(posPoint.x, posPoint.y, 100, 100, BlokGUI::Color1(0.0f, 0.5f, 0.0f, 1.0f));
+//	BlokGUI::DrawTexture(posPoint.x - 16, posPoint.y - 32, 32, 32, "textures/gui/pointer.png");
 
 //	BlokGUI::AutoBeginPanel(5, 5);
 //	BlokGUI::AutoLabel("Fig speed:");

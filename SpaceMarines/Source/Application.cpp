@@ -95,13 +95,13 @@ void Application::start()
 void Application::update()
 {
 	customLogicLoop();
+	Modules::checkInvocables();
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->update();
 	}
 	Modules::physics().debugDraw();
 	Modules::renderer().update();
-	Modules::checkInvocables();
 }
 
 void Application::fixedUpdate()
